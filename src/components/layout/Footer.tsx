@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, ShieldCheck } from 'lucide-react';
+// Only import icons that are actually used in the code below
+import { Phone, MapPin, ShieldCheck } from 'lucide-react';
 import { CONTACT_INFO } from '../../constants';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
