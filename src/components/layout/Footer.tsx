@@ -28,7 +28,10 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
             <div className="bg-blue-900/20 border border-blue-800/40 p-4 rounded-xl flex items-center space-x-3">
                <ShieldCheck className="text-orange-500 w-8 h-8 shrink-0" />
                <div className="text-[10px] uppercase font-bold text-blue-200">
-                  {lang === 'hi' ? 'AKFI से संबद्ध संस्थान' : 'Affiliated to AKFI'}
+                  {lang === 'hi' 
+  ? 'झारखंड राज्य कबड्डी संघ से संबद्ध (AKFI मान्यता प्राप्त)' 
+  : 'Affiliated to Jharkhand State Kabaddi Association (Recognized by AKFI)'
+}
                </div>
             </div>
           </div>

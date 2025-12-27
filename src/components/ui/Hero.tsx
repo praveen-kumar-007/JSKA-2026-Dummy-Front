@@ -33,7 +33,10 @@ const Hero: React.FC<HeroProps> = ({ onRegisterClick, lang }) => {
             </div>
             <div className="inline-flex items-center space-x-2 bg-blue-800/80 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border border-blue-400/30">
               <ShieldCheck size={14} className="text-orange-400" />
-              <span>{lang === 'hi' ? 'AKFI से संबद्ध' : 'Affiliated to AKFI'}</span>
+              <span>{lang === 'hi' 
+  ? 'झारखंड राज्य कबड्डी संघ से संबद्ध (AKFI मान्यता प्राप्त)' 
+  : 'Affiliated to Jharkhand State Kabaddi Association (Recognized by AKFI)'
+}</span>
             </div>
           </div>
 
