@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Hero from '../components/ui/Hero';
-import { Trophy, Users, Award, Zap, ExternalLink } from 'lucide-react';
+import { Trophy, Users, Award, Zap, ExternalLink, Megaphone, Calendar, ArrowRight } from 'lucide-react';
 import { MOCK_NEWS } from '../constants';
-// Use 'import type' for TypeScript interfaces/types
 import type { NewsArticle } from '../types';
 import type { Language } from '../translations';
-
-// Use standard import for the actual data (translations)
 import { translations } from '../translations';
 
 interface HomeProps {
@@ -33,6 +30,114 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
       {/* Hero Section */}
       <Hero onRegisterClick={() => onNavigate('register')} lang={lang} />
       
+      {/* ----------------------------------------------------------------------- */}
+      {/* NEW: FEATURED CHAMPIONSHIP ANNOUNCEMENT SECTION */}
+      {/* ----------------------------------------------------------------------- */}
+      <section className="relative py-16 bg-gradient-to-br from-red-900 to-blue-950 text-white overflow-hidden border-y-8 border-orange-500">
+        <div className="absolute top-0 right-0 p-4 opacity-10">
+           <Trophy size={400} />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            
+            {/* Left Side: Poster Image */}
+            <div className="w-full lg:w-1/3">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                {/* IMPORTANT: Replace the src below with your actual uploaded image path.
+                   Example: src="/assets/championship-poster.png"
+                */}
+                <img 
+                  src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1766845990/Gemini_Generated_Image_eyfw6eyfw6eyfw6e_pldumt.png" 
+                  alt="Dhanbad Kabaddi Championship 2026" 
+                  className="relative rounded-2xl shadow-2xl w-full object-cover transform transition group-hover:scale-[1.02] border-4 border-white/20"
+                />
+              </div>
+            </div>
+
+            {/* Right Side: The Registration Focus */}
+            <div className="w-full lg:w-2/3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 rounded-full text-xs font-bold uppercase tracking-widest mb-6 animate-pulse">
+                <Megaphone size={16} />
+                {lang === 'hi' ? 'आगामी प्रतियोगिता' : 'Upcoming Championship'}
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-oswald font-bold mb-4 leading-tight">
+                {lang === 'hi' 
+                  ? 'इंटर स्कूल धनबाद कबड्डी चैंपियनशिप 2026' 
+                  : 'Inter School Dhanbad Kabaddi Championship 2026'}
+              </h2>
+              
+              <p className="text-xl text-blue-200 mb-8 font-light border-l-4 border-orange-500 pl-4">
+                 {lang === 'hi' 
+                  ? 'सब-जूनियर (अंडर-16) बालक एवं बालिका वर्ग' 
+                  : 'Sub-Junior (Under-16) Boys & Girls Category'}
+              </p>
+
+              {/* Attractive Info Box */}
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Date Block */}
+                  <div className="flex items-start gap-4">
+                    <div className="bg-orange-500/20 p-3 rounded-lg text-orange-400">
+                      <Calendar size={28} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm uppercase tracking-wider text-blue-300 font-bold mb-1">
+                        {lang === 'hi' ? 'रजिस्ट्रेशन प्रारंभ' : 'Registration Starts'}
+                      </h4>
+                      <p className="text-2xl font-oswald font-bold text-white">5 Jan 2026</p>
+                      <p className="text-xs text-blue-200 mt-1">
+                        {lang === 'hi' ? '(ऑनलाइन और ऑफलाइन)' : '(Online & Offline)'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Format Block */}
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-500/20 p-3 rounded-lg text-blue-400">
+                      <Trophy size={28} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm uppercase tracking-wider text-blue-300 font-bold mb-1">
+                        {lang === 'hi' ? 'प्रतियोगिता प्रारूप' : 'Tournament Format'}
+                      </h4>
+                      <p className="text-lg font-bold text-white leading-tight">
+                        {lang === 'hi' ? 'जनवरी में 2 रविवार' : '2 Sundays in Jan'}
+                      </p>
+                      <p className="text-xs text-blue-200 mt-1">
+                        {lang === 'hi' ? 'उद्घाटन और समापन समारोह' : 'Opening & Closing Ceremony'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-white/10">
+                   <p className="text-sm text-center italic text-blue-100">
+                     {lang === 'hi' 
+                       ? '"सभी स्कूल और क्लब अपनी टीमें तैयार रखें! रजिस्ट्रेशन लिंक जल्द ही सक्रिय होगा।"'
+                       : '"Schools and Clubs, get your teams ready! Registration link activating soon."'}
+                   </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => onNavigate('institution')}
+                  className="bg-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-orange-700 transition-all shadow-lg hover:shadow-orange-500/20 flex items-center justify-center gap-2 flex-1 group"
+                >
+                  <Award size={20} />
+                  {lang === 'hi' ? 'संस्थान एफिलिएशन (Institution Affiliation)' : 'Institution Affiliation'}
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-24 bg-white relative z-10">
         <div className="max-w-7xl mx-auto px-4">
