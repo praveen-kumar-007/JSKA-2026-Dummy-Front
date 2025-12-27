@@ -4,7 +4,7 @@ export const translations = {
   en: {
     nav: { home: 'Home', about: 'About', gallery: 'Gallery', news: 'News', register: 'Registration', institution: 'Institution', affiliated: 'Affiliated' },
     hero: { 
-      badge: 'District League 2024', slogan: 'Sport of the Soil, Sport of the Nation, Kabaddi Our Sport', title: 'Le Panga,', subtitle: 'Dhanbad District!', 
+      badge: 'District League 2026', slogan: 'Sport of the Soil, Sport of the Nation, Kabaddi Our Sport', title: 'Le Panga,', subtitle: 'Dhanbad District!', 
       description: 'Promoting excellence in Kabaddi across Dhanbad district.',
       ctaPrimary: 'Register Now', ctaSecondary: 'View Schedule',
       stats: { clubs: 'Active Clubs', players: 'Registered Players', titles: 'Championships', support: 'Support' }
@@ -48,7 +48,7 @@ export const translations = {
   hi: {
     nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'पंजीकरण', institution: 'संस्थान', affiliated: 'संबद्ध' },
     hero: { 
-      badge: 'जिला लीग 2024', slogan: 'मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल', title: 'ले पंगा,', subtitle: 'धनबाद जिला!', 
+      badge: 'जिला लीग 2026', slogan: 'मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल', title: 'ले पंगा,', subtitle: 'धनबाद जिला!', 
       description: 'धनबाद जिले में कबड्डी में उत्कृष्टता को बढ़ावा देना।',
       ctaPrimary: 'अभी पंजीकरण करें', ctaSecondary: 'शेड्यूल देखें',
       stats: { clubs: 'सक्रिय क्लब', players: 'पंजीकृत खिलाड़ी', titles: 'चैंपियनशिप', support: 'सहायता' }
