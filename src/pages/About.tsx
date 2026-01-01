@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Language } from '../translations';
 import { translations } from '../translations';
 import { ShieldCheck, Award, Users, Star, UserCheck, ScrollText, Medal, Megaphone } from 'lucide-react';
@@ -9,6 +10,7 @@ interface AboutProps {
 
 export const About: React.FC<AboutProps> = ({ lang }) => {
   const t = translations[lang];
+  const navigate = useNavigate();
 
   // The Top 4 Leaders (With Images)
   const coreLeadership = [
@@ -308,7 +310,10 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
         {/* Bottom Contact CTA */}
         <div className="mt-16 md:mt-24 text-center pb-12">
           <p className="text-slate-400 text-xs md:text-sm mb-4 uppercase tracking-widest">Want to join us?</p>
-          <button className="bg-blue-900 hover:bg-orange-600 text-white px-8 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all shadow-xl hover:-translate-y-1 hover:shadow-orange-500/20">
+          <button
+            onClick={() => navigate('/contact')}
+            className="bg-blue-900 hover:bg-orange-600 text-white px-8 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all shadow-xl hover:-translate-y-1 hover:shadow-orange-500/20"
+          >
             {lang === 'hi' ? 'संपर्क करें' : 'Contact Association'}
           </button>
         </div>

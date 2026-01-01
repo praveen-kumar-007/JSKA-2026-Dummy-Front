@@ -48,7 +48,11 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
   return (
     <div className="animate-in fade-in duration-500">
       {/* Hero Section */}
-      <Hero onRegisterClick={() => onNavigate('register')} lang={lang} />
+      <Hero 
+        onRegisterClick={() => onNavigate('register')} 
+        onScheduleClick={() => onNavigate('news')} 
+        lang={lang} 
+      />
       
       {/* ----------------------------------------------------------------------- */}
       {/* FEATURED CHAMPIONSHIP ANNOUNCEMENT SECTION */}

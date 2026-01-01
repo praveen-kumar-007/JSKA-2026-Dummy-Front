@@ -8,10 +8,11 @@ import type { Language } from '../../translations';
 
 interface HeroProps {
   onRegisterClick: () => void;
+  onScheduleClick: () => void;
   lang: Language;
 }
 
-const Hero: React.FC<HeroProps> = ({ onRegisterClick, lang }) => {
+const Hero: React.FC<HeroProps> = ({ onRegisterClick, onScheduleClick, lang }) => {
   const t = translations[lang].hero;
   
   return (
@@ -61,7 +62,10 @@ const Hero: React.FC<HeroProps> = ({ onRegisterClick, lang }) => {
               {t.ctaPrimary}
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white hover:text-blue-900 text-white px-12 py-6 rounded-lg font-bold text-xl transition-all active:scale-95 transform hover:-translate-y-1">
+            <button 
+              onClick={onScheduleClick}
+              className="bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white hover:text-blue-900 text-white px-12 py-6 rounded-lg font-bold text-xl transition-all active:scale-95 transform hover:-translate-y-1"
+            >
               {t.ctaSecondary}
             </button>
           </div>
