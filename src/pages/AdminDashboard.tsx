@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckCircle, XCircle, Trash2, 
   Users, Building, RefreshCcw, Search, Eye,
-  LogOut, IndianRupee, Newspaper, Image as ImageIcon, Mail, Wallet
-  // Removed unused Clock, Download, and FileText
+  LogOut, IndianRupee, Newspaper, Image as ImageIcon, Mail
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Language } from '../translations';
@@ -110,7 +109,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         </div>
 
         {/* Admin Management Panel */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-10">
           <a href="/admin/gallery" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-blue-50 transition-all">
             <ImageIcon size={32} className="text-blue-700 mb-2" />
             <span className="font-bold text-xs text-blue-900">Manage Gallery</span>
@@ -123,10 +122,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             <Mail size={28} className="text-blue-700 mb-2" />
             <span className="font-bold text-xs text-blue-900">Contact Forms</span>
           </a>
-          <Link to="/admin/player-ids" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-blue-50 transition-all">
-            <Wallet size={32} className="text-blue-700 mb-2" />
-            <span className="font-bold text-xs text-blue-900">Player IDs</span>
-          </Link>
           <a href="#" onClick={() => setActiveTab('players')} className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${activeTab === 'players' ? 'bg-blue-900 text-white' : 'bg-white hover:bg-blue-50 text-blue-900'}`}> 
             <Users size={28} className={activeTab === 'players' ? 'text-orange-400' : 'text-blue-900'} />
             <span className="font-bold text-xs">Player Details</span>

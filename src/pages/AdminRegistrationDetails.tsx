@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
-import { ArrowLeft, Download, User, Phone, Info, Building2 } from "lucide-react";
+import { ArrowLeft, Download, User, Phone, Info, Building2, Wallet, X } from "lucide-react";
+import { IDCardFront } from "./Frontcard";
+import { IDCardBack } from "./Backcard";
+import type { IDCardData } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -12,6 +14,31 @@ const AdminRegistrationDetails = () => {
   const [type, setType] = useState<'player' | 'institution' | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [generatedIdNo, setGeneratedIdNo] = useState<string | null>(null);
+  const [showIdCard, setShowIdCard] = useState(false);
+
+  // Generate unique DDKA-#### ID
+  const generateIdNo = () => {
+    const randomFourDigits = Math.floor(1000 + Math.random() * 9000);
+    const newIdNo = `DDKA-${randomFourDigits}`;
+    setGeneratedIdNo(newIdNo);
+    setShowIdCard(true);
+  };
+
+  const getIdCardData = (): IDCardData | null => {
+    if (!generatedIdNo || type !== 'player' || !data) return null;
+    return {
+      idNo: generatedIdNo,
+      name: data.fullName,
+      fathersName: data.fathersName,
+      dob: data.dob,
+      bloodGroup: data.bloodGroup,
+      phone: data.phone,
+      address: data.address,
+      photoUrl: data.photo,
+      transactionId: data.transactionId,
+    };
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -104,16 +131,26 @@ const AdminRegistrationDetails = () => {
         {/* RIGHT COLUMN: Main Info */}
         <div className="flex flex-col gap-6 w-full">
           {/* Back & Dashboard Buttons */}
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between gap-2">
             <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-blue-900 font-bold hover:underline">
               <ArrowLeft size={22} /> Back
             </button>
-            <button
-              onClick={() => navigate('/admin-portal-access')}
-              className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
-            >
-              Go to Dashboard
-            </button>
+            <div className="flex gap-2">
+              {type === 'player' && data?.status === 'Approved' && (
+                <button
+                  onClick={generateIdNo}
+                  className="px-4 py-2 rounded-full bg-green-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-700 transition-all flex items-center gap-2"
+                >
+                  <Wallet size={16} /> Generate ID
+                </button>
+              )}
+              <button
+                onClick={() => navigate('/admin-portal-access')}
+                className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
+              >
+                Go to Dashboard
+              </button>
+            </div>
           </div>
 
           {/* Header: Name, Email, Status, Registered Date */}
@@ -220,6 +257,58 @@ const AdminRegistrationDetails = () => {
           )}
         </div>
       </div>
+
+      {/* ID Card Modal */}
+      {showIdCard && generatedIdNo && getIdCardData() && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-blue-900 text-white p-4 flex justify-between items-center">
+              <h2 className="text-xl font-bold">{data.fullName} - ID Card</h2>
+              <button
+                onClick={() => {
+                  setShowIdCard(false);
+                  setGeneratedIdNo(null);
+                }}
+                className="text-2xl hover:bg-blue-800 p-1 rounded w-8 h-8 flex items-center justify-center"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* ID Cards */}
+            <div className="p-8 flex gap-8 justify-center flex-wrap">
+              <div>
+                <h3 className="text-center font-bold text-slate-700 mb-4">Front Side</h3>
+                <IDCardFront data={getIdCardData()!} />
+              </div>
+              <div>
+                <h3 className="text-center font-bold text-slate-700 mb-4">Back Side</h3>
+                <IDCardBack data={getIdCardData()!} />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 bg-slate-100 border-t border-slate-200 p-4 flex gap-4 justify-center">
+              <button
+                onClick={() => {
+                  setShowIdCard(false);
+                  setGeneratedIdNo(null);
+                }}
+                className="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded transition"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition flex items-center gap-2"
+              >
+                <Download size={18} /> Print / Download
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
