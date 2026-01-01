@@ -61,10 +61,18 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         sessionStorage.setItem('isAdminAuthenticated', 'true');
         setTimeout(() => onLoginSuccess(), 300);
       } else {
-        setError(result.message || 'Login failed. Please try again.');
+        // Provide more specific error messages
+        const errorMsg = result.message || 'Login failed. Please try again.';
+        if (errorMsg.includes('Invalid')) {
+          setError('❌ Invalid Admin ID or Password. Please check and try again.');
+        } else if (errorMsg.includes('required')) {
+          setError('⚠️ Admin ID and Password are required.');
+        } else {
+          setError(`❌ ${errorMsg}`);
+        }
       }
     } catch (err) {
-      setError('Error authenticating. Please try again.');
+      setError('❌ Connection failed. Make sure the backend server is running at ' + API_URL);
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
@@ -159,6 +167,15 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
           <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">
             Dhanbad District Kabaddi Association
           </p>
+          <div className="pt-3 border-t border-slate-200">
+            <p className="text-[11px] text-slate-600 mb-2">No admin account yet?</p>
+            <a 
+              href="/admin-secure-setup-dkka2024" 
+              className="text-[11px] text-blue-600 hover:text-blue-800 font-bold underline"
+            >
+              Create admin account here
+            </a>
+          </div>
         </div>
       </div>
     </div>
