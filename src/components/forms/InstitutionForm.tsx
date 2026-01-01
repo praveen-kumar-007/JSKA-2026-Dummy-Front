@@ -6,6 +6,7 @@ import {
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
 import { FEES } from '../../constants';
+import { Link } from 'react-router-dom';
 
 interface InstitutionFormProps {
   lang: Language;
@@ -16,6 +17,7 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [transactionId, setTransactionId] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   
   // State for Payment Screenshot
   const [screenshot, setScreenshot] = useState<File | null>(null);
@@ -60,6 +62,12 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
 
   const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      alert(lang === 'hi'
+        ? 'कृपया आगे बढ़ने से पहले नियम और शर्तों को स्वीकार करें।'
+        : 'Please agree to the Terms & Conditions before proceeding.');
+      return;
+    }
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
@@ -88,6 +96,7 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
         dataToSend.append(key, value);
       });
       dataToSend.append('transactionId', transactionId.toUpperCase().trim());
+      dataToSend.append('acceptedTerms', acceptedTerms ? 'true' : 'false');
       
       // Append the screenshot file
       dataToSend.append('screenshot', screenshot);
@@ -262,6 +271,37 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
                   <label className="text-sm font-bold text-gray-700 flex items-center gap-1"><MapPin size={14}/> {t.labels.address}</label>
                   <textarea required name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border rounded-xl h-32 outline-none" placeholder={t.placeholders.address}></textarea>
                 </div>
+              </div>
+            </section>
+
+            {/* Terms & Conditions Acceptance */}
+            <section>
+              <div className="mt-4 flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded border-slate-400 text-orange-600 focus:ring-orange-500"
+                  required
+                />
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  {lang === 'hi' ? (
+                    <>
+                      हम पुष्टि करते हैं कि हमने DDKA की{' '}
+                      <Link to="/terms-conditions" className="text-orange-600 underline font-semibold">नियम एवं शर्तें</Link>{' '}
+                      और{' '}
+                      <Link to="/privacy-policy" className="text-orange-600 underline font-semibold">प्राइवेसी पॉलिसी</Link>{' '}
+                      पढ़ ली हैं और उनसे सहमत हैं।
+                    </>
+                  ) : (
+                    <>
+                      We confirm that we have read and agree to the DDKA{' '}
+                      <Link to="/terms-conditions" className="text-orange-600 underline font-semibold">Terms &amp; Conditions</Link>{' '}
+                      and{' '}
+                      <Link to="/privacy-policy" className="text-orange-600 underline font-semibold">Privacy Policy</Link>.
+                    </>
+                  )}
+                </p>
               </div>
             </section>
 

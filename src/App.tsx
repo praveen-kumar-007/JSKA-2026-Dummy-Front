@@ -11,12 +11,16 @@ import About from './pages/About';
 import Gallery from './pages/Gallery';
 import News from './pages/News';
 import NewsArticle from './pages/NewsArticle';
+import TermsConditions from './pages/TermsConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import KabaddiRules from './pages/KabaddiRules';
 import AdminNewsUpload from './pages/AdminNewsUpload';
 import AdminDashboard from './pages/AdminDashboard'; 
 import AdminInstitutionDetails from './pages/AdminInstitutionDetails';
 import AdminLogin from './pages/AdminLogin';
 import AdminSignup from './pages/AdminSignup';
 import AdminRegistrationDetails from './pages/AdminRegistrationDetails';
+import PlayerIDCardPage from './pages/PlayerIDCardPage';
 import AdminGalleryUpload from './pages/AdminGalleryUpload';
 import AdminContact from './pages/AdminContact';
 import Contact from './pages/Contact';
@@ -75,6 +79,9 @@ const App: React.FC = () => {
           <Route path="/gallery" element={<Gallery lang={lang} />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsArticle />} />
+          <Route path="/terms-conditions" element={<TermsConditions lang={lang} />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy lang={lang} />} />
+          <Route path="/kabaddi-rules" element={<KabaddiRules lang={lang} />} />
           {/* Admin Gallery Upload Route (protected) */}
           <Route path="/admin/gallery" element={
             isAuthenticated ? <AdminGalleryUpload /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
@@ -118,6 +125,7 @@ const App: React.FC = () => {
 
           <Route path="*" element={<Home lang={lang} onNavigate={handlePageChange} />} />
           <Route path="/admin/registration/:id" element={<AdminRegistrationDetails />} />
+          <Route path="/id-card/:idNo" element={<PlayerIDCardPage />} />
           <Route path="/admin/institution/:id" element={<AdminInstitutionDetails />} />
         </Routes>
       </main>

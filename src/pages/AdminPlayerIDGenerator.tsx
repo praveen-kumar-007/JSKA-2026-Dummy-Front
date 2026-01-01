@@ -19,6 +19,8 @@ interface PlayerData {
   photoUrl: string;
   transactionId: string;
   status: string;
+  idNo?: string;
+  memberRole?: string;
 }
 
 const AdminPlayerIDGenerator = () => {
@@ -74,7 +76,7 @@ const AdminPlayerIDGenerator = () => {
 
   const convertToIDCardData = (player: PlayerData): IDCardData => {
     return {
-      idNo: `DDKA-${player.transactionId.slice(-6).toUpperCase()}`,
+      idNo: player.idNo || `DDKA-${player.transactionId.slice(-6).toUpperCase()}`,
       name: player.fullName,
       fathersName: player.fathersName,
       dob: player.dob,
@@ -83,6 +85,7 @@ const AdminPlayerIDGenerator = () => {
       address: player.address,
       photoUrl: player.photoUrl,
       transactionId: player.transactionId,
+      memberRole: player.memberRole || 'Player',
     };
   };
 

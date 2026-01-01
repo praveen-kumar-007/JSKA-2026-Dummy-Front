@@ -32,4 +32,5 @@ export interface IDCardData {
   address: string;
   photoUrl: string;
   transactionId: string;
+  memberRole?: string;
 }

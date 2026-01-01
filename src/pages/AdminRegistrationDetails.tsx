@@ -7,6 +7,8 @@ import type { IDCardData } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+const DEFAULT_ROLES = ['Player', 'Coach', 'Referee', 'Official', 'Manager', 'Support Staff'];
+
 const AdminRegistrationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,13 +18,75 @@ const AdminRegistrationDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [generatedIdNo, setGeneratedIdNo] = useState<string | null>(null);
   const [showIdCard, setShowIdCard] = useState(false);
+  const [memberRole, setMemberRole] = useState<string>('Player');
+  const [customRole, setCustomRole] = useState<string>('');
+  const [customIdInput, setCustomIdInput] = useState<string>('');
+  const [showIdOptions, setShowIdOptions] = useState<boolean>(false);
 
-  // Generate unique DDKA-#### ID
-  const generateIdNo = () => {
-    const randomFourDigits = Math.floor(1000 + Math.random() * 9000);
-    const newIdNo = `DDKA-${randomFourDigits}`;
-    setGeneratedIdNo(newIdNo);
-    setShowIdCard(true);
+  // Generate ID (with optional custom ID and role)
+  const generateIdNo = async () => {
+    if (!data || type !== 'player') return;
+
+    // First click: reveal options, second click actually generates
+    if (!showIdOptions) {
+      setShowIdOptions(true);
+      return;
+    }
+
+    const roleToSave = (customRole.trim() || memberRole || 'Player');
+    const custom = customIdInput.trim().toUpperCase();
+
+    let newIdNo: string;
+    if (custom) {
+      newIdNo = custom;
+    } else if (data.idNo) {
+      // Reuse existing assigned ID if admin didn't provide a new one
+      newIdNo = data.idNo;
+    } else {
+      // Default deterministic unique ID based on transactionId
+      const suffixSource = data.transactionId || '';
+      const suffix = suffixSource
+        ? suffixSource.slice(-6).toUpperCase()
+        : String(Math.floor(100000 + Math.random() * 900000));
+      newIdNo = `DDKA-${suffix}`;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/players/assign-id`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: data._id,
+          transactionId: data.transactionId,
+          idNo: newIdNo,
+          memberRole: roleToSave,
+        }),
+      });
+
+      let result: any = {};
+      try {
+        result = await response.json();
+      } catch {
+        // ignore JSON parse errors
+      }
+
+      if (response.ok && result.success) {
+        setData((prev: any) =>
+          prev ? { ...prev, idNo: newIdNo, memberRole: roleToSave } : prev
+        );
+        setGeneratedIdNo(newIdNo);
+        setShowIdCard(true);
+        return;
+      }
+
+      const message: string = result?.message || `Failed to save ID (status ${response.status})`;
+      throw new Error(message);
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || 'Failed to save ID number. Please try again.');
+    }
   };
 
   const getIdCardData = (): IDCardData | null => {
@@ -37,7 +101,38 @@ const AdminRegistrationDetails = () => {
       address: data.address,
       photoUrl: data.photo,
       transactionId: data.transactionId,
+      memberRole: data.memberRole || memberRole,
     };
+  };
+
+  const handleDeleteId = async () => {
+    if (!data || type !== 'player' || !data.idNo) return;
+    const confirmed = window.confirm('Are you sure you want to delete this ID?');
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`${API_URL}/api/players/clear-id`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: data._id, transactionId: data.transactionId }),
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Failed to delete ID');
+      }
+
+      setData((prev: any) => (prev ? { ...prev, idNo: null, memberRole: 'Player' } : prev));
+      setGeneratedIdNo(null);
+      setShowIdCard(false);
+      setShowIdOptions(false);
+      alert('ID deleted successfully.');
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || 'Failed to delete ID. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -52,6 +147,19 @@ const AdminRegistrationDetails = () => {
           if (result.success) {
             setData(result.data);
             setType('player');
+
+            const existingRole = result.data.memberRole;
+            if (existingRole && DEFAULT_ROLES.includes(existingRole)) {
+              setMemberRole(existingRole);
+              setCustomRole('');
+            } else if (existingRole) {
+              setMemberRole('Player');
+              setCustomRole(existingRole);
+            } else {
+              setMemberRole('Player');
+              setCustomRole('');
+            }
+
             setLoading(false);
             return 'found'; // short-circuit
           }
@@ -131,7 +239,7 @@ const AdminRegistrationDetails = () => {
         {/* RIGHT COLUMN: Main Info */}
         <div className="flex flex-col gap-6 w-full">
           {/* Back & Dashboard Buttons */}
-          <div className="mb-4 flex items-center justify-between gap-2">
+          <div className="mb-2 flex items-center justify-between gap-2">
             <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-blue-900 font-bold hover:underline">
               <ArrowLeft size={22} /> Back
             </button>
@@ -144,6 +252,14 @@ const AdminRegistrationDetails = () => {
                   <Wallet size={16} /> Generate ID
                 </button>
               )}
+              {type === 'player' && data?.status === 'Approved' && data?.idNo && (
+                <button
+                  onClick={handleDeleteId}
+                  className="px-4 py-2 rounded-full bg-red-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-red-700 transition-all"
+                >
+                  Delete ID
+                </button>
+              )}
               <button
                 onClick={() => navigate('/admin-portal-access')}
                 className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
@@ -152,6 +268,47 @@ const AdminRegistrationDetails = () => {
               </button>
             </div>
           </div>
+
+          {/* Member Role & Custom ID controls for ID card */}
+          {type === 'player' && data?.status === 'Approved' && showIdOptions && (
+            <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-end gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-slate-700">Member Role</span>
+                <select
+                  value={memberRole}
+                  onChange={(e) => setMemberRole(e.target.value)}
+                  className="border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  <option value="Player">Player</option>
+                  <option value="Coach">Coach</option>
+                  <option value="Referee">Referee</option>
+                  <option value="Official">Official</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Support Staff">Support Staff</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-slate-700">Custom Role (optional)</span>
+                <input
+                  type="text"
+                  value={customRole}
+                  onChange={(e) => setCustomRole(e.target.value)}
+                  placeholder="e.g. Captain"
+                  className="border border-slate-300 rounded px-2 py-1 text-xs w-32 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-slate-700">Custom ID (optional)</span>
+                <input
+                  type="text"
+                  value={customIdInput}
+                  onChange={(e) => setCustomIdInput(e.target.value)}
+                  placeholder="e.g. DDKA-1001"
+                  className="border border-slate-300 rounded px-2 py-1 text-xs w-32 focus:outline-none focus:ring-1 focus:ring-blue-500 uppercase"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Header: Name, Email, Status, Registered Date */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
@@ -269,6 +426,7 @@ const AdminRegistrationDetails = () => {
                 onClick={() => {
                   setShowIdCard(false);
                   setGeneratedIdNo(null);
+                  setShowIdOptions(false);
                 }}
                 className="text-2xl hover:bg-blue-800 p-1 rounded w-8 h-8 flex items-center justify-center"
               >
@@ -277,12 +435,12 @@ const AdminRegistrationDetails = () => {
             </div>
 
             {/* ID Cards */}
-            <div className="p-8 flex gap-8 justify-center flex-wrap">
-              <div>
+            <div className="px-6 py-6 flex gap-4 justify-center flex-wrap items-start">
+              <div className="flex flex-col items-center">
                 <h3 className="text-center font-bold text-slate-700 mb-4">Front Side</h3>
                 <IDCardFront data={getIdCardData()!} />
               </div>
-              <div>
+              <div className="flex flex-col items-center">
                 <h3 className="text-center font-bold text-slate-700 mb-4">Back Side</h3>
                 <IDCardBack data={getIdCardData()!} />
               </div>
@@ -299,6 +457,14 @@ const AdminRegistrationDetails = () => {
               >
                 Close
               </button>
+              {generatedIdNo && (
+                <button
+                  onClick={() => window.open(`/id-card/${generatedIdNo}`, '_blank')}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition flex items-center gap-2"
+                >
+                  Open Dedicated Page
+                </button>
+              )}
               <button
                 onClick={() => window.print()}
                 className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition flex items-center gap-2"

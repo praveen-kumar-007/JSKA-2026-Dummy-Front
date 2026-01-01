@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, Tag, ArrowLeft } from 'lucide-react';
+import { Calendar, Tag, ArrowLeft, Share2, Copy, Facebook, Linkedin, Twitter } from 'lucide-react';
 
 // News Article Detail Page
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -9,6 +9,7 @@ const NewsArticle = () => {
   const { id } = useParams();
   const [news, setNews] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -23,6 +24,16 @@ const NewsArticle = () => {
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-xl">Loading...</div>;
   if (!news) return <div className="min-h-screen flex items-center justify-center text-xl text-red-500">News not found.</div>;
+
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  const handleCopyLink = () => {
+    if (!shareUrl) return;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-2">
@@ -44,6 +55,60 @@ const NewsArticle = () => {
             <span className="flex items-center gap-1 text-xs text-slate-500"><Calendar size={14}/>{new Date(news.createdAt).toLocaleDateString()}</span>
             {news.category && <span className="flex items-center gap-1 text-xs text-blue-700 font-bold uppercase"><Tag size={12}/>{news.category}</span>}
             {news.isHighlight && <span className="text-xs px-2 py-1 rounded bg-orange-100 text-orange-700 font-bold ml-2">Highlight</span>}
+          </div>
+          <div className="mb-6 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center gap-2 mb-3">
+              <Share2 size={16} className="text-blue-700" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Share this news
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2 text-xs">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`${news.title} - ${shareUrl}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500/10 text-green-700 hover:bg-green-500/20 font-medium transition-colors"
+              >
+                <Share2 size={14} />
+                WhatsApp
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-600/10 text-blue-700 hover:bg-blue-600/20 font-medium transition-colors"
+              >
+                <Facebook size={14} />
+                Facebook
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(news.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-sky-500/10 text-sky-600 hover:bg-sky-500/20 font-medium transition-colors"
+              >
+                <Twitter size={14} />
+                Twitter
+              </a>
+              <a
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(news.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 font-medium transition-colors"
+              >
+                <Linkedin size={14} />
+                LinkedIn
+              </a>
+              <button
+                type="button"
+                onClick={handleCopyLink}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium transition-colors"
+              >
+                <Copy size={14} />
+                {copied ? 'Copied' : 'Copy Link'}
+              </button>
+            </div>
           </div>
           <h1 className="text-3xl font-extrabold mb-4 text-blue-900 leading-tight">{news.title}</h1>
           <div className="text-slate-700 text-lg whitespace-pre-line mb-4">{news.content}</div>

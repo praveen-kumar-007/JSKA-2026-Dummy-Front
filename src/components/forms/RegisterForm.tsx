@@ -7,6 +7,7 @@ import { RegistrationType } from '../../types';
 import type { Language } from '../../translations';
 import { FEES } from '../../constants';
 import { translations } from '../../translations';
+import { Link } from 'react-router-dom';
 
 interface RegisterFormProps {
   lang: Language;
@@ -17,6 +18,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [transactionId, setTransactionId] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   
   // FIXED: State updated to handle exactly 4 files (photo, front, back, receipt)
   const [selectedFiles, setSelectedFiles] = useState<{ [key: string]: File | null }>({
@@ -115,6 +117,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      alert(lang === 'hi'
+        ? 'कृपया आगे बढ़ने से पहले नियम और शर्तों को स्वीकार करें।'
+        : 'Please agree to the Terms & Conditions before submitting.');
+      return;
+    }
     
     // STRICT VALIDATION: Transaction ID and Receipt Screenshot required
     if (!transactionId || !selectedFiles.receipt) {
@@ -136,6 +144,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
       
       // 2. Append Transaction ID
       dataToSend.append('transactionId', transactionId.toUpperCase().trim());
+
+      // 2b. Append Terms acceptance
+      dataToSend.append('acceptedTerms', acceptedTerms ? 'true' : 'false');
 
       // 3. Append the physical files (matching Multer keys on backend)
       if (selectedFiles.photo) dataToSend.append('photo', selectedFiles.photo);
@@ -269,6 +280,38 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
                 <label className="text-sm font-black text-slate-500 uppercase tracking-widest">Full Address</label>
                 <textarea required name="address" value={formData.address} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-50 outline-none h-28 text-lg" placeholder="Full residential address..."></textarea>
               </div>
+            </div>
+          </section>
+
+          {/* Terms & Conditions Acceptance */}
+          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 rounded border-slate-400 text-orange-600 focus:ring-orange-500"
+                required
+              />
+              <p className="text-sm text-slate-700 leading-relaxed">
+                {lang === 'hi' ? (
+                  <>
+                    मैं पुष्टि करता/करती हूं कि मैंने{' '}
+                    <Link to="/terms-conditions" className="text-orange-600 underline font-semibold">नियम एवं शर्तें</Link>{' '}
+                    और{' '}
+                    <Link to="/privacy-policy" className="text-orange-600 underline font-semibold">प्राइवेसी पॉलिसी</Link>{' '}
+                    पढ़ ली है और उनसे सहमत हूं।
+                  </>
+                ) : (
+                  <>
+                    I confirm that I have read and agree to the{' '}
+                    <Link to="/terms-conditions" className="text-orange-600 underline font-semibold">Terms &amp; Conditions</Link>{' '}
+                    and{' '}
+                    <Link to="/privacy-policy" className="text-orange-600 underline font-semibold">Privacy Policy</Link>{' '}
+                    of DDKA.
+                  </>
+                )}
+              </p>
             </div>
           </section>
 

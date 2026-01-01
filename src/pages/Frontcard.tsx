@@ -35,35 +35,63 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
         fontFamily: "'Poppins', sans-serif",
       }}
     >
-      {/* Top Header - Deep Blue */}
+      {/* Top Header - Deep Blue with DDKA Logo */}
       <div
         style={{
           background: 'linear-gradient(135deg, #00579B, #003366)',
-          padding: '9px 11px',
+          padding: '8px 10px',
           display: 'flex',
           alignItems: 'center',
+          gap: '8px',
           position: 'relative',
           zIndex: 1,
         }}
       >
-        <h1
+        <img
+          src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png"
+          alt="DDKA Logo"
           style={{
-            fontSize: '13px',
-            fontWeight: 600,
-            color: '#FFFFFF',
-            margin: 0,
-            lineHeight: 1.2,
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            objectFit: 'contain',
+            backgroundColor: 'white',
+            padding: '2px',
           }}
-        >
-          Dhanbad District Kabaddi Association
-        </h1>
+        />
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              fontSize: '11px',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              lineHeight: 1.1,
+              textAlign: 'left',
+            }}
+          >
+            Dhanbad District Kabaddi
+          </div>
+          <div
+            style={{
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              lineHeight: 1.1,
+              textAlign: 'left',
+            }}
+          >
+            Association
+          </div>
+        </div>
       </div>
 
-      {/* Photo - Circular, Overlapping Header */}
+      {/* Photo - Centered Circular Image */}
       <div
         style={{
-          marginTop: '-16px',
-          textAlign: 'center',
+          marginTop: '0px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           position: 'relative',
           zIndex: 2,
         }}
@@ -99,7 +127,7 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
             fontWeight: 700,
             color: '#003366',
             marginBottom: '1px',
-            marginTop: '5px',
+            marginTop: '2px',
           }}
         >
           {data.name}
@@ -107,21 +135,21 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
         <p
           style={{
             fontSize: '8.5px',
-            fontWeight: 500,
+            fontWeight: 600,
             color: '#FF6F00',
-            marginBottom: '9px',
+            marginBottom: '8px',
             textTransform: 'uppercase',
-            letterSpacing: '0.3px',
+            letterSpacing: '0.35px',
           }}
         >
-          DDKA Member
+          {data.memberRole ? data.memberRole : 'DDKA MEMBER'}
         </p>
 
-        {/* Detail Grid */}
+        {/* Detail Grid - aligned labels and values */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'auto 1fr',
+            gridTemplateColumns: '58px 1fr',
             gap: '3.5px 5px',
             textAlign: 'left',
             fontSize: '8.5px',
@@ -134,6 +162,9 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
 
           <span style={{ fontWeight: 600, color: '#333', fontSize: '8px' }}>DOB:</span>
           <span style={{ fontWeight: 500, color: '#111', fontSize: '8.5px' }}>{formatDOB(data.dob)}</span>
+
+          <span style={{ fontWeight: 600, color: '#333', fontSize: '8px' }}>Role:</span>
+          <span style={{ fontWeight: 500, color: '#111', fontSize: '8.5px' }}>{data.memberRole || 'Player'}</span>
 
           <span style={{ fontWeight: 600, color: '#333', fontSize: '8px' }}>Blood:</span>
           <span style={{ fontWeight: 700, color: '#C62828', fontSize: '8.5px' }}>{data.bloodGroup}</span>

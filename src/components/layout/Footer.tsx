@@ -1,6 +1,7 @@
 import React from 'react';
 // Only import icons that are actually used in the code below
 import { Phone, MapPin, ShieldCheck, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { CONTACT_INFO } from '../../constants';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
@@ -11,7 +12,8 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ lang }) => {
-  const t = translations[lang].footer;
+  const t = translations[lang];
+  const footer = t.footer;
 
   return (
     <footer className="bg-slate-950 text-white pt-20 pb-10 border-t border-blue-900/30">
@@ -25,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                 <span className="text-[10px] text-orange-500 font-bold uppercase tracking-widest leading-none">Dhanbad District</span>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">{t.desc}</p>
+            <p className="text-gray-400 text-sm leading-relaxed">{footer.desc}</p>
             <div className="bg-blue-900/20 border border-blue-800/40 p-4 rounded-xl flex items-center space-x-3">
                <ShieldCheck className="text-orange-500 w-8 h-8 shrink-0" />
                <div className="text-[10px] uppercase font-bold text-blue-200">
@@ -38,15 +40,85 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-8 border-l-4 border-orange-500 pl-4">{t.quickLinks}</h3>
-            <ul className="space-y-4 text-gray-400 text-sm font-medium">
-              <li><a href="#" className="hover:text-orange-500 transition-colors">Upcoming Events</a></li>
-              <li><a href="#" className="hover:text-orange-500 transition-colors">Rule Book</a></li>
-            </ul>
+            <h3 className="text-lg font-bold mb-8 border-l-4 border-orange-500 pl-4">{footer.quickLinks}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-400 text-sm font-medium">
+              <div>
+                <p className="text-sm uppercase tracking-wider text-white font-semibold mb-3">
+                  {lang === 'hi' ? 'एक्सप्लोर' : 'Explore DDKA'}
+                </p>
+                <ul className="space-y-2">
+                  <li>
+                    <Link to="/" className="hover:text-orange-500 transition-colors">
+                      {t.nav.home}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/about" className="hover:text-orange-500 transition-colors">
+                      {t.nav.about}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/gallery" className="hover:text-orange-500 transition-colors">
+                      {t.nav.gallery}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/news" className="hover:text-orange-500 transition-colors">
+                      {t.nav.news}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/kabaddi-rules" className="hover:text-orange-500 transition-colors">
+                      {lang === 'hi' ? 'DDKA कबड्डी नियम' : 'DDKA Kabaddi Rules'}
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-wider text-white font-semibold mb-3">
+                  {lang === 'hi' ? 'पंजीकरण एवं विधिक' : 'Registration & Legal'}
+                </p>
+                <ul className="space-y-2">
+                  <li>
+                    <Link to="/register" className="hover:text-orange-500 transition-colors">
+                      {t.forms.playerTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/institution" className="hover:text-orange-500 transition-colors">
+                      {t.forms.instTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/terms-conditions" className="hover:text-orange-500 transition-colors">
+                      {lang === 'hi' ? 'नियम एवं शर्तें' : 'Terms & Conditions'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/privacy-policy" className="hover:text-orange-500 transition-colors">
+                      {lang === 'hi' ? 'प्राइवेसी पॉलिसी' : 'Privacy Policy'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/contact" className="hover:text-orange-500 transition-colors">
+                      {footer.contact}
+                    </Link>
+                  </li>
+                  <li className="pt-2 text-[11px] text-slate-300">
+                    <span className="font-semibold text-white">Player Registration Fee:</span>{' '}
+                    <span className="font-semibold text-orange-400">₹400</span>
+                  </li>
+                  <li className="text-[11px] text-slate-300">
+                    <span className="font-semibold text-white">Institution Registration Fee:</span>{' '}
+                    <span className="font-semibold text-orange-400">₹2000</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-8 border-l-4 border-orange-500 pl-4">{t.contact}</h3>
+            <h3 className="text-lg font-bold mb-8 border-l-4 border-orange-500 pl-4">{footer.contact}</h3>
             <ul className="space-y-6">
               <li className="flex items-start space-x-4 text-gray-400 text-sm">
                 <MapPin size={22} className="text-orange-500 shrink-0" />
@@ -59,9 +131,6 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
               <li className="flex items-center space-x-4 text-gray-400 text-sm">
                 <Mail size={22} className="text-orange-500 shrink-0" />
                 <a href="mailto:dhanbaddistrictkabaddi@gmail.com" className="underline hover:text-orange-400">dhanbaddistrictkabaddi@gmail.com</a>
-              </li>
-              <li className="mt-2">
-                <a href="/contact" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded transition-all text-xs uppercase tracking-wider shadow">Contact Us Page</a>
               </li>
             </ul>
             <FooterContactForm />

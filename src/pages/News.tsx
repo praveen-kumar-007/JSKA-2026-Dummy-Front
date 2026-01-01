@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Tag, ChevronRight, X } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, X, Share2, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -89,10 +89,65 @@ const News = () => {
 
                     {/* Footer Actions */}
                     <div className="mt-auto pt-2 border-t border-slate-100 flex justify-between items-center">
-                      <Link to={`/news/${item._id}`} className="text-blue-700 font-bold text-base flex items-center gap-1 group/btn hover:text-orange-600 transition-colors">
+                      <Link
+                        to={`/news/${item._id}`}
+                        className="text-blue-700 font-bold text-base flex items-center gap-1 group/btn hover:text-orange-600 transition-colors"
+                      >
                         View Full
                         <ChevronRight size={18} className="transition-transform group-hover/btn:translate-x-1" />
                       </Link>
+                    </div>
+
+                    {/* Share Card */}
+                    <div className="mt-4 p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Share2 size={14} className="text-blue-700" />
+                        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-700">
+                          Share this news
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-2 text-[11px]">
+                        <a
+                          href={`https://wa.me/?text=${encodeURIComponent(`${item.title} - ${window.location.origin}/news/${item._id}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500/10 text-green-700 hover:bg-green-500/20 font-medium transition-colors"
+                        >
+                          WhatsApp
+                        </a>
+                        <a
+                          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/news/${item._id}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-600/10 text-blue-700 hover:bg-blue-600/20 font-medium transition-colors"
+                        >
+                          Facebook
+                        </a>
+                        <a
+                          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/news/${item._id}`)}&text=${encodeURIComponent(item.title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-sky-500/10 text-sky-600 hover:bg-sky-500/20 font-medium transition-colors"
+                        >
+                          Twitter
+                        </a>
+                        <a
+                          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`${window.location.origin}/news/${item._id}`)}&title=${encodeURIComponent(item.title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 font-medium transition-colors"
+                        >
+                          LinkedIn
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => navigator.clipboard.writeText(`${window.location.origin}/news/${item._id}`)}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium transition-colors"
+                        >
+                          <Copy size={12} />
+                          Copy Link
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
