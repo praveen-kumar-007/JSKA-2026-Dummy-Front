@@ -7,102 +7,179 @@ interface Props {
 
 export const IDCardBack: React.FC<Props> = ({ data }) => {
   const qrData = `DDKA:${data.idNo}:${data.name}`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrData)}&color=ff6b35`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${encodeURIComponent(qrData)}&color=ff6b35`;
 
   return (
     <div 
-      className="relative flex flex-col bg-white overflow-hidden shadow-2xl"
-      style={{ 
-        width: '240px', 
-        height: '380px', 
+      style={{
+        width: '210px',
+        height: '330px',
         borderRadius: '16px',
-        fontFamily: "'Poppins', sans-serif",
-        border: '3px solid #ff6b35'
+        overflow: 'hidden',
+        boxShadow: '0 8px 25px rgba(0, 20, 40, 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
+        position: 'relative',
+        fontFamily: "'Poppins', sans-serif"
       }}
     >
-      {/* Watermark Logos Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-8">
-        <div className="absolute top-4 left-4 text-2xl font-black text-blue-900">AKFI</div>
-        <div className="absolute bottom-4 right-4 text-2xl font-black text-blue-900">JH-KBD</div>
+      {/* Watermark Logos */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        opacity: 0.08,
+        zIndex: 0
+      }}>
+        <div style={{position: 'absolute', top: '16px', left: '16px', fontSize: '24px', fontWeight: 900, color: '#ff6b35'}}>AKFI</div>
+        <div style={{position: 'absolute', bottom: '16px', right: '16px', fontSize: '24px', fontWeight: 900, color: '#ff6b35'}}>JH-KBD</div>
       </div>
 
-      {/* Header Section - Orange Gradient */}
+      {/* Header */}
       <div 
-        className="relative px-3 py-3 shrink-0"
-        style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)' }}
+        style={{
+          background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
+          color: 'white',
+          textAlign: 'center',
+          padding: '9px 10px',
+          position: 'relative',
+          zIndex: 1
+        }}
       >
-        <div className="flex items-center justify-center gap-1.5">
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm border-2 border-white">
-            <span className="text-[10px] font-black text-orange-600">🇮🇳</span>
-          </div>
-          <div className="flex-1 text-center">
-            <h1 className="text-white text-[8px] font-black leading-tight tracking-tight uppercase">
-              CLUB DETAILS
-            </h1>
-            <p className="text-white text-[5px] font-bold uppercase tracking-widest mt-0.5">
-              Member Verification
-            </p>
-          </div>
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm border-2 border-white">
-            <span className="text-[10px] font-black">🏏</span>
-          </div>
+        <h3 style={{
+          fontSize: '11px',
+          fontWeight: 600,
+          margin: '0 0 2px 0'
+        }}>
+          Dhanbad District Kabaddi
+        </h3>
+        <p style={{
+          fontSize: '8px',
+          fontWeight: 400,
+          opacity: 0.95,
+          margin: 0
+        }}>
+          Member ID Card
+        </p>
+      </div>
+
+      {/* Main Content */}
+      <div style={{
+        padding: '10px 11px',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize: '8px',
+        color: '#333',
+        lineHeight: 1.3,
+        zIndex: 1
+      }}>
+        {/* About Section */}
+        <h4 style={{
+          fontSize: '9px',
+          fontWeight: 600,
+          color: '#ff6b35',
+          marginBottom: '3px',
+          textAlign: 'center'
+        }}>
+          About DDKA
+        </h4>
+        <p style={{
+          textAlign: 'center',
+          marginBottom: '7px',
+          fontSize: '7.5px',
+          lineHeight: 1.25,
+          color: '#555'
+        }}>
+          Promoting excellence in Kabaddi. Dedicated to developing talent, fitness, and sportsmanship.
+        </p>
+
+        {/* QR Section */}
+        <div style={{
+          textAlign: 'center',
+          margin: '5px 0'
+        }}>
+          <img 
+            src={qrUrl} 
+            alt="QR Code" 
+            style={{
+              width: '70px',
+              height: '70px',
+              border: '2px solid #ff6b35',
+              borderRadius: '4px',
+              margin: '0 auto 4px auto',
+              display: 'block',
+              backgroundColor: '#fff'
+            }}
+          />
+          <p style={{
+            fontSize: '7.5px',
+            fontWeight: 500,
+            color: '#ff6b35',
+            margin: 0
+          }}>
+            Scan for Details
+          </p>
+        </div>
+
+        {/* Club Info Grid */}
+        <div style={{
+          fontSize: '7.5px',
+          textAlign: 'center',
+          margin: '5px 0 3px 0',
+          paddingTop: '4px',
+          borderTop: '1px dashed #ff6b35',
+          color: '#444',
+          lineHeight: 1.2
+        }}>
+          <p style={{margin: '2px 0'}}>
+            <strong style={{color: '#ff6b35'}}>Phone:</strong> +91-6542-8765-43
+          </p>
+          <p style={{margin: '2px 0'}}>
+            <strong style={{color: '#ff6b35'}}>Email:</strong> ddka@kabaddi.in
+          </p>
+        </div>
+
+        {/* Address Info */}
+        <div style={{
+          fontSize: '7px',
+          textAlign: 'center',
+          margin: '3px 0 5px 0',
+          color: '#555',
+          lineHeight: 1.25,
+          wordWrap: 'break-word'
+        }}>
+          <p style={{margin: 0}}>
+            <strong style={{color: '#ff6b35'}}>Address:</strong> Dhanbad, Jharkhand, India
+          </p>
+        </div>
+
+        {/* Contact Footer */}
+        <div style={{
+          fontSize: '7px',
+          textAlign: 'center',
+          color: '#666',
+          marginTop: 'auto',
+          paddingTop: '4px',
+          borderTop: '1px solid #ff6b35',
+          lineHeight: 1.2
+        }}>
+          <p style={{margin: '2px 0 0 0'}}>
+            If found, please return to DDKA office
+          </p>
+          <p style={{margin: '1px 0'}}>Est. 2017</p>
         </div>
       </div>
 
-      {/* Accent Line - Vibrant */}
-      <div className="h-1 w-full shrink-0" style={{ 
-        background: 'linear-gradient(90deg, #ff6b35, #f7931e, #ff6b35)',
-      }} />
-
-      {/* Main Content Area */}
-      <div className="flex-grow flex flex-col px-2.5 py-2 space-y-1.5 justify-between overflow-hidden">
-        {/* ID Number */}
-        <div className="bg-white text-orange-600 px-2 py-1 rounded text-center border-2 border-orange-600">
-          <p className="text-[4.5px] text-slate-600 font-bold uppercase tracking-wider">Member ID</p>
-          <p className="text-[9px] font-black tracking-[0.1em] mt-0.5">{data.idNo}</p>
-        </div>
-
-        {/* QR Code */}
-        <div className="flex justify-center py-1">
-          <div className="p-1.5 bg-white border-2 border-orange-600 rounded shadow-md">
-            <img src={qrUrl} alt="QR Code" className="w-12 h-12" />
-          </div>
-        </div>
-
-        {/* Club Information Grid */}
-        <div className="space-y-0.75">
-          {/* Club Name */}
-          <div className="bg-white border border-slate-300 px-1.5 py-0.5 rounded">
-            <p className="text-[4px] text-slate-500 font-bold uppercase tracking-wide">Club Name</p>
-            <p className="text-[6.5px] font-bold text-slate-900 leading-tight">Dhanbad District Kabaddi</p>
-          </div>
-
-          {/* Club Phone */}
-          <div className="bg-white border border-slate-300 px-1.5 py-0.5 rounded">
-            <p className="text-[4px] text-slate-500 font-bold uppercase tracking-wide">Club Phone</p>
-            <p className="text-[6.5px] font-bold text-slate-900 leading-tight">+91-6542-8765-43</p>
-          </div>
-
-          {/* Club Email */}
-          <div className="bg-white border border-slate-300 px-1.5 py-0.5 rounded">
-            <p className="text-[4px] text-slate-500 font-bold uppercase tracking-wide">Email</p>
-            <p className="text-[6px] font-bold text-slate-900 leading-tight truncate">ddka@kabaddi.in</p>
-          </div>
-
-          {/* Club Address */}
-          <div className="bg-white border border-slate-300 px-1.5 py-0.5 rounded flex-grow">
-            <p className="text-[4px] text-slate-500 font-bold uppercase tracking-wide">Address</p>
-            <p className="text-[6px] font-medium text-slate-800 leading-tight line-clamp-2">Dhanbad, Jharkhand, India</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer - Orange Gradient */}
-      <div className="px-2 py-1.5 mt-auto shrink-0 flex items-center justify-between"
-           style={{ background: 'linear-gradient(90deg, #ff6b35, #f7931e)' }}>
-        <span className="text-white text-[5px] font-black tracking-[0.15em] uppercase">DDKA MEMBER</span>
-        <span className="text-white text-[5px] font-bold">Est. 2017</span>
-      </div>
+      {/* Bottom Bar */}
+      <div 
+        style={{
+          height: '5px',
+          background: 'linear-gradient(135deg, #ff6b35, #f7931e)',
+          marginTop: 'auto'
+        }}
+      />
     </div>
   );
 };
