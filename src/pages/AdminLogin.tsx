@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Lock, User, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Lock, User, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
@@ -9,22 +11,81 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [adminId, setAdminId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Check if admin account exists on mount
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/admin/exists`);
+        const result = await res.json();
+        if (result.success) {
+          // Admin exists, page ready
+        }
+      } catch (err) {
+        console.error('Failed to check admin status', err);
+      } finally {
+        setCheckingAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
-    // Credentials - You can change these
-    const VALID_ID = "DDKA";
-    const VALID_PASSWORD = "DDKA@2017";
+    // Validation
+    if (!adminId.trim() || !password) {
+      setError('Please enter both ID and password');
+      return;
+    }
 
-    if (adminId === VALID_ID && password === VALID_PASSWORD) {
-      setError('');
-      sessionStorage.setItem('isAdminAuthenticated', 'true');
-      onLoginSuccess();
-    } else {
-      setError('Invalid Credentials. Access Denied.');
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${API_URL}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          adminId: adminId.trim(),
+          password
+        })
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setError('');
+        sessionStorage.setItem('isAdminAuthenticated', 'true');
+        setTimeout(() => onLoginSuccess(), 300);
+      } else {
+        setError(result.message || 'Login failed. Please try again.');
+      }
+    } catch (err) {
+      setError('Error authenticating. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (checkingAdmin) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-500">
+          <div className="bg-blue-900 p-8 text-center text-white">
+            <Lock size={48} className="mx-auto mb-4 animate-pulse" />
+            <h2 className="text-2xl font-bold uppercase tracking-tight">Checking Admin Status</h2>
+          </div>
+          <div className="p-8 text-center">
+            <p className="text-slate-700">Please wait...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
@@ -53,8 +114,9 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 type="text"
                 value={adminId}
                 onChange={(e) => setAdminId(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all font-medium"
-                placeholder="Enter ID"
+                disabled={isLoading}
+                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all font-medium disabled:bg-slate-100"
+                placeholder="Enter admin ID"
               />
             </div>
           </div>
@@ -65,25 +127,35 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 required
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                disabled={isLoading}
+                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all disabled:bg-slate-100"
                 placeholder="••••••••"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 disabled:opacity-50"
+                disabled={isLoading}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 
           <button 
             type="submit"
-            className="w-full bg-blue-900 hover:bg-orange-600 text-white font-oswald text-xl uppercase py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center group active:scale-95"
+            disabled={isLoading || !adminId || !password}
+            className="w-full bg-blue-900 hover:bg-orange-600 disabled:bg-slate-400 text-white font-oswald text-xl uppercase py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center group active:scale-95 disabled:cursor-not-allowed"
           >
-            Authenticate
-            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+            {isLoading ? 'Authenticating...' : 'Authenticate'}
+            {!isLoading && <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />}
           </button>
         </form>
-        
-        <div className="p-6 bg-slate-50 text-center border-t border-slate-100">
+        <div className="p-6 bg-slate-50 text-center border-t border-slate-100 space-y-3">
+          <p className="text-sm text-green-700 font-bold">✓ Secure Admin Access</p>
           <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">
             Dhanbad District Kabaddi Association
           </p>

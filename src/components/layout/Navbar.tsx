@@ -23,6 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
       { name: t.forms.playerTitle, id: 'register' },
       { name: t.forms.instTitle, id: 'institution' },
     ] },
+    { name: t.footer.contact, id: 'contact' },
   ];
 
   // State for mobile dropdown

@@ -1,9 +1,10 @@
 import React from 'react';
 // Only import icons that are actually used in the code below
-import { Phone, MapPin, ShieldCheck } from 'lucide-react';
+import { Phone, MapPin, ShieldCheck, Mail } from 'lucide-react';
 import { CONTACT_INFO } from '../../constants';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
+import FooterContactForm from './FooterContactForm';
 
 interface FooterProps {
   lang: Language;
@@ -55,7 +56,15 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                 <Phone size={22} className="text-orange-500 shrink-0" />
                 <span>{CONTACT_INFO.phone}</span>
               </li>
+              <li className="flex items-center space-x-4 text-gray-400 text-sm">
+                <Mail size={22} className="text-orange-500 shrink-0" />
+                <a href="mailto:dhanbaddistrictkabaddi@gmail.com" className="underline hover:text-orange-400">dhanbaddistrictkabaddi@gmail.com</a>
+              </li>
+              <li className="mt-2">
+                <a href="/contact" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded transition-all text-xs uppercase tracking-wider shadow">Contact Us Page</a>
+              </li>
             </ul>
+            <FooterContactForm />
           </div>
 
           <div className="flex flex-col items-center justify-center p-8 bg-blue-900/10 rounded-2xl border border-white/5 text-center">

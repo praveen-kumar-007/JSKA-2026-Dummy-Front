@@ -10,8 +10,16 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
 import News from './pages/News';
+import NewsArticle from './pages/NewsArticle';
+import AdminNewsUpload from './pages/AdminNewsUpload';
 import AdminDashboard from './pages/AdminDashboard'; 
-import AdminLogin from './pages/AdminLogin'; // New Import
+import AdminInstitutionDetails from './pages/AdminInstitutionDetails';
+import AdminLogin from './pages/AdminLogin';
+import AdminSignup from './pages/AdminSignup';
+import AdminRegistrationDetails from './pages/AdminRegistrationDetails';
+import AdminGalleryUpload from './pages/AdminGalleryUpload';
+import AdminContact from './pages/AdminContact';
+import Contact from './pages/Contact';
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
@@ -65,7 +73,20 @@ const App: React.FC = () => {
           <Route path="/" element={<Home lang={lang} onNavigate={handlePageChange} />} />
           <Route path="/about" element={<About lang={lang} />} />
           <Route path="/gallery" element={<Gallery lang={lang} />} />
-          <Route path="/news" element={<News lang={lang} />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/news/:id" element={<NewsArticle />} />
+          {/* Admin Gallery Upload Route (protected) */}
+          <Route path="/admin/gallery" element={
+            isAuthenticated ? <AdminGalleryUpload /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+            {/* Admin Contact Messages (protected) */}
+            <Route path="/admin/contact" element={
+              isAuthenticated ? <AdminContact /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+            } />
+          {/* Admin News Upload Route (protected) */}
+          <Route path="/admin-news-upload" element={
+            isAuthenticated ? <AdminNewsUpload /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
           
           {/* Admin Route with Auth Check */}
           <Route path="/admin-portal-access" element={
@@ -75,6 +96,7 @@ const App: React.FC = () => {
               <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
             )
           } />
+          <Route path="/admin-secure-setup-dkka2024" element={<AdminSignup />} />
           
           <Route path="/register" element={
             <div className="py-20 bg-slate-50 min-h-screen">
@@ -92,7 +114,11 @@ const App: React.FC = () => {
             </div>
           } />
 
+          <Route path="/contact" element={<Contact lang={lang} />} />
+
           <Route path="*" element={<Home lang={lang} onNavigate={handlePageChange} />} />
+          <Route path="/admin/registration/:id" element={<AdminRegistrationDetails />} />
+          <Route path="/admin/institution/:id" element={<AdminInstitutionDetails />} />
         </Routes>
       </main>
 
