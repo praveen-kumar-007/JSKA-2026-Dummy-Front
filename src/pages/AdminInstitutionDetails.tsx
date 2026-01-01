@@ -36,8 +36,19 @@ const AdminInstitutionDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 p-4 md:p-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-12 items-start">
-        {/* LEFT COLUMN: Payment Screenshot */}
+        {/* LEFT COLUMN: Institution Logo + Payment Screenshot */}
         <div className="flex flex-col gap-8 min-w-[320px]">
+          {data.instLogoUrl && (
+            <div className="bg-white rounded-xl shadow border p-6 flex flex-col items-center justify-start h-full">
+              <div className="font-bold text-lg mb-4 w-full text-center">Institution Logo</div>
+              <img
+                src={data.instLogoUrl}
+                alt="Institution Logo"
+                className="w-32 h-32 object-cover rounded-full border mb-3 bg-white"
+              />
+            </div>
+          )}
+
           {data.screenshotUrl && (
             <div className="bg-white rounded-xl shadow border p-6 flex flex-col items-center justify-start h-full">
               <div className="font-bold text-lg mb-4 w-full text-center">Payment Screenshot</div>

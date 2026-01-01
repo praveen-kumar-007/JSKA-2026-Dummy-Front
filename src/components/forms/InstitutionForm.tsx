@@ -23,6 +23,10 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
 
+  // State for Institution Logo
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>('');
+
   const t = translations[lang].forms;
   const tp = translations[lang].payment;
 
@@ -55,13 +59,34 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
     }
   };
 
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLogoFile(file);
+      setLogoPreview(URL.createObjectURL(file));
+    }
+  };
+
   const clearScreenshot = () => {
     setScreenshot(null);
     setPreview('');
   };
 
+  const clearLogo = () => {
+    setLogoFile(null);
+    setLogoPreview('');
+  };
+
   const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!logoFile) {
+      alert(
+        lang === 'hi'
+          ? 'कृपया आगे बढ़ने से पहले संस्थान / कॉलेज / क्लब का लोगो अपलोड करें।'
+          : 'Please upload the institution / college / club logo before proceeding.'
+      );
+      return;
+    }
     if (!acceptedTerms) {
       alert(lang === 'hi'
         ? 'कृपया आगे बढ़ने से पहले नियम और शर्तों को स्वीकार करें।'
@@ -78,6 +103,14 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!logoFile) {
+      alert(
+        lang === 'hi'
+          ? 'कृपया संस्थान / कॉलेज / क्लब का लोगो अपलोड करें।'
+          : 'Please upload the institution / college / club logo.'
+      );
+      return;
+    }
     if (!transactionId || !screenshot) {
       alert("Please provide both Transaction ID and Payment Screenshot.");
       return;
@@ -100,6 +133,11 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
       
       // Append the screenshot file
       dataToSend.append('screenshot', screenshot);
+
+      // Append logo file if provided
+      if (logoFile) {
+        dataToSend.append('instLogo', logoFile);
+      }
 
       const response = await fetch(`${API_URL}/api/institutions/register`, {
         method: 'POST',
@@ -143,7 +181,7 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
           <p className="font-mono text-xl text-blue-900">{transactionId.toUpperCase()}</p>
         </div>
         <button 
-          onClick={() => { setIsSuccess(false); setStep(1); setTransactionId(''); clearScreenshot(); }}
+          onClick={() => { setIsSuccess(false); setStep(1); setTransactionId(''); clearScreenshot(); clearLogo(); }}
           className="bg-blue-900 text-white px-12 py-4 rounded-xl font-bold hover:bg-orange-600 transition-all shadow-lg"
         >
           {lang === 'hi' ? 'मुख्य पृष्ठ पर लौटें' : 'Return to Home'}
@@ -201,6 +239,30 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
                   <label className="text-sm font-bold text-gray-700 flex items-center gap-1"><Calendar size={14}/> {lang === 'hi' ? 'स्थापना वर्ष' : 'Year of Estb.'}</label>
                   <input required type="number" name="year" value={formData.year} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none" placeholder="2024" />
                 </div>
+                <div className="space-y-2 md:col-span-2 lg:col-span-1">
+                  <label className="text-sm font-bold text-gray-700 flex items-center gap-1">
+                    <Upload size={14} /> {lang === 'hi' ? 'संस्थान लोगो*' : 'Institution Logo*'}
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center justify-center px-4 py-2 bg-blue-50 border border-dashed border-blue-300 rounded-xl cursor-pointer hover:bg-blue-100 text-xs font-semibold text-blue-700">
+                      <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
+                      <Upload size={16} className="mr-2" />
+                      {lang === 'hi' ? 'लोगो चुनें' : 'Choose Logo'}
+                    </label>
+                    {logoPreview && (
+                      <div className="relative inline-block">
+                        <img src={logoPreview} alt="Logo Preview" className="w-12 h-12 rounded-full object-cover border" />
+                        <button
+                          type="button"
+                          onClick={clearLogo}
+                          className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 flex items-center justify-center"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -236,6 +298,11 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 flex items-center gap-1"><Ruler size={14}/> {lang === 'hi' ? 'खेल का मैदान (वर्ग फुट)' : 'Playground Area (sq.ft)'}</label>
                   <input required name="area" value={formData.area} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none" placeholder="e.g. 2000" />
+                  <p className="text-xs text-gray-500">
+                    {lang === 'hi'
+                      ? 'यदि सटीक क्षेत्रफल ज्ञात न हो, तो अनुमानित आंकड़ा दर्ज करें।'
+                      : 'If exact area is not known, please enter an approximate figure.'}
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700">{lang === 'hi' ? 'सतह का प्रकार' : 'Surface Type'}</label>
@@ -261,7 +328,7 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({ lang }) => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700">{lang === 'hi' ? 'वैकल्पिक फोन' : 'Alternative Phone'}</label>
-                  <input name="altPhone" value={formData.altPhone} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none" placeholder="+91 XXXX XXXXXX" />
+                  <input required name="altPhone" value={formData.altPhone} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none" placeholder="+91 XXXX XXXXXX" />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <label className="text-sm font-bold text-gray-700">{t.labels.email}</label>

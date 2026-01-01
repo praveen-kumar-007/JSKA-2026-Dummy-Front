@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, User, Phone, Info, Building2, Wallet, X } from "lucide-react";
-import { IDCardFront } from "./Frontcard";
-import { IDCardBack } from "./Backcard";
-import type { IDCardData } from "../types";
+import { ArrowLeft, Download, User, Phone, Info, Building2, Wallet } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -16,8 +13,6 @@ const AdminRegistrationDetails = () => {
   const [type, setType] = useState<'player' | 'institution' | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [generatedIdNo, setGeneratedIdNo] = useState<string | null>(null);
-  const [showIdCard, setShowIdCard] = useState(false);
   const [memberRole, setMemberRole] = useState<string>('Player');
   const [customRole, setCustomRole] = useState<string>('');
   const [customIdInput, setCustomIdInput] = useState<string>('');
@@ -76,8 +71,8 @@ const AdminRegistrationDetails = () => {
         setData((prev: any) =>
           prev ? { ...prev, idNo: newIdNo, memberRole: roleToSave } : prev
         );
-        setGeneratedIdNo(newIdNo);
-        setShowIdCard(true);
+        setShowIdOptions(false);
+        window.open(`/id-card/${newIdNo}`, '_blank');
         return;
       }
 
@@ -87,22 +82,6 @@ const AdminRegistrationDetails = () => {
       console.error(err);
       alert(err?.message || 'Failed to save ID number. Please try again.');
     }
-  };
-
-  const getIdCardData = (): IDCardData | null => {
-    if (!generatedIdNo || type !== 'player' || !data) return null;
-    return {
-      idNo: generatedIdNo,
-      name: data.fullName,
-      fathersName: data.fathersName,
-      dob: data.dob,
-      bloodGroup: data.bloodGroup,
-      phone: data.phone,
-      address: data.address,
-      photoUrl: data.photo,
-      transactionId: data.transactionId,
-      memberRole: data.memberRole || memberRole,
-    };
   };
 
   const handleDeleteId = async () => {
@@ -125,8 +104,6 @@ const AdminRegistrationDetails = () => {
       }
 
       setData((prev: any) => (prev ? { ...prev, idNo: null, memberRole: 'Player' } : prev));
-      setGeneratedIdNo(null);
-      setShowIdCard(false);
       setShowIdOptions(false);
       alert('ID deleted successfully.');
     } catch (err: any) {
@@ -183,6 +160,12 @@ const AdminRegistrationDetails = () => {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  const handleViewIdCard = () => {
+    if (type === 'player' && data?.idNo) {
+      window.open(`/id-card/${data.idNo}`, '_blank');
+    }
+  };
 
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   if (error || !data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
@@ -245,20 +228,31 @@ const AdminRegistrationDetails = () => {
             </button>
             <div className="flex gap-2">
               {type === 'player' && data?.status === 'Approved' && (
-                <button
-                  onClick={generateIdNo}
-                  className="px-4 py-2 rounded-full bg-green-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-700 transition-all flex items-center gap-2"
-                >
-                  <Wallet size={16} /> Generate ID
-                </button>
-              )}
-              {type === 'player' && data?.status === 'Approved' && data?.idNo && (
-                <button
-                  onClick={handleDeleteId}
-                  className="px-4 py-2 rounded-full bg-red-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-red-700 transition-all"
-                >
-                  Delete ID
-                </button>
+                <>
+                  {data?.idNo ? (
+                    <button
+                      onClick={handleViewIdCard}
+                      className="px-4 py-2 rounded-full bg-green-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-700 transition-all flex items-center gap-2"
+                    >
+                      <Wallet size={16} /> View ID Card
+                    </button>
+                  ) : (
+                    <button
+                      onClick={generateIdNo}
+                      className="px-4 py-2 rounded-full bg-green-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-700 transition-all flex items-center gap-2"
+                    >
+                      <Wallet size={16} /> Generate ID
+                    </button>
+                  )}
+                  {data?.idNo && (
+                    <button
+                      onClick={handleDeleteId}
+                      className="px-4 py-2 rounded-full bg-red-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-red-700 transition-all"
+                    >
+                      Delete ID
+                    </button>
+                  )}
+                </>
               )}
               <button
                 onClick={() => navigate('/admin-portal-access')}
@@ -415,66 +409,6 @@ const AdminRegistrationDetails = () => {
         </div>
       </div>
 
-      {/* ID Card Modal */}
-      {showIdCard && generatedIdNo && getIdCardData() && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-blue-900 text-white p-4 flex justify-between items-center">
-              <h2 className="text-xl font-bold">{data.fullName} - ID Card</h2>
-              <button
-                onClick={() => {
-                  setShowIdCard(false);
-                  setGeneratedIdNo(null);
-                  setShowIdOptions(false);
-                }}
-                className="text-2xl hover:bg-blue-800 p-1 rounded w-8 h-8 flex items-center justify-center"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* ID Cards */}
-            <div className="px-6 py-6 flex gap-4 justify-center flex-wrap items-start">
-              <div className="flex flex-col items-center">
-                <h3 className="text-center font-bold text-slate-700 mb-4">Front Side</h3>
-                <IDCardFront data={getIdCardData()!} />
-              </div>
-              <div className="flex flex-col items-center">
-                <h3 className="text-center font-bold text-slate-700 mb-4">Back Side</h3>
-                <IDCardBack data={getIdCardData()!} />
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-slate-100 border-t border-slate-200 p-4 flex gap-4 justify-center">
-              <button
-                onClick={() => {
-                  setShowIdCard(false);
-                  setGeneratedIdNo(null);
-                }}
-                className="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded transition"
-              >
-                Close
-              </button>
-              {generatedIdNo && (
-                <button
-                  onClick={() => window.open(`/id-card/${generatedIdNo}`, '_blank')}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition flex items-center gap-2"
-                >
-                  Open Dedicated Page
-                </button>
-              )}
-              <button
-                onClick={() => window.print()}
-                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition flex items-center gap-2"
-              >
-                <Download size={18} /> Print / Download
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

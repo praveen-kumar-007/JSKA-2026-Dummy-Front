@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckCircle, XCircle, Trash2, 
   Users, Building, RefreshCcw, Search, Eye,
-  LogOut, IndianRupee, Newspaper, Image as ImageIcon, Mail
+  LogOut, Newspaper, Image as ImageIcon, Mail
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Language } from '../translations';
@@ -16,6 +16,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected'>('All');
+  const [ageFilter, setAgeFilter] = useState<'All Ages' | 'Under 10' | '10-14' | '14-16' | '16-19' | '19-25' | 'Over 25'>('All Ages');
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -78,15 +80,42 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     }
   };
 
-  const filteredData = data.filter(item => 
+  const calculateAge = (dob?: string) => {
+    if (!dob) return null;
+    const birth = new Date(dob);
+    if (Number.isNaN(birth.getTime())) return null;
+    const diff = Date.now() - birth.getTime();
+    const ageDate = new Date(diff);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
+  const getAgeGroup = (dob?: string) => {
+    const age = calculateAge(dob);
+    if (age === null) return 'N/A';
+    if (age < 10) return 'Under 10';
+    if (age <= 14) return '10-14';
+    if (age <= 16) return '14-16';
+    if (age <= 19) return '16-19';
+    if (age <= 25) return '19-25';
+    return 'Over 25';
+  };
+
+  const searchFiltered = data.filter(item => 
     (item.fullName || item.instName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (item.transactionId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.phone || item.email || '').includes(searchTerm)
+    (item.phone || item.email || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getReceiptUrl = (item: any) => {
-    return item.receiptUrl || item.screenshotUrl || null;
-  };
+  const statusFiltered = searchFiltered.filter(item => {
+    if (statusFilter === 'All') return true;
+    return (item.status || 'Pending') === statusFilter;
+  });
+
+  const filteredData = statusFiltered.filter(item => {
+    if (activeTab !== 'players' || ageFilter === 'All Ages') return true;
+    const group = getAgeGroup(item.dob);
+    return group === ageFilter;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
@@ -133,15 +162,60 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         </div>
 
         {/* Search Bar */}
-        <div className="relative mb-8">
+        <div className="relative mb-6">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
           <input 
             type="text" 
-            placeholder={`Search by name, Transaction ID or phone...`} 
+            placeholder="Search by name, email, or Aadhar..." 
             className="w-full pl-16 pr-6 py-4 bg-white border-4 border-white rounded-[2rem] shadow-xl focus:ring-8 focus:ring-blue-50 outline-none transition-all font-medium text-base"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+        </div>
+
+        {/* Filters: Status + Age Group */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div className="flex flex-wrap gap-2">
+            {(['All', 'Pending', 'Approved', 'Rejected'] as const).map((status) => (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
+                  statusFilter === status
+                    ? 'bg-blue-900 text-white border-blue-900'
+                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+
+          {activeTab === 'players' && (
+            <div className="flex flex-wrap gap-2">
+              {([
+                'All Ages',
+                'Under 10',
+                '10-14',
+                '14-16',
+                '16-19',
+                '19-25',
+                'Over 25',
+              ] as const).map((age) => (
+                <button
+                  key={age}
+                  onClick={() => setAgeFilter(age)}
+                  className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
+                    ageFilter === age
+                      ? 'bg-orange-500 text-white border-orange-500'
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  {age}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Table Container */}
@@ -150,46 +224,76 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b-2 border-slate-100">
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Basic Information</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Payment Reference</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest text-center">Receipt</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Photo</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Phone</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Age Group / Type</th>
+                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Role</th>
                   <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Status</th>
                   <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y-2 divide-slate-50">
                 {loading ? (
-                  <tr><td colSpan={5} className="p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
+                  <tr><td colSpan={8} className="p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
                 ) : filteredData.length === 0 ? (
-                  <tr><td colSpan={5} className="p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
+                  <tr><td colSpan={8} className="p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
                 ) : filteredData.map((item) => (
                   <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
+                    {/* Photo */}
                     <td className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-blue-900 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg">
-                          {(item.fullName || item.instName || 'U')[0].toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
-                          <p className="text-xs text-slate-400 font-bold">{item.phone || item.email}</p>
-                        </div>
+                      <div className="flex items-center justify-center">
+                        {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
+                          <img
+                            src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo}
+                            alt={item.fullName || item.instName || 'Photo'}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-slate-200"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                            {(item.fullName || item.instName || 'U')[0].toUpperCase()}
+                          </div>
+                        )}
                       </div>
                     </td>
+
+                    {/* Name */}
                     <td className="p-6">
-                      <div className="inline-flex items-center gap-2 bg-slate-100 px-3 py-1 rounded-xl border border-slate-200">
-                        <IndianRupee size={14} className="text-slate-500" />
-                        <span className="font-mono text-xs font-black text-slate-700 uppercase">{item.transactionId || 'N/A'}</span>
-                      </div>
+                      <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
                     </td>
-                    <td className="p-6 text-center">
-                      {getReceiptUrl(item) ? (
-                        <a href={getReceiptUrl(item)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-xl text-xs font-black hover:bg-blue-700 hover:text-white transition-all shadow-sm">
-                          <Eye size={16} /> VIEW
-                        </a>
+
+                    {/* Email */}
+                    <td className="p-6">
+                      <p className="text-sm text-slate-700 font-medium">{item.email || '-'}</p>
+                    </td>
+
+                    {/* Phone */}
+                    <td className="p-6">
+                      <p className="text-sm text-slate-700 font-medium">{item.phone || item.officePhone || '-'}</p>
+                    </td>
+
+                    {/* Age Group / Type */}
+                    <td className="p-6">
+                      {activeTab === 'players' ? (
+                        <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                          {getAgeGroup(item.dob)}
+                        </span>
                       ) : (
-                        <span className="text-[10px] text-slate-300 font-black uppercase tracking-widest">No File</span>
+                        <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                          {item.instType || 'N/A'}
+                        </span>
                       )}
                     </td>
+
+                    {/* Role */}
+                    <td className="p-6">
+                      <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-widest">
+                        {activeTab === 'players' ? (item.memberRole || 'Player') : 'Institution'}
+                      </span>
+                    </td>
+
+                    {/* Status */}
                     <td className="p-6">
                       <span className={`inline-block px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border-2 ${
                         item.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' : 
@@ -198,6 +302,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                         {item.status || 'Pending'}
                       </span>
                     </td>
+                    {/* Actions */}
                     <td className="p-6">
                       <div className="flex justify-end gap-2">
                         <button 
@@ -223,10 +328,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                         </button>
                         <a
                           href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
-                          className="p-2 bg-blue-50 text-blue-600 rounded-2xl hover:bg-blue-600 hover:text-white transition-all active:scale-90"
-                          title="View More"
+                          className="px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
+                          title="View Details"
                         >
-                          <Eye size={18} />
+                          <Eye size={16} /> View Details
                         </a>
                       </div>
                     </td>
