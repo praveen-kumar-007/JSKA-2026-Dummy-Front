@@ -103,7 +103,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
                   </button>
                   {mobileDropdownOpen && (
                     <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-30">
-                      {navItems.find((item) => item.dropdown).dropdown.map((sub) => (
+                      {(navItems.find((item) => item.dropdown)?.dropdown ?? []).map((sub) => (
                         <button
                           key={sub.id}
                           onClick={() => { onPageChange(sub.id); setIsOpen(false); setMobileDropdownOpen(false); }}
@@ -173,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
               </button>
               {mobileDropdownOpen && (
                 <div className="pl-4 mt-1">
-                  {navItems.find((item) => item.dropdown).dropdown.map((sub) => (
+                  {(navItems.find((item) => item.dropdown)?.dropdown ?? []).map((sub) => (
                     <button
                       key={sub.id}
                       onClick={() => { onPageChange(sub.id); setIsOpen(false); setMobileDropdownOpen(false); }}
