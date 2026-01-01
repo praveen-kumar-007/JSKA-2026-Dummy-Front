@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { IDCardData } from '../types';
 import { COLORS } from '../constants';
@@ -8,14 +7,17 @@ interface Props {
 }
 
 export const IDCardBack: React.FC<Props> = ({ data }) => {
-  const formattedDate = new Date(data.dob).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
+  const formatDOB = (dobString: string) => {
+    try {
+      const date = new Date(dobString);
+      return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch {
+      return dobString;
+    }
+  };
 
   const qrData = `DDKA:${data.idNo}:${data.name}`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrData)}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrData)}&color=1e40af`;
 
   return (
     <div 
@@ -23,78 +25,93 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
       style={{ 
         width: '240px', 
         height: '380px', 
-        borderRadius: '20px',
+        borderRadius: '16px',
         fontFamily: "'Poppins', sans-serif",
-        border: `1.5px solid ${COLORS.primary}`
+        border: `2px solid ${COLORS.primary}`
       }}
     >
-      {/* Background Texture Overlay */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
-        backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)',
-        backgroundSize: '8px 8px'
-      }} />
+      {/* Watermark Logos Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-8">
+        <div className="absolute top-4 left-4 text-2xl font-black text-blue-900">AKFI</div>
+        <div className="absolute bottom-4 right-4 text-2xl font-black text-blue-900">JH-KBD</div>
+      </div>
 
-      {/* Header Section */}
+      {/* Header Section - Professional */}
       <div 
-        className="relative h-14 flex items-center px-3 overflow-hidden shrink-0"
+        className="relative px-3 py-2.5 shrink-0"
         style={{ background: COLORS.primary }}
       >
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-orange-600 -skew-x-[25deg] translate-x-10 translate-y-[-10%] opacity-20" />
-        
-        <div className="relative z-10 w-full text-center">
-          <h1 className="text-white text-[10px] font-black leading-tight tracking-tight uppercase">
-            VERIFICATION
-          </h1>
-          <p className="text-orange-200 text-[6px] font-bold uppercase tracking-widest mt-0.5">ID Card</p>
+        <div className="flex items-center justify-center gap-1.5">
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm border border-orange-500">
+            <span className="text-[10px] font-black text-orange-600">🇮🇳</span>
+          </div>
+          <div className="flex-1 text-center">
+            <h1 className="text-white text-[8px] font-black leading-tight tracking-tight uppercase">
+              ID VERIFICATION
+            </h1>
+            <p className="text-orange-300 text-[5.5px] font-bold uppercase tracking-widest mt-0.5">
+              Scan QR for Details
+            </p>
+          </div>
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm border border-orange-500">
+            <span className="text-[10px] font-black">🏏</span>
+          </div>
         </div>
       </div>
 
-      {/* Visual Accent */}
-      <div className="h-1 w-full shrink-0" style={{ 
-        background: `linear-gradient(90deg, ${COLORS.secondary}, ${COLORS.accent})`,
+      {/* Accent Line */}
+      <div className="h-0.5 w-full shrink-0" style={{ 
+        background: `linear-gradient(90deg, ${COLORS.secondary}, ${COLORS.accent}, ${COLORS.secondary})`,
       }} />
 
       {/* Main Content Area */}
-      <div className="flex-grow flex flex-col px-3 py-4 space-y-2.5 justify-center">
-        
-        {/* ID Number - Prominent */}
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-3 py-1.5 rounded-lg text-center">
-          <p className="text-[5.5px] text-slate-300 font-bold uppercase tracking-wider">Member ID</p>
-          <p className="text-[10px] font-black tracking-[0.08em] mt-0.5">{data.idNo}</p>
+      <div className="flex-grow flex flex-col px-2.5 py-2 space-y-1.5 justify-between overflow-hidden">
+        {/* ID Number */}
+        <div className="bg-gradient-to-r from-blue-900 to-slate-900 text-white px-2 py-1 rounded text-center">
+          <p className="text-[4.5px] text-blue-200 font-bold uppercase tracking-wider">Member ID</p>
+          <p className="text-[9px] font-black tracking-[0.1em] mt-0.5">{data.idNo}</p>
         </div>
 
-        {/* QR Code for Verification */}
-        <div className="flex justify-center py-2">
-          <div className="p-2 bg-white border-2 border-slate-900 rounded shadow-md">
-            <img src={qrUrl} alt="QR" className="w-14 h-14" />
+        {/* QR Code */}
+        <div className="flex justify-center py-1">
+          <div className="p-1.5 bg-white border-2 border-blue-900 rounded shadow-md">
+            <img src={qrUrl} alt="QR Code" className="w-12 h-12" />
           </div>
         </div>
 
-        {/* Important Information Grid */}
-        <div className="space-y-1.5 text-center">
-          <div className="bg-blue-50 border-l-4 border-blue-600 px-2 py-1 rounded">
-            <p className="text-[5px] text-slate-500 font-bold uppercase tracking-wider">Date of Birth</p>
-            <p className="text-[8px] font-bold text-slate-900">{formattedDate}</p>
+        {/* Information Grid */}
+        <div className="space-y-1">
+          {/* DOB */}
+          <div className="bg-blue-50 border-l-4 border-blue-600 px-1.5 py-0.75 rounded">
+            <p className="text-[4.5px] text-slate-500 font-bold uppercase tracking-wide">Date of Birth</p>
+            <p className="text-[7px] font-bold text-slate-900 leading-tight">{formatDOB(data.dob)}</p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-600 px-2 py-1 rounded">
-            <p className="text-[5px] text-slate-500 font-bold uppercase tracking-wider">Blood Group</p>
-            <p className="text-[10px] font-black text-red-600">{data.bloodGroup}</p>
+          {/* Blood Group */}
+          <div className="bg-red-50 border-l-4 border-red-600 px-1.5 py-0.75 rounded">
+            <p className="text-[4.5px] text-slate-500 font-bold uppercase tracking-wide">Blood Group</p>
+            <p className="text-[8px] font-black text-red-600 leading-tight">{data.bloodGroup}</p>
+          </div>
+
+          {/* Emergency Contact */}
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 px-1.5 py-0.75 rounded">
+            <p className="text-[4.5px] text-slate-500 font-bold uppercase tracking-wide">Emergency Contact</p>
+            <p className="text-[7px] font-bold text-slate-900 leading-tight">{data.phone}</p>
+          </div>
+
+          {/* Valid Card Notice */}
+          <div className="bg-green-50 border border-green-300 rounded px-1.5 py-0.75 text-center">
+            <p className="text-[5px] text-green-700 font-black uppercase tracking-wider">
+              ✓ Official Valid Card
+            </p>
           </div>
         </div>
-
-        {/* Emergency Contact */}
-        <div className="bg-yellow-50 border border-yellow-400 rounded px-2 py-1.5 text-center">
-          <p className="text-[5px] text-slate-600 font-bold uppercase tracking-wider">Emergency Contact</p>
-          <p className="text-[7.5px] font-bold text-slate-800 mt-1">{data.phone}</p>
-        </div>
-
       </div>
 
-      {/* Footer Strip */}
-      <div className="bg-slate-900 flex flex-col items-center justify-center py-2 shrink-0 space-y-0.5">
-        <p className="text-white/40 text-[5px] font-black tracking-[0.1em] uppercase">Official DDKA Card</p>
-        <p className="text-orange-500 text-[5px] font-bold">Scan QR for Verification</p>
+      {/* Footer - Professional */}
+      <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 px-2 py-1.5 mt-auto shrink-0 flex items-center justify-between">
+        <span className="text-white/40 text-[5px] font-black tracking-[0.15em] uppercase">DDKA MEMBER</span>
+        <span className="text-orange-400 text-[5px] font-bold">Est. 2017</span>
       </div>
     </div>
   );
