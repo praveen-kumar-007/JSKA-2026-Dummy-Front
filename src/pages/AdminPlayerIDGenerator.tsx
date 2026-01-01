@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Download, Eye, LayoutGrid, List, Search, AlertCircle, Loader } from 'lucide-react';
 import { IDCardFront } from './Frontcard';
-import { IDCardBack } from './BackCard';
-import { IDCardData } from '../types';
+import { IDCardBack } from './Backcard';
+import type { IDCardData } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { IDCardData } from '../types';
+import type { IDCardData } from '../types';
 import { COLORS } from '../constants';
 
 interface Props {
@@ -95,13 +95,6 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
       <div className="bg-slate-900 flex flex-col items-center justify-center py-2 shrink-0 space-y-0.5">
         <p className="text-white/40 text-[5px] font-black tracking-[0.1em] uppercase">Official DDKA Card</p>
         <p className="text-orange-500 text-[5px] font-bold">Scan QR for Verification</p>
-      </div>
-    </div>
-  );
-};>
-        <div className="h-full flex-1 bg-slate-900"></div>
-        <div className="h-full flex-1 bg-orange-600"></div>
-        <div className="h-full flex-1 bg-amber-400"></div>
       </div>
     </div>
   );

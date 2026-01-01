@@ -1,5 +1,5 @@
 
-import { IDCardData } from '../types';
+import type { IDCardData } from '../types';
 import { ASSOCIATION_INFO, COLORS, LOGOS } from '../constants';
 
 interface Props {
