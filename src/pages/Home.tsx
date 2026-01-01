@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Hero from '../components/ui/Hero';
 import { Trophy, Users, Award, Zap, ExternalLink, Megaphone, Calendar, ArrowRight, Activity } from 'lucide-react';
-import { MOCK_NEWS } from '../constants';
-import type { NewsArticle } from '../types';
+import NewsCard from '../components/ui/NewsCard';
+import type { HomeNewsItem } from '../components/ui/NewsCard';
 import type { Language } from '../translations';
 import { translations } from '../translations';
 
@@ -12,17 +12,37 @@ interface HomeProps {
 }
 
 export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
-  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [news, setNews] = useState<HomeNewsItem[]>([]);
   const [isLoadingNews, setIsLoadingNews] = useState(false);
   const t = translations[lang];
 
   useEffect(() => {
     setIsLoadingNews(true);
-    // Simulating API call
-    setTimeout(() => {
-      setNews(MOCK_NEWS.slice(0, 3) as NewsArticle[]);
-      setIsLoadingNews(false);
-    }, 800);
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    fetch(`${API_URL}/api/news`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+          const sorted = data.data
+            .slice()
+            .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          const mapped: HomeNewsItem[] = sorted.slice(0, 3).map((n: any) => ({
+            _id: n._id,
+            title: n.title,
+            category: n.category,
+            content: n.content,
+            createdAt: n.createdAt,
+            imageUrl: Array.isArray(n.images) && n.images.length > 0 ? n.images[0] : undefined,
+          }));
+          setNews(mapped);
+        } else {
+          setNews([]);
+        }
+      })
+      .catch(() => {
+        setNews([]);
+      })
+      .finally(() => setIsLoadingNews(false));
   }, []);
 
   return (
@@ -230,12 +250,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
               [1,2,3].map(i => <div key={i} className="h-64 bg-blue-800/50 rounded-2xl animate-pulse"></div>)
             ) : (
               news.map((item, idx) => (
-                <div key={idx} className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/10 hover:bg-white/20 transition-all cursor-default group">
-                  <span className="text-[10px] font-bold bg-orange-600 px-3 py-1 rounded mb-6 inline-block uppercase tracking-widest">{item.category}</span>
-                  <h3 className="text-xl font-bold mb-4 line-clamp-2 group-hover:text-orange-400 transition-colors">{item.title}</h3>
-                  <p className="text-sm text-blue-100 line-clamp-3 mb-6 font-light">{item.content}</p>
-                  <span className="text-xs text-blue-300 font-mono">{item.date}</span>
-                </div>
+                <NewsCard key={idx} article={item} />
               ))
             )}
           </div>
