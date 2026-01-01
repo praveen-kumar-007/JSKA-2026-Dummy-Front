@@ -47,9 +47,28 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
     reasonForJoining: '',
   });
 
+  // Custom handler for Aadhar and Phone
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'aadharNumber') {
+      // Remove all non-digits
+      let digits = value.replace(/\D/g, '');
+      // Limit to 12 digits
+      digits = digits.slice(0, 12);
+      // Add space every 4 digits
+      let formatted = '';
+      for (let i = 0; i < digits.length; i += 4) {
+        if (i > 0) formatted += ' ';
+        formatted += digits.substr(i, 4);
+      }
+      setFormData(prev => ({ ...prev, [name]: formatted }));
+    } else if (name === 'phone' || name === 'parentsPhone') {
+      // Only allow numbers, max 10 digits
+      let digits = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, [name]: digits }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
@@ -236,15 +255,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-500 uppercase tracking-widest">Aadhar Number</label>
-                <input required name="aadharNumber" value={formData.aadharNumber} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="1234 5678 9012" />
+                <input required name="aadharNumber" value={formData.aadharNumber} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="1234 5678 9012" maxLength={14} inputMode="numeric" pattern="[0-9 ]*" />
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-500 uppercase tracking-widest">Phone Number</label>
-                <input required name="phone" value={formData.phone} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="+91 98765 43210" />
+                <input required name="phone" value={formData.phone} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="9876543210" maxLength={10} inputMode="numeric" pattern="[0-9]*" />
               </div>
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-500 uppercase tracking-widest">Parent's Phone</label>
-                <input required name="parentsPhone" value={formData.parentsPhone} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="+91 98765 43211" />
+                <input required name="parentsPhone" value={formData.parentsPhone} onChange={handleChange} className="w-full px-6 py-5 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-lg" placeholder="9876543211" maxLength={10} inputMode="numeric" pattern="[0-9]*" />
               </div>
               <div className="md:col-span-2 space-y-3">
                 <label className="text-sm font-black text-slate-500 uppercase tracking-widest">Full Address</label>
