@@ -188,7 +188,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
       {/* ----------------------------------------------------------------------- */}
       <section className="py-16 bg-slate-50 border-y border-slate-200">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center justify-center md:justify-start gap-3 mb-8">
             <Activity className="text-orange-600" />
             <h3 className="text-2xl font-bold text-blue-900 uppercase tracking-wide">
               {lang === 'hi' ? 'संघ की गतिविधियां' : 'Association Updates'}
@@ -209,7 +209,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
             </div>
             
             {/* CONTENT AREA */}
-            <div className="w-full md:w-1/2 md:pr-4">
+            <div className="w-full md:w-1/2 md:pr-4 flex flex-col items-center md:items-start text-center md:text-left">
               <span className="text-xs font-bold text-orange-600 bg-orange-100 px-2 py-1 rounded mb-3 inline-block">
                  {lang === 'hi' ? 'ताज़ा खबर' : 'LATEST UPDATE'}
               </span>
@@ -239,7 +239,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
       {/* Latest News Preview Section */}
       <section className="py-20 bg-blue-900 text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 text-center md:text-left">
             <div>
               <h2 className="text-4xl font-oswald font-bold uppercase mb-2">{t.news.latest}</h2>
               <p className="text-blue-200">{t.news.curated}</p>
