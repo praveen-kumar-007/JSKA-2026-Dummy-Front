@@ -65,16 +65,16 @@ const Hero: React.FC<HeroProps> = ({ onRegisterClick, onScheduleClick, lang }) =
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
                 {[
-                  { text: aff.line1, label: lang === 'hi' ? 'संबद्धता' : 'Affiliation', color: 'text-orange-500' },
-                  { text: aff.line2, label: lang === 'hi' ? 'पंजीकरण' : 'Registration', color: 'text-blue-400' },
-                  { text: aff.line3, label: lang === 'hi' ? 'मान्यता' : 'Recognition', color: 'text-green-400' }
+                  { text: aff.line1, label: lang === 'hi' ? 'संबद्धता' : 'Affiliation', color: 'bg-orange-500' },
+                  { text: aff.line2, label: lang === 'hi' ? 'पंजीकरण' : 'Registration', color: 'bg-orange-500' },
+                  { text: aff.line3, label: lang === 'hi' ? 'मान्यता' : 'Recognition', color: 'bg-orange-500' }
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col space-y-3 group/item">
                     <div className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${item.color.replace('text', 'bg')} shadow-[0_0_8px_currentColor]`}></div>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{item.label}</span>
+                      <div className={`w-2 h-2 rounded-full ${item.color} shadow-[0_0_10px_rgba(249,115,22,0.8)] animate-pulse`}></div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-orange-400/80">{item.label}</span>
                     </div>
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-white leading-snug group-hover/item:text-orange-400 transition-colors">
+                    <p className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-white leading-snug group-hover/item:text-orange-400 transition-colors">
                       {item.text}
                     </p>
                   </div>
