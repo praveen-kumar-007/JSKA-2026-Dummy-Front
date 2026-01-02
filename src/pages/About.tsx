@@ -80,6 +80,8 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
     }
   };
 
+  const chiefPatrons = committee.patrons.names;
+
   return (
     <div className="py-12 md:py-24 animate-in fade-in slide-in-from-bottom-4 duration-700 bg-slate-50">
       <div className="max-w-[90rem] mx-auto px-4">
@@ -161,6 +163,73 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
         </div>
 
         {/* ------------------------------------------------------------------ */}
+        {/* CHIEF PATRONS - FEATURED CARD SECTION */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="mb-20 md:mb-24">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-5xl font-oswald font-bold text-blue-900 uppercase tracking-tight">
+              {committee.patrons.title}
+            </h2>
+            <div className="w-28 h-1.5 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 mx-auto mt-4 rounded-full shadow-md"></div>
+            <p className="mt-4 text-slate-500 text-sm md:text-base max-w-2xl mx-auto">
+              {lang === 'hi'
+                ? 'DDKA के मुख्य संरक्षक, जो संघ के मार्गदर्शन, प्रेरणा और सहयोग के स्तंभ हैं।'
+                : 'The Chief Patrons of DDKA who guide, inspire, and support the association.'}
+            </p>
+          </div>
+
+          <div className="relative max-w-5xl mx-auto">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-800 via-slate-900 to-orange-700 rounded-[2rem] blur-lg opacity-60"></div>
+            <div className="relative bg-gradient-to-r from-blue-900 via-slate-900 to-orange-800 rounded-[1.8rem] p-6 md:p-10 text-white overflow-hidden shadow-2xl border border-white/10">
+              <div className="absolute -right-10 -top-10 w-40 h-40 md:w-64 md:h-64 bg-orange-500/10 rounded-full blur-3xl"></div>
+              <div className="absolute -left-10 -bottom-10 w-40 h-40 md:w-64 md:h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+              <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12 mb-8 md:mb-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/30 flex items-center justify-center shadow-lg">
+                    <Medal className="w-7 h-7 md:w-9 md:h-9 text-yellow-300" />
+                  </div>
+                  <div>
+                    <p className="text-xs md:text-sm uppercase tracking-[0.25em] text-orange-200 font-semibold">
+                      {lang === 'hi' ? 'सम्मानित संरक्षक दल' : 'Honourable Panel'}
+                    </p>
+                    <h3 className="text-xl md:text-3xl font-oswald font-bold tracking-tight mt-1">
+                      {lang === 'hi' ? 'DDKA मुख्य संरक्षक मंडल' : 'DDKA Chief Patrons Panel'}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="hidden md:block md:flex-1 text-right text-sm text-blue-100 max-w-md ml-auto">
+                  {lang === 'hi'
+                    ? 'ये वरिष्ठ संरक्षक न केवल खेल के विकास में सहयोग करते हैं, बल्कि आने वाली पीढ़ी के लिए प्रेरणा स्रोत भी हैं।'
+                    : 'These senior patrons not only support the growth of Kabaddi, but also stand as role models for the next generation.'}
+                </div>
+              </div>
+
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {chiefPatrons.map((patron, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-orange-300/70 rounded-2xl p-4 md:p-5 flex items-start gap-3 md:gap-4 transition-all duration-300 shadow-md hover:shadow-xl"
+                  >
+                    <div className="mt-1">
+                      <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-orange-500/30 flex items-center justify-center border border-orange-300/60">
+                        <Medal className="w-4 h-4 md:w-5 md:h-5 text-yellow-200" />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm md:text-base font-semibold leading-snug">
+                        {patron}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ------------------------------------------------------------------ */}
         {/* CORE LEADERSHIP (CARDS) - 2 PER ROW ON MOBILE */}
         {/* ------------------------------------------------------------------ */}
         <div className="mb-28">
@@ -224,41 +293,24 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20">
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20">
             
-            {/* Left Column: Chairman & Patrons */}
+            {/* Left Column: Chairman */}
             <div className="space-y-8 md:space-y-12">
-               {/* Chairman Block */}
-               <div className="bg-slate-50 p-6 md:p-8 rounded-2xl md:rounded-3xl border-l-4 md:border-l-8 border-blue-900 shadow-sm">
-                  <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-                     <UserCheck className="text-blue-900 w-6 h-6 md:w-8 md:h-8" />
-                     <h3 className="text-lg md:text-2xl font-oswald font-bold text-blue-900 uppercase">
-                        {committee.chairman.title}
-                     </h3>
-                  </div>
-                  <ul className="space-y-2">
-                     {committee.chairman.names.map((name, i) => (
-                        <li key={i} className="text-base md:text-xl text-slate-700 font-medium pl-2">{name}</li>
-                     ))}
-                  </ul>
-               </div>
-
-               {/* Patrons Block */}
-               <div className="bg-slate-50 p-6 md:p-8 rounded-2xl md:rounded-3xl border-l-4 md:border-l-8 border-orange-500 shadow-sm">
-                  <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-                     <Medal className="text-orange-600 w-6 h-6 md:w-8 md:h-8" />
-                     <h3 className="text-lg md:text-2xl font-oswald font-bold text-blue-900 uppercase">
-                        {committee.patrons.title}
-                     </h3>
-                  </div>
-                  <ul className="space-y-2 md:space-y-3">
-                     {committee.patrons.names.map((name, i) => (
-                        <li key={i} className="text-sm md:text-base text-slate-600 border-b border-slate-200 pb-2 last:border-0">
-                           {name}
-                        </li>
-                     ))}
-                  </ul>
-               </div>
+              {/* Chairman Block */}
+              <div className="bg-slate-50 p-6 md:p-8 rounded-2xl md:rounded-3xl border-l-4 md:border-l-8 border-blue-900 shadow-sm">
+                <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+                  <UserCheck className="text-blue-900 w-6 h-6 md:w-8 md:h-8" />
+                  <h3 className="text-lg md:text-2xl font-oswald font-bold text-blue-900 uppercase">
+                    {committee.chairman.title}
+                  </h3>
+                </div>
+                <ul className="space-y-2">
+                  {committee.chairman.names.map((name, i) => (
+                    <li key={i} className="text-base md:text-xl text-slate-700 font-medium pl-2">{name}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {/* Right Column: VPs and Asst Secretaries */}
