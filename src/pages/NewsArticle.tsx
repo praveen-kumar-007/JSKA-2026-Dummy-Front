@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Tag, ArrowLeft, Share2, Copy, Facebook, Linkedin, Twitter } from 'lucide-react';
 
@@ -36,7 +37,46 @@ const NewsArticle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-2">
+    <>
+      <Helmet>
+        <title>{news.title} | DDKA Kabaddi News Dhanbad</title>
+        <meta
+          name="description"
+          content={
+            news.content && news.content.length > 150
+              ? `${news.content.slice(0, 150)}...`
+              : news.content
+          }
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={`${news.title} | DDKA Kabaddi News Dhanbad`} />
+        <meta
+          property="og:description"
+          content={
+            news.content && news.content.length > 150
+              ? `${news.content.slice(0, 150)}...`
+              : news.content
+          }
+        />
+        {shareUrl && <meta property="og:url" content={shareUrl} />}
+        {news.images && news.images.length > 0 && (
+          <meta property="og:image" content={news.images[0]} />
+        )}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${news.title} | DDKA Kabaddi News Dhanbad`} />
+        <meta
+          name="twitter:description"
+          content={
+            news.content && news.content.length > 150
+              ? `${news.content.slice(0, 150)}...`
+              : news.content
+          }
+        />
+        {news.images && news.images.length > 0 && (
+          <meta name="twitter:image" content={news.images[0]} />
+        )}
+      </Helmet>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-2">
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
         {/* Accent Bar */}
         <div className={`h-2 w-full ${news.isHighlight ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-400 to-blue-600'}`} />
@@ -115,6 +155,7 @@ const NewsArticle = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
