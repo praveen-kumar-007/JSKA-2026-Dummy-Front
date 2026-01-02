@@ -43,7 +43,12 @@ export const translations = {
       upi: 'Pay via any UPI App', upiId: '9504904499@upi', txId: 'Enter Transaction ID',
       verify: 'Verify Payment', processing: 'Verifying...', note: 'Valid for current season.'
     },
-    footer: { desc: 'The official governing body for Kabaddi in Dhanbad.', quickLinks: 'Quick Links', contact: 'Contact Us' }
+    footer: { desc: 'The official governing body for Kabaddi in Dhanbad.', quickLinks: 'Quick Links', contact: 'Contact Us' },
+    affiliation: {
+      line1: 'Affiliated To - JHARKHAND STATE KABADDI ASSOCIATION',
+      line2: 'Registered with 1860 Govt. of Jharkhand',
+      line3: 'Affiliated for - A.K.F.I. & Jharkhand Olympic Association'
+    }
   },
   hi: {
     nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'पंजीकरण', institution: 'संस्थान', affiliated: 'संबद्ध' },
@@ -87,6 +92,11 @@ export const translations = {
       upi: 'किसी भी UPI ऐप से भुगतान करें', upiId: '9504904499@upi', txId: 'ट्रांजैक्शन आईडी दर्ज करें',
       verify: 'भुगतान सत्यापित करें', processing: 'सत्यापित किया जा रहा है...', note: 'वर्तमान सत्र के लिए वैध।'
     },
-    footer: { desc: 'धनबाद में कबड्डी के लिए आधिकारिक शासी निकाय।', quickLinks: 'त्वरित लिंक', contact: 'संपर्क करें' }
+    footer: { desc: 'धनबाद में कबड्डी के लिए आधिकारिक शासी निकाय।', quickLinks: 'त्वरित लिंक', contact: 'संपर्क करें' },
+    affiliation: {
+      line1: 'झारखंड राज्य कबड्डी संघ से संबद्ध',
+      line2: 'झारखंड सरकार (1860) के तहत पंजीकृत',
+      line3: 'ए.के.एफ.आई. एवं झारखंड ओलंपिक संघ से संबद्ध'
+    }
   }
 } as const; // Adding "as const" makes TypeScript more strict and reliable

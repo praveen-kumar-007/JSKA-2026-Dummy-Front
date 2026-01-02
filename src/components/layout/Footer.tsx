@@ -28,13 +28,24 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">{footer.desc}</p>
-            <div className="bg-blue-900/20 border border-blue-800/40 p-4 rounded-xl flex items-center space-x-3">
-               <ShieldCheck className="text-orange-500 w-8 h-8 shrink-0" />
-               <div className="text-[10px] uppercase font-bold text-blue-200">
-                  {lang === 'hi' 
-  ? 'झारखंड राज्य कबड्डी संघ से संबद्ध (AKFI मान्यता प्राप्त)' 
-  : 'Affiliated to Jharkhand State Kabaddi Association (Recognized by AKFI)'
-}
+            <div className="bg-blue-900/20 border border-blue-800/40 p-4 rounded-xl space-y-3">
+               <div className="flex items-start space-x-3">
+                  <ShieldCheck className="text-orange-500 w-5 h-5 shrink-0 mt-0.5" />
+                  <div className="text-[10px] uppercase font-bold text-blue-200 leading-tight">
+                     {t.affiliation.line1}
+                  </div>
+               </div>
+               <div className="flex items-start space-x-3">
+                  <ShieldCheck className="text-orange-500 w-5 h-5 shrink-0 mt-0.5" />
+                  <div className="text-[10px] uppercase font-bold text-blue-200 leading-tight">
+                     {t.affiliation.line2}
+                  </div>
+               </div>
+               <div className="flex items-start space-x-3">
+                  <ShieldCheck className="text-orange-500 w-5 h-5 shrink-0 mt-0.5" />
+                  <div className="text-[10px] uppercase font-bold text-blue-200 leading-tight">
+                     {t.affiliation.line3}
+                  </div>
                </div>
             </div>
           </div>

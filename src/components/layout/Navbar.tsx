@@ -31,6 +31,25 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
+      {/* Top Affiliation Bar */}
+      <div className="bg-slate-900 text-white py-1.5 border-b border-blue-800/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-center md:text-left gap-1 md:gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500">•</span>
+              <span>{t.affiliation.line1}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500">•</span>
+              <span>{t.affiliation.line2}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500">•</span>
+              <span>{t.affiliation.line3}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo Section */}
