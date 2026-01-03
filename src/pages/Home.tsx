@@ -193,7 +193,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
                   {idx === 3 && <Award className="w-10 h-10 text-orange-500" />}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-blue-900">{feature.title}</h3>
-                <p className="text-slate-600 leading-relaxed text-sm">{feature.desc}</p>
+                <p className="text-slate-700 leading-relaxed text-sm">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -235,7 +235,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
                   ? 'धनबाद जिला कबड्डी संघ की बैठक' 
                   : 'Meeting of Dhanbad District Kabaddi Association'}
               </h2>
-              <p className="text-slate-600 leading-relaxed mb-4">
+              <p className="text-slate-700 leading-relaxed mb-4">
                 {lang === 'hi'
                   ? 'धनबाद जिला कबड्डी संघ की एक महत्वपूर्ण बैठक आयोजित की गई जिसमें जिले में कबड्डी के विकास और आगामी कार्ययोजना पर चर्चा की गई। इस बैठक में संघ के वरिष्ठ पदाधिकारी और सदस्य उपस्थित रहे।'
                   : 'A significant meeting of the Dhanbad District Kabaddi Association (DDKA) was held to discuss the development of Kabaddi and the upcoming roadmap for the district. Senior officials and members of the association were present to strategize future events.'}

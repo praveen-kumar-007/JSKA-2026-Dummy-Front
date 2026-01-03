@@ -109,7 +109,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
             {t.nav.about}
           </h1>
           <div className="w-32 h-2 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto rounded-full shadow-lg"></div>
-          <p className="mt-6 text-slate-500 font-light text-xl uppercase tracking-widest">
+          <p className="mt-6 text-slate-600 font-light text-xl uppercase tracking-widest">
              {lang === 'hi' ? 'परंपरा • अनुशासन • गौरव' : 'Tradition • Discipline • Glory'}
           </p>
         </div>
@@ -203,7 +203,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
                 <h2 className="text-2xl md:text-4xl font-oswald font-bold text-blue-900 mb-4 md:mb-6 uppercase">
                 {lang === 'hi' ? 'हमारा विजन' : 'Our Vision'}
                 </h2>
-                <p className="text-slate-600 leading-relaxed text-sm md:text-lg">
+                <p className="text-slate-700 leading-relaxed text-sm md:text-lg">
                 {lang === 'hi' 
                     ? 'DDKA का विजन: कबड्डी को झारखंड के प्रमुख खेल के रूप में पुनर्स्थापित करना और कोयला राजधानी से अंतर्राष्ट्रीय प्रतिभाओं को खोजना।'
                     : 'DDKA vision: Restore Kabaddi as Jharkhand\'s premier sport and scout international talent from the Coal Capital.'}
@@ -238,7 +238,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
               {committee.patrons.title}
             </h2>
             <div className="w-28 h-1.5 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 mx-auto mt-4 rounded-full shadow-md"></div>
-            <p className="mt-4 text-slate-500 text-sm md:text-base max-w-2xl mx-auto">
+            <p className="mt-4 text-slate-600 text-sm md:text-base max-w-2xl mx-auto">
               {lang === 'hi'
                 ? 'DDKA के मुख्य संरक्षक, जो संघ के मार्गदर्शन, प्रेरणा और सहयोग के स्तंभ हैं।'
                 : 'The Chief Patrons of DDKA who guide, inspire, and support the association.'}
@@ -319,8 +319,8 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
                     <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-slate-200 p-2 text-center">
-                       <Users className="w-12 h-12 md:w-20 md:h-20 text-slate-400 mb-2" />
-                       <p className="text-[10px] md:text-xs text-slate-500 font-bold uppercase">Image Pending</p>
+                       <Users className="w-12 h-12 md:w-20 md:h-20 text-slate-500 mb-2" />
+                       <p className="text-[10px] md:text-xs text-slate-600 font-bold uppercase">Image Pending</p>
                     </div>
                   )}
                   
@@ -355,7 +355,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
             <h2 className="text-2xl md:text-4xl font-oswald font-bold text-blue-900 uppercase">
               {lang === 'hi' ? 'संघ के पदाधिकारी' : 'Association Office Bearers'}
             </h2>
-            <p className="text-slate-500 mt-2 md:mt-3 font-light text-sm md:text-base">
+            <p className="text-slate-600 mt-2 md:mt-3 font-light text-sm md:text-base">
                Dhanbad District Kabaddi Association Team
             </p>
           </div>
@@ -388,7 +388,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-800">
                         <Users size={16} className="md:w-5 md:h-5" />
                      </div>
-                     <h3 className="text-base md:text-xl font-bold text-slate-400 uppercase tracking-widest">
+                     <h3 className="text-base md:text-xl font-bold text-slate-500 uppercase tracking-widest">
                         {committee.vicePresidents.title}
                      </h3>
                   </div>
@@ -408,7 +408,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-800">
                         <ScrollText size={16} className="md:w-5 md:h-5" />
                      </div>
-                     <h3 className="text-base md:text-xl font-bold text-slate-400 uppercase tracking-widest">
+                     <h3 className="text-base md:text-xl font-bold text-slate-500 uppercase tracking-widest">
                         {committee.asstSecretaries.title}
                      </h3>
                   </div>
@@ -428,7 +428,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
 
         {/* Bottom Contact CTA */}
         <div className="mt-16 md:mt-24 text-center pb-12">
-          <p className="text-slate-400 text-xs md:text-sm mb-4 uppercase tracking-widest">Want to join us?</p>
+          <p className="text-slate-500 text-xs md:text-sm mb-4 uppercase tracking-widest">Want to join us?</p>
           <button
             onClick={() => navigate('/contact')}
             className="bg-blue-900 hover:bg-orange-600 text-white px-8 py-4 md:px-12 md:py-5 rounded-full font-bold text-base md:text-lg transition-all shadow-xl hover:-translate-y-1 hover:shadow-orange-500/20"

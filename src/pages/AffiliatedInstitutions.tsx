@@ -63,9 +63,9 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
         />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-50 pt-24 pb-16">
+      <div className="min-h-screen bg-slate-50 pb-16">
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-blue-900 py-16 mb-12">
+        <div className="relative overflow-hidden bg-blue-900 py-12 md:py-16 mb-8 md:mb-12">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
@@ -97,7 +97,7 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
             <div className="relative w-full max-w-md">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-400" />
+                <Search className="h-5 w-5 text-slate-500" />
               </div>
               <input
                 type="text"
@@ -114,7 +114,7 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                   viewMode === 'grid' 
                     ? 'bg-blue-600 text-white shadow-md' 
-                    : 'text-slate-500 hover:bg-slate-50'
+                    : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <LayoutGrid size={18} />
@@ -127,7 +127,7 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                   viewMode === 'list' 
                     ? 'bg-blue-600 text-white shadow-md' 
-                    : 'text-slate-500 hover:bg-slate-50'
+                    : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <List size={18} />
@@ -165,7 +165,7 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
                         />
                       ) : (
                         <div className="relative w-full h-full flex items-center justify-center bg-white rounded-xl md:rounded-2xl border border-slate-100 shadow-sm">
-                          <Building2 className="w-8 h-8 text-slate-300" />
+                          <Building2 className="w-8 h-8 text-slate-400" />
                         </div>
                       )}
                     </div>
@@ -193,7 +193,7 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-slate-50 rounded-lg md:rounded-xl border border-slate-100">
-                          <Building2 className="w-6 h-6 text-slate-300" />
+                          <Building2 className="w-6 h-6 text-slate-400" />
                         </div>
                       )}
                     </div>
@@ -212,12 +212,12 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
           ) : (
             <div className="text-center py-20">
               <div className="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-100">
-                <Search className="w-8 h-8 text-slate-300" />
+                <Search className="w-8 h-8 text-slate-400" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">
                 {lang === 'hi' ? 'कोई संस्थान नहीं मिला' : 'No institutions found'}
               </h3>
-              <p className="text-slate-500">
+              <p className="text-slate-600">
                 {lang === 'hi' 
                   ? 'कृपया अपनी खोज बदलें या बाद में पुनः प्रयास करें।' 
                   : 'Try adjusting your search or check back later.'}

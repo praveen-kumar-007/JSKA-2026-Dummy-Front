@@ -102,7 +102,7 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 				<h1 className="text-5xl font-extrabold mb-2 text-blue-900 drop-shadow">
 					Contact <span className="text-orange-500">DDKA</span>
 				</h1>
-				<p className="text-lg text-slate-600 mb-6">
+				<p className="text-lg text-slate-700 mb-6">
 					{lang === 'hi'
 						? 'हमसे संपर्क करें - हम आपकी सहायता के लिए यहाँ हैं'
 						: "Get in touch with us - we're here to help you succeed"}
@@ -114,7 +114,7 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 					<h2 className="text-2xl font-bold mb-2 text-blue-900">
 						{lang === 'hi' ? 'हमसे संपर्क करें' : 'Get in Touch'}
 					</h2>
-					<p className="text-slate-500 mb-4 text-sm">
+					<p className="text-slate-600 mb-4 text-sm">
 						{lang === 'hi'
 							? 'क्या आप कबड्डी में अपना करियर शुरू करना चाहते हैं? हमारे कार्यक्रमों के बारे में प्रश्न हैं? हम आपकी सहायता के लिए यहाँ हैं!'
 							: "Ready to start your kabaddi journey? Have questions about our association or events? We'd love to hear from you!"}
@@ -160,7 +160,7 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 							<div className="text-sm">
 								Dhanbad District Kabaddi Association (DDKA)
 							</div>
-							<div className="text-xs text-slate-500 mt-1">
+							<div className="text-xs text-slate-600 mt-1">
 								{lang === 'hi'
 									? 'झारखंड राज्य कबड्डी संघ से संबद्ध (AKFI मान्यता प्राप्त)'
 									: 'Affiliated to Jharkhand State Kabaddi Association (Recognized by AKFI)'}
@@ -321,7 +321,7 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								)}
 							</button>
 							{faqOpen === idx && (
-								<div className="mt-3 text-slate-600 text-base animate-in fade-in duration-300">
+								<div className="mt-3 text-slate-700 text-base animate-in fade-in duration-300">
 									{faq.answer[lang]}
 								</div>
 							)}
