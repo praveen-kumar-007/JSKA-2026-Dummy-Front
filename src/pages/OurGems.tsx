@@ -92,28 +92,28 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
         />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="min-h-screen bg-gradient-to-b from-stone-50 to-amber-50/20">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 pt-28 pb-16 px-4 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-600 via-rose-600 to-amber-500 pt-28 pb-16 px-4 relative overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
           </div>
           
           <div className="max-w-5xl mx-auto text-center relative z-10">
             <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-1 w-12 bg-orange-500 rounded-full"></div>
-              <Trophy className="w-8 h-8 text-orange-500" />
-              <div className="h-1 w-12 bg-orange-500 rounded-full"></div>
+              <div className="h-1 w-12 bg-white/70 rounded-full"></div>
+              <Trophy className="w-8 h-8 text-white" />
+              <div className="h-1 w-12 bg-white/70 rounded-full"></div>
             </div>
             <h1 className="text-5xl md:text-7xl font-oswald font-extrabold text-white mb-4 uppercase tracking-wider drop-shadow-lg">
               {isHi ? 'गौरव मंदिर' : 'HALL OF FAME'}
             </h1>
-            <div className="inline-block bg-orange-500/20 backdrop-blur-sm border border-orange-500/30 rounded-full px-6 py-2 mb-6">
-              <p className="text-orange-300 font-semibold text-sm uppercase tracking-widest">
+            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/30 rounded-full px-6 py-2 mb-6">
+              <p className="text-white font-semibold text-sm uppercase tracking-widest">
                 {isHi ? 'हमारे चैंपियन और रेफरी' : 'Our Champions & Referees'}
               </p>
             </div>
-            <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed font-medium drop-shadow">
               {isHi
                 ? 'धनबाद जिला कबड्डी संघ के गौरवशाली खिलाड़ी और समर्पित रेफरी बोर्ड'
                 : 'Celebrating the proud champions and dedicated referee board of Dhanbad District Kabaddi Association'}
@@ -125,15 +125,15 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
           
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
             </div>
           ) : (
             <>
               {/* National Players Section */}
               {nationalPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
-                  <div className="bg-gradient-to-r from-blue-900 to-blue-800 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-8 py-6 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
                       <Star className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -143,13 +143,13 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                   <div className="p-4 md:p-10">
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                       {sortedNationalPlayers.map((player) => (
-                        <div key={player._id} className="bg-gradient-to-br from-blue-50 to-orange-50 rounded-xl p-3 md:p-6 border border-blue-100 hover:shadow-lg transition-all hover:scale-105">
+                        <div key={player._id} className="bg-gradient-to-br from-white to-slate-50 rounded-xl p-3 md:p-6 border border-indigo-100 hover:shadow-lg transition-all hover:scale-105">
                           <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-900 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                              <Trophy className="w-5 h-5 md:w-6 md:h-6 text-orange-400" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-indigo-700 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                              <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-300" />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-sm md:text-lg font-bold text-blue-900 mb-1 leading-tight">{player.name}</h3>
+                              <h3 className="text-sm md:text-lg font-bold text-slate-900 mb-1 leading-tight">{player.name}</h3>
                               <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'}`}>
                                 {player.gender === 'Female' ? (isHi ? 'महिला' : 'Female') : (isHi ? 'पुरुष' : 'Male')}
                               </span>
@@ -165,9 +165,9 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {/* Federation Cup Section */}
               {federationCupPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
-                  <div className="bg-gradient-to-r from-orange-600 to-orange-500 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                      <Award className="w-6 h-6 text-orange-600" />
+                  <div className="bg-gradient-to-r from-teal-600 to-emerald-500 px-8 py-6 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                      <Award className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
                       {isHi ? 'फेडरेशन कप' : 'Federation Cup'}
@@ -176,14 +176,14 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                   <div className="p-4 md:p-10">
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                       {sortedFederationCupPlayers.map((player) => (
-                        <div key={player._id} className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-3 md:p-6 border border-orange-100 hover:shadow-lg transition-all hover:scale-105">
+                        <div key={player._id} className="bg-gradient-to-br from-white to-emerald-50 rounded-xl p-3 md:p-6 border border-emerald-100 hover:shadow-lg transition-all hover:scale-105">
                           <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-600 to-orange-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                              <Award className="w-5 h-5 md:w-6 md:h-6 text-yellow-100" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-teal-600 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                              <Award className="w-5 h-5 md:w-6 md:h-6 text-white" />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-sm md:text-lg font-bold text-orange-900 mb-1 leading-tight">{player.name}</h3>
-                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-orange-100 text-orange-700'}`}>
+                              <h3 className="text-sm md:text-lg font-bold text-slate-900 mb-1 leading-tight">{player.name}</h3>
+                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-emerald-100 text-emerald-700'}`}>
                                 {player.gender === 'Female' ? (isHi ? 'महिला' : 'Female') : (isHi ? 'पुरुष' : 'Male')}
                               </span>
                             </div>
@@ -198,9 +198,9 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {/* Jharkhand Premier League Section */}
               {jplPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
-                  <div className="bg-gradient-to-r from-green-700 to-green-600 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-green-700" />
+                  <div className="bg-gradient-to-r from-fuchsia-600 to-purple-600 px-8 py-6 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                      <Trophy className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
                       {isHi ? 'झारखंड प्रीमियर लीग' : 'Jharkhand Premier League'}
@@ -209,14 +209,14 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                   <div className="p-4 md:p-10">
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                       {sortedJplPlayers.map((player) => (
-                        <div key={player._id} className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-3 md:p-6 border border-green-100 hover:shadow-lg transition-all hover:scale-105">
+                        <div key={player._id} className="bg-gradient-to-br from-white to-purple-50 rounded-xl p-3 md:p-6 border border-purple-100 hover:shadow-lg transition-all hover:scale-105">
                           <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-green-700 to-green-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                              <Star className="w-5 h-5 md:w-6 md:h-6 text-yellow-300 fill-yellow-300" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-600 to-fuchsia-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                              <Star className="w-5 h-5 md:w-6 md:h-6 text-white fill-white" />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-sm md:text-lg font-bold text-green-900 mb-1 leading-tight">{player.name}</h3>
-                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-green-100 text-green-700'}`}>
+                              <h3 className="text-sm md:text-lg font-bold text-slate-900 mb-1 leading-tight">{player.name}</h3>
+                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-indigo-100 text-indigo-700'}`}>
                                 {player.gender === 'Female' ? (isHi ? 'महिला' : 'Female') : (isHi ? 'पुरुष' : 'Male')}
                               </span>
                             </div>
@@ -231,8 +231,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {/* Referee Board Section */}
               {referees.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                  <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <div className="bg-gradient-to-r from-slate-800 via-indigo-800 to-cyan-700 px-8 py-6 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
                       <Shield className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -242,10 +242,10 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                   <div className="p-4 md:p-10">
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                       {sortedReferees.map((referee) => (
-                        <div key={referee._id} className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-3 md:p-6 border border-slate-200 hover:shadow-lg transition-all hover:scale-105">
+                        <div key={referee._id} className="bg-gradient-to-br from-white to-slate-50 rounded-xl p-3 md:p-6 border border-slate-200 hover:shadow-lg transition-all hover:scale-105">
                           <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-slate-800 to-slate-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                              <Shield className="w-5 h-5 md:w-6 md:h-6 text-orange-400" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-slate-800 to-cyan-700 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                              <Shield className="w-5 h-5 md:w-6 md:h-6 text-white" />
                             </div>
                             <div className="flex-1">
                               <h3 className="text-sm md:text-lg font-bold text-slate-900 mb-1 md:mb-2 leading-tight">{referee.name}</h3>
@@ -262,14 +262,14 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
           )}
 
           {/* Pride Message */}
-          <div className="mt-12 bg-gradient-to-r from-blue-900 to-orange-600 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+          <div className="mt-12 bg-gradient-to-r from-indigo-700 via-slate-800 to-cyan-700 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
             <div className="relative z-10">
-              <Users className="w-16 h-16 text-white mx-auto mb-6 opacity-80" />
-              <h3 className="text-3xl font-oswald font-bold text-white mb-4 uppercase">
+              <Users className="w-16 h-16 text-white mx-auto mb-6 opacity-90" />
+              <h3 className="text-3xl font-oswald font-bold text-white mb-4 uppercase drop-shadow-lg">
                 {isHi ? 'हमारा गौरव' : 'Our Pride'}
               </h3>
-              <p className="text-blue-100 max-w-3xl mx-auto leading-relaxed text-lg">
+              <p className="text-white/90 max-w-3xl mx-auto leading-relaxed text-lg drop-shadow">
                 {isHi
                   ? 'ये खिलाड़ी और रेफरी DDKA की मेहनत, समर्पण और उत्कृष्टता का प्रतीक हैं। इनकी सफलता धनबाद की कबड्डी विरासत को आगे बढ़ाती है।'
                   : 'These players and referees represent the dedication, hard work, and excellence of DDKA. Their success continues the proud kabaddi legacy of Dhanbad.'}
