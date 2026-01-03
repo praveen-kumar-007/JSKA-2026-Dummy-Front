@@ -154,8 +154,13 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
               ))}
             </div>
             
-            {/* Desktop Language & AKFI Logo */}
+            {/* Desktop Language & Logos */}
             <div className="flex items-center space-x-3">
+              <img 
+                src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" 
+                alt="Jharkhand State Kabaddi Association" 
+                className="h-8 w-8 object-contain grayscale hover:grayscale-0 transition-all rounded-full bg-white p-1" 
+              />
               <img 
                 src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" 
                 alt="AKFI Logo" 
@@ -261,6 +266,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
             <div className="pt-4 mt-4 border-t border-gray-100">
               <div className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-xl p-4">
                 <div className="flex items-center justify-center gap-3 mb-3">
+                  <img 
+                    src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" 
+                    alt="Jharkhand State Kabaddi Association" 
+                    className="h-10 w-10 object-contain rounded-full" 
+                  />
                   <img 
                     src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" 
                     alt="AKFI Logo" 

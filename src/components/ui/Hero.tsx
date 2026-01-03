@@ -115,6 +115,10 @@ const Hero: React.FC<HeroProps> = ({ onRegisterClick, onScheduleClick, lang }) =
             </div>
             <div className="relative group">
               <div className="absolute -inset-2 bg-white rounded-full blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
+              <img src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" alt="Jharkhand State Kabaddi Association" className="h-24 w-24 rounded-full bg-white p-1.5 relative" />
+            </div>
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-white rounded-full blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
               <img src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" className="h-24 w-24 rounded-full bg-white p-1.5 relative" />
             </div>
           </div>

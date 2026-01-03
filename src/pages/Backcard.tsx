@@ -26,7 +26,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
         fontFamily: "'Poppins', sans-serif",
       }}
     >
-      {/* Top Header - Deep Blue with AKFI Logo */}
+      {/* Top Header - Deep Blue with Logos and Text */}
       <div
         style={{
           background: 'linear-gradient(135deg, #00579B, #003366)',
@@ -34,9 +34,44 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
           padding: '7px 9px',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          justifyContent: 'space-between',
+          gap: '6px',
         }}
       >
+        <img
+          src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+          alt="Jharkhand State Kabaddi Association"
+          style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '50%',
+            objectFit: 'contain',
+            backgroundColor: 'white',
+            padding: '2px',
+          }}
+        />
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 700,
+              lineHeight: 1.2,
+              letterSpacing: '0.3px',
+            }}
+          >
+            Dhanbad District
+          </div>
+          <div
+            style={{
+              fontSize: '9px',
+              fontWeight: 600,
+              opacity: 0.95,
+              lineHeight: 1.1,
+            }}
+          >
+            Kabaddi Association
+          </div>
+        </div>
         <img
           src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png"
           alt="AKFI Logo"
@@ -49,26 +84,6 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
             padding: '2px',
           }}
         />
-        <div style={{ flex: 1, textAlign: 'left' }}>
-          <div
-            style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              lineHeight: 1.1,
-            }}
-          >
-            Dhanbad District Kabaddi
-          </div>
-          <div
-            style={{
-              fontSize: '8px',
-              fontWeight: 500,
-              opacity: 0.9,
-            }}
-          >
-            Member ID Card
-          </div>
-        </div>
       </div>
 
       {/* Main Content */}

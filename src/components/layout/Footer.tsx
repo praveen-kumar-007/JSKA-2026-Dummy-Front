@@ -153,7 +153,10 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
           </div>
 
           <div className="flex flex-col items-center justify-center p-8 bg-blue-900/10 rounded-2xl border border-white/5 text-center">
-            <img src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" className="h-24 w-24 mb-6 opacity-80 rounded-full bg-white p-1" />
+            <div className="flex gap-4 mb-6">
+              <img src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" alt="Jharkhand State Kabaddi Association" className="h-24 w-24 opacity-80 rounded-full bg-white p-1" />
+              <img src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" className="h-24 w-24 opacity-80 rounded-full bg-white p-1" />
+            </div>
             <div className="font-oswald text-xl text-orange-500 font-bold uppercase">
               {translations[lang].hero.slogan}
             </div>
