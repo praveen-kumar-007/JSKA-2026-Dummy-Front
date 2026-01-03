@@ -69,6 +69,11 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/affiliated-institutions" className="hover:text-orange-500 transition-colors">
+                      {t.nav.affiliatedInstitutions}
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/gallery" className="hover:text-orange-500 transition-colors">
                       {t.nav.gallery}
                     </Link>

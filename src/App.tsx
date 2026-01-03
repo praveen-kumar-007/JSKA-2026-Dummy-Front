@@ -11,6 +11,7 @@ import About from './pages/About';
 import Gallery from './pages/Gallery';
 import News from './pages/News';
 import NewsArticle from './pages/NewsArticle';
+import AffiliatedInstitutions from './pages/AffiliatedInstitutions';
 import TermsConditions from './pages/TermsConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import KabaddiRules from './pages/KabaddiRules';
@@ -76,6 +77,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home lang={lang} onNavigate={handlePageChange} />} />
           <Route path="/about" element={<About lang={lang} />} />
+          <Route path="/affiliated-institutions" element={<AffiliatedInstitutions lang={lang} />} />
           <Route path="/gallery" element={<Gallery lang={lang} />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsArticle />} />

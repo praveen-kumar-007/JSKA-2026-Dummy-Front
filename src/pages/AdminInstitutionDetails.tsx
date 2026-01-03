@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Building2, Phone, Info, Download, Mail } from "lucide-react";
+import { ArrowLeft, Building2, Phone, Info, Download, Mail, Trash2 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -10,6 +10,20 @@ const AdminInstitutionDetails = () => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    if (!window.confirm("Permanently delete this institution? This cannot be undone.")) return;
+    try {
+      const response = await fetch(`${API_URL}/api/institutions/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        navigate('/admin-portal-access');
+      } else {
+        alert("Delete failed");
+      }
+    } catch (error) {
+      alert("Error deleting institution");
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -80,6 +94,12 @@ const AdminInstitutionDetails = () => {
               className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
             >
               Go to Dashboard
+            </button>
+            <button
+              onClick={handleDelete}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all border border-red-100"
+            >
+              <Trash2 size={16} /> Delete Record
             </button>
           </div>
 

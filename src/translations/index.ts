@@ -2,7 +2,7 @@ export type Language = 'en' | 'hi';
 
 export const translations = {
   en: {
-    nav: { home: 'Home', about: 'About', gallery: 'Gallery', news: 'News', register: 'Registration', institution: 'Institution', affiliated: 'Affiliated' },
+    nav: { home: 'Home', about: 'About', gallery: 'Gallery', news: 'News', register: 'Registration', institution: 'Institution', affiliated: 'Affiliated', affiliatedInstitutions: 'Affiliated Institutions' },
     hero: { 
       badge: 'District League 2026', slogan: 'Sport of the Soil, Sport of the Nation, Kabaddi Our Sport', title: 'Le Panga,', subtitle: 'Dhanbad District!', 
       description: 'Promoting excellence in Kabaddi across Dhanbad district.',
@@ -51,7 +51,7 @@ export const translations = {
     }
   },
   hi: {
-    nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'पंजीकरण', institution: 'संस्थान', affiliated: 'संबद्ध' },
+    nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'पंजीकरण', institution: 'संस्थान', affiliated: 'संबद्ध', affiliatedInstitutions: 'संबद्ध संस्थान' },
     hero: { 
       badge: 'जिला लीग 2026', slogan: 'मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल', title: 'ले पंगा,', subtitle: 'धनबाद जिला!', 
       description: 'धनबाद जिले में कबड्डी में उत्कृष्टता को बढ़ावा देना।',
