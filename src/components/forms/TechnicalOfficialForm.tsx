@@ -17,7 +17,7 @@ interface TechnicalOfficialFormProps {
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
+const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = ({ lang }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -75,7 +75,7 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      alert('File size must be less than 10 MB.');
+      alert(lang === 'hi' ? 'फ़ाइल का आकार 10 एमबी से कम होना चाहिए।' : 'File size must be less than 10 MB.');
       e.target.value = '';
       return;
     }
@@ -101,12 +101,20 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
     e.preventDefault();
 
     if (!signatureFile || !photoFile) {
-      alert('Please upload both Signature and Passport Size Photo.');
+      alert(
+        lang === 'hi'
+          ? 'कृपया हस्ताक्षर और पासपोर्ट साइज़ फोटो दोनों अपलोड करें।'
+          : 'Please upload both Signature and Passport Size Photo.'
+      );
       return;
     }
 
     if (!formData.confirmation) {
-      alert('Please confirm that all details are correct.');
+      alert(
+        lang === 'hi'
+          ? 'कृपया सुनिश्चित करें कि ऊपर दी गई सभी जानकारी सही है।'
+          : 'Please confirm that all details are correct.'
+      );
       return;
     }
 
@@ -160,10 +168,12 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
           <CheckCircle className="w-12 h-12 text-green-600" />
         </div>
         <h2 className="text-3xl font-oswald font-bold text-slate-900 mb-3 uppercase tracking-wide">
-          Technical Official Form Submitted
+          {lang === 'hi' ? 'टेक्निकल ऑफिशियल फॉर्म सबमिट' : 'Technical Official Form Submitted'}
         </h2>
         <p className="text-slate-600 text-lg">
-          Thank you for registering as a Technical Official. Your details have been recorded.
+          {lang === 'hi'
+            ? 'टेक्निकल ऑफिशियल के रूप में पंजीकरण के लिए धन्यवाद। आपकी जानकारी रिकॉर्ड कर ली गई है।'
+            : 'Thank you for registering as a Technical Official. Your details have been recorded.'}
         </p>
       </div>
     );
@@ -174,10 +184,12 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
       <div className="bg-blue-900 px-8 py-6 text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-oswald font-bold uppercase tracking-wide">
-            Technical Official Registration
+            {lang === 'hi' ? 'टेक्निकल ऑफिशियल पंजीकरण' : 'Technical Official Registration'}
           </h1>
           <p className="text-blue-200 mt-2 text-sm sm:text-base">
-            Dedicated form for DDKA Technical Officials registration.
+            {lang === 'hi'
+              ? 'DDKA टेक्निकल ऑफिशियल पंजीकरण के लिए समर्पित फॉर्म।'
+              : 'Dedicated form for DDKA Technical Officials registration.'}
           </p>
         </div>
       </div>
@@ -186,11 +198,12 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
       <div className="bg-slate-50 border-t border-slate-200 px-6 sm:px-8 py-6 flex flex-col items-center gap-4 text-center">
         <div className="text-sm text-slate-700 max-w-2xl">
           <p className="font-semibold text-slate-900 mb-1">
-            ID Card after Examination
+            {lang === 'hi' ? 'परीक्षा के बाद प्राप्त आईडी कार्ड' : 'ID Card after Examination'}
           </p>
           <p>
-            After successfully qualifying the DDKA Technical Official examination, candidates will receive an
-            official DDKA Technical Official ID card similar to the one shown below.
+            {lang === 'hi'
+              ? 'DDKA टेक्निकल ऑफिशियल परीक्षा सफलतापूर्वक उत्तीर्ण करने के बाद अभ्यर्थी को नीचे दिखाए गए के समान आधिकारिक DDKA टेक्निकल ऑफिशियल आईडी कार्ड प्राप्त होगा।'
+              : 'After successfully qualifying the DDKA Technical Official examination, candidates will receive an official DDKA Technical Official ID card similar to the one shown below.'}
           </p>
         </div>
         <img
@@ -208,7 +221,7 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               <User className="text-orange-600" size={22} />
             </div>
             <h2 className="text-lg sm:text-xl font-oswald font-bold text-slate-800 uppercase tracking-wide">
-              Personal Details
+              {lang === 'hi' ? 'व्यक्तिगत विवरण' : 'Personal Details'}
             </h2>
           </div>
 
@@ -278,7 +291,7 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               <Phone className="text-blue-600" size={22} />
             </div>
             <h2 className="text-lg sm:text-xl font-oswald font-bold text-slate-800 uppercase tracking-wide">
-              Identity & Contact
+              {lang === 'hi' ? 'पहचान और संपर्क' : 'Identity & Contact'}
             </h2>
           </div>
 
@@ -353,7 +366,7 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               <FileText className="text-green-600" size={22} />
             </div>
             <h2 className="text-lg sm:text-xl font-oswald font-bold text-slate-800 uppercase tracking-wide">
-              Technical Profile
+              {lang === 'hi' ? 'टेक्निकल प्रोफाइल' : 'Technical Profile'}
             </h2>
           </div>
 
@@ -439,7 +452,7 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               <Upload className="text-purple-600" size={22} />
             </div>
             <h2 className="text-lg sm:text-xl font-oswald font-bold text-slate-800 uppercase tracking-wide">
-              Uploads
+              {lang === 'hi' ? 'दस्तावेज़ अपलोड' : 'Uploads'}
             </h2>
           </div>
 
@@ -508,7 +521,9 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               required
             />
             <p className="text-sm text-slate-700 leading-relaxed">
-              I confirm that all details provided above are true and correct to the best of my knowledge.
+              {lang === 'hi'
+                ? 'मैं पुष्टि करता/करती हूं कि ऊपर दी गई सभी जानकारी मेरे ज्ञान के अनुसार सही है।'
+                : 'I confirm that all details provided above are true and correct to the best of my knowledge.'}
             </p>
           </div>
         </section>
@@ -521,7 +536,13 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
               isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Technical Official Form'}
+            {isSubmitting
+              ? lang === 'hi'
+                ? 'सबमिट किया जा रहा है...'
+                : 'Submitting...'
+              : lang === 'hi'
+                ? 'टेक्निकल ऑफिशियल फॉर्म सबमिट करें'
+                : 'Submit Technical Official Form'}
           </button>
         </div>
       </form>
