@@ -111,6 +111,11 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/technical-official-registration" className="hover:text-orange-500 transition-colors">
+                      {lang === 'hi' ? 'टेक्निकल ऑफिशियल रजिस्ट्रेशन' : 'Technical Official Registration'}
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/terms-conditions" className="hover:text-orange-500 transition-colors">
                       {lang === 'hi' ? 'नियम एवं शर्तें' : 'Terms & Conditions'}
                     </Link>

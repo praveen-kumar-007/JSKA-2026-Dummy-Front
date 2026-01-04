@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckCircle, XCircle, Trash2, 
   Users, Building, RefreshCcw, Search, Eye,
-  LogOut, Newspaper, Image as ImageIcon, Mail
+  LogOut, Newspaper, Image as ImageIcon, Mail, UserCheck
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Language } from '../translations';
@@ -22,6 +22,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const handleLogout = () => {
+    // Clear authentication flags and admin JWT
+    localStorage.removeItem('token');
     sessionStorage.removeItem('isAdminAuthenticated');
     window.location.href = '/admin-portal-access';
   };
@@ -159,6 +161,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
           <Link to="/admin/referees" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-slate-50 transition-all">
             <Users size={28} className="text-slate-700 mb-2" />
             <span className="font-bold text-xs text-slate-900">Referee Board</span>
+          </Link>
+          <Link to="/admin/technical-officials" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-slate-50 transition-all">
+            <UserCheck size={28} className="text-emerald-700 mb-2" />
+            <span className="font-bold text-xs text-emerald-900">Technical Officials</span>
           </Link>
           <a href="#" onClick={() => setActiveTab('players')} className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${activeTab === 'players' ? 'bg-blue-900 text-white' : 'bg-white hover:bg-blue-50 text-blue-900'}`}> 
             <Users size={28} className={activeTab === 'players' ? 'text-orange-400' : 'text-blue-900'} />

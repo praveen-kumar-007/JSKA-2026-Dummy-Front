@@ -58,6 +58,12 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
 
       if (result.success) {
         setError('');
+
+        // Persist JWT token for protected admin API calls
+        if (result.token) {
+          localStorage.setItem('token', result.token);
+        }
+
         sessionStorage.setItem('isAdminAuthenticated', 'true');
         setTimeout(() => onLoginSuccess(), 300);
       } else {

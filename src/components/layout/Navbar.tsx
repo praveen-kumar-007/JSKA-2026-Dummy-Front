@@ -35,6 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
       dropdown: [
         { name: t.forms.playerTitle, id: 'register' },
         { name: t.forms.instTitle, id: 'institution' },
+        { name: lang === 'hi' ? 'टेक्निकल ऑफिशियल रजिस्ट्रेशन' : 'Technical Official Registration', id: 'technical-official-registration' },
       ] 
     },
     { name: t.footer.contact, id: 'contact' },

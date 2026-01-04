@@ -28,10 +28,13 @@ import Contact from './pages/Contact';
 import OurGems from './pages/OurGems';
 import AdminPlayersManagement from './pages/AdminPlayersManagement';
 import AdminRefereesManagement from './pages/AdminRefereesManagement';
+import AdminTechnicalOfficialsManagement from './pages/AdminTechnicalOfficialsManagement';
+import AdminTechnicalOfficialDetails from './pages/AdminTechnicalOfficialDetails';
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
 import InstitutionForm from './components/forms/InstitutionForm';
+import TechnicalOfficialForm from './components/forms/TechnicalOfficialForm';
 
 // Types & Icons
 import type { Language } from './translations'; 
@@ -104,6 +107,13 @@ const App: React.FC = () => {
           <Route path="/admin/referees" element={
             isAuthenticated ? <AdminRefereesManagement /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
           } />
+          {/* Admin Technical Officials Management (protected) */}
+          <Route path="/admin/technical-officials" element={
+            isAuthenticated ? <AdminTechnicalOfficialsManagement /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+          <Route path="/admin/technical-officials/:id" element={
+            isAuthenticated ? <AdminTechnicalOfficialDetails /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
           {/* Admin News Upload Route (protected) */}
           <Route path="/admin-news-upload" element={
             isAuthenticated ? <AdminNewsUpload /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
@@ -131,6 +141,14 @@ const App: React.FC = () => {
             <div className="py-20 bg-slate-50 min-h-screen">
               <div className="max-w-7xl mx-auto px-4">
                 <InstitutionForm lang={lang} />
+              </div>
+            </div>
+          } />
+
+          <Route path="/technical-official-registration" element={
+            <div className="py-20 bg-slate-50 min-h-screen">
+              <div className="max-w-7xl mx-auto px-4">
+                <TechnicalOfficialForm lang={lang} />
               </div>
             </div>
           } />
