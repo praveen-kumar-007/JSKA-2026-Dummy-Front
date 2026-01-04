@@ -182,6 +182,24 @@ const TechnicalOfficialForm: React.FC<TechnicalOfficialFormProps> = () => {
         </div>
       </div>
 
+      {/* Sample ID card preview */}
+      <div className="bg-slate-50 border-t border-slate-200 px-6 sm:px-8 py-6 flex flex-col items-center gap-4 text-center">
+        <div className="text-sm text-slate-700 max-w-2xl">
+          <p className="font-semibold text-slate-900 mb-1">
+            ID Card after Examination
+          </p>
+          <p>
+            After successfully qualifying the DDKA Technical Official examination, candidates will receive an
+            official DDKA Technical Official ID card similar to the one shown below.
+          </p>
+        </div>
+        <img
+          src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767535733/Screenshot_2026-01-04_193603_js6bvo.png"
+          alt="Sample DDKA Technical Official ID Card issued after exam"
+          className="w-full max-w-sm rounded-xl border border-slate-200 shadow-md bg-white"
+        />
+      </div>
+
       <form onSubmit={handleSubmit} className="p-6 sm:p-8 md:p-10 space-y-8 bg-slate-50">
         {/* Personal Details */}
         <section className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-100 space-y-6">
