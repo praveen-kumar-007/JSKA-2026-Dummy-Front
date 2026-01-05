@@ -176,6 +176,12 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
           </h1>
           <p className="text-slate-600 mt-2">Manage DDKA Technical Officials applications</p>
         </div>
+        <button
+          onClick={() => { window.location.href = '/admin-portal-access'; }}
+          className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
+        >
+          Go to Dashboard
+        </button>
       </div>
 
       {loading ? (

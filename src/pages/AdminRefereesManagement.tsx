@@ -117,13 +117,21 @@ const AdminRefereesManagement: React.FC = () => {
           <h1 className="text-3xl font-oswald font-bold text-blue-900 uppercase">Referees Management</h1>
           <p className="text-slate-600 mt-2">Manage DDKA's referee board</p>
         </div>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold"
-        >
-          {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-          {showForm ? 'Cancel' : 'Add Referee'}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => { window.location.href = '/admin-portal-access'; }}
+            className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all"
+          >
+            Go to Dashboard
+          </button>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold"
+          >
+            {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
+            {showForm ? 'Cancel' : 'Add Referee'}
+          </button>
+        </div>
       </div>
 
       {/* Add/Edit Form */}

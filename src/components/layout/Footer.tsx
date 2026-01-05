@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 // Only import icons that are actually used in the code below
 import { Phone, MapPin, ShieldCheck, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CONTACT_INFO } from '../../constants';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
@@ -14,6 +14,20 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ lang }) => {
   const t = translations[lang];
   const footer = t.footer;
+  const navigate = useNavigate();
+  const [, setAkfiTapCount] = useState(0);
+
+  const handleAkfiTap = () => {
+    setAkfiTapCount((prev) => {
+      const next = prev + 1;
+      if (next >= 11) {
+        // Reset and navigate to hidden admin portal access
+        setTimeout(() => navigate('/admin-portal-access'), 0);
+        return 0;
+      }
+      return next;
+    });
+  };
 
   return (
     <footer className="bg-slate-950 text-white pt-20 pb-10 border-t border-blue-900/30">
@@ -165,7 +179,12 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
           <div className="flex flex-col items-center justify-center p-8 bg-blue-900/10 rounded-2xl border border-white/5 text-center">
             <div className="flex gap-4 mb-6">
               <img src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" alt="Jharkhand State Kabaddi Association" className="h-24 w-24 opacity-80 rounded-full bg-white p-1" />
-              <img src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" className="h-24 w-24 opacity-80 rounded-full bg-white p-1" />
+              <img
+                src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png"
+                alt="AKFI"
+                className="h-24 w-24 opacity-80 rounded-full bg-white p-1 cursor-pointer select-none"
+                onClick={handleAkfiTap}
+              />
             </div>
             <div className="font-oswald text-xl text-orange-500 font-bold uppercase">
               {translations[lang].hero.slogan}
