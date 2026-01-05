@@ -4,6 +4,13 @@ export const CONTACT_INFO = {
   email: "dhanbaddistrictkabaddi@gmail.com"
 };
 
+export const SOCIAL_LINKS = {
+  youtube: 'https://www.youtube.com/@DhanbadKabaddiAssociation',
+  instagram: 'https://www.instagram.com/dhanbad_kabaddi/',
+  x: 'https://x.com/DhanbadKabaddi',
+  facebook: 'https://www.facebook.com/profile.php?id=61586162997794'
+};
+
 export const FEES = {
   PLAYER: 400,
   INSTITUTION: 2000

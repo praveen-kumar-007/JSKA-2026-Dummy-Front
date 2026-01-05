@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-// Only import icons that are actually used in the code below
-import { Phone, MapPin, ShieldCheck, Mail } from 'lucide-react';
+import { Phone, MapPin, ShieldCheck, Mail, Youtube, Instagram, Twitter, Facebook } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CONTACT_INFO } from '../../constants';
+import { CONTACT_INFO, SOCIAL_LINKS } from '../../constants';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
 import FooterContactForm from './FooterContactForm';
@@ -192,10 +191,67 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
            </div>
         </div>
 
-        <div className="border-t border-white/5 pt-10 text-center">
-          <p className="text-gray-500 text-xs">
-             © {new Date().getFullYear()} DDKA. {lang === 'hi' ? 'सर्वाधिकार सुरक्षित।' : 'ALL RIGHTS RESERVED.'}
-          </p>
+        <div className="border-t border-white/5 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <p className="text-gray-400 text-[11px] uppercase tracking-[0.25em] mb-2 font-semibold">
+                {lang === 'hi' ? 'सोशल मीडिया पर जुड़ें' : 'Connect on Social Media'}
+              </p>
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <a
+                  href={SOCIAL_LINKS.youtube}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="DDKA YouTube Channel"
+                  className="relative group p-2.5 sm:p-3 rounded-full bg-white/5 border border-white/10 shadow-[0_0_12px_rgba(15,23,42,0.7)] overflow-hidden transition-all hover:shadow-[0_0_25px_rgba(248,113,113,0.7)] hover:border-red-500/80 active:scale-95"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-tr from-red-600/30 via-transparent to-orange-500/30 opacity-70 group-hover:opacity-100 blur-lg transition-opacity" />
+                  <span className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 group-hover:bg-black/90 transition-colors">
+                    <Youtube className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 group-hover:text-red-300 transition-colors" />
+                  </span>
+                </a>
+                <a
+                  href={SOCIAL_LINKS.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="DDKA Instagram"
+                  className="relative group p-2.5 sm:p-3 rounded-full bg-white/5 border border-white/10 shadow-[0_0_12px_rgba(15,23,42,0.7)] overflow-hidden transition-all hover:shadow-[0_0_25px_rgba(249,168,212,0.7)] hover:border-pink-500/80 active:scale-95"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-tr from-pink-500/40 via-fuchsia-500/30 to-yellow-400/30 opacity-70 group-hover:opacity-100 blur-lg transition-opacity" />
+                  <span className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 group-hover:bg-black/90 transition-colors">
+                    <Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-pink-400 group-hover:text-pink-300 transition-colors" />
+                  </span>
+                </a>
+                <a
+                  href={SOCIAL_LINKS.x}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="DDKA X (Twitter)"
+                  className="relative group p-2.5 sm:p-3 rounded-full bg-white/5 border border-white/10 shadow-[0_0_12px_rgba(15,23,42,0.7)] overflow-hidden transition-all hover:shadow-[0_0_25px_rgba(96,165,250,0.7)] hover:border-blue-400/80 active:scale-95"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-tr from-sky-500/35 via-slate-500/30 to-white/20 opacity-70 group-hover:opacity-100 blur-lg transition-opacity" />
+                  <span className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 group-hover:bg-black/90 transition-colors">
+                    <Twitter className="w-4 h-4 sm:w-5 sm:h-5 text-sky-400 group-hover:text-sky-300 transition-colors" />
+                  </span>
+                </a>
+                <a
+                  href={SOCIAL_LINKS.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="DDKA Facebook Page"
+                  className="relative group p-2.5 sm:p-3 rounded-full bg-white/5 border border-white/10 shadow-[0_0_12px_rgba(15,23,42,0.7)] overflow-hidden transition-all hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] hover:border-blue-600/80 active:scale-95"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-tr from-blue-600/40 via-sky-500/35 to-white/20 opacity-70 group-hover:opacity-100 blur-lg transition-opacity" />
+                  <span className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 group-hover:bg-black/90 transition-colors">
+                    <Facebook className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                  </span>
+                </a>
+              </div>
+            </div>
+            <p className="text-gray-500 text-xs text-center md:text-right">
+               © {new Date().getFullYear()} DDKA. {lang === 'hi' ? 'सर्वाधिकार सुरक्षित।' : 'ALL RIGHTS RESERVED.'}
+            </p>
+          </div>
         </div>
       </div>
     </footer>
