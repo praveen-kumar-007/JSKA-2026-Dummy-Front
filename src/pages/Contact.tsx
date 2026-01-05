@@ -182,10 +182,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								target="_blank"
 								rel="noreferrer"
 								aria-label="DDKA YouTube Channel"
-								className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-red-500/80 hover:bg-red-50 active:bg-red-100 text-[11px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-red-500/80 hover:bg-red-50 active:bg-red-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-red-400 group-hover:bg-black group-hover:text-red-300 transition-all">
-									<Youtube className="w-4 h-4" />
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-red-400 group-hover:bg-black group-hover:text-red-300 transition-all">
+									<Youtube className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">YouTube</span>
 							</a>
@@ -194,10 +194,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								target="_blank"
 								rel="noreferrer"
 								aria-label="DDKA Instagram"
-								className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-pink-500/80 hover:bg-pink-50 active:bg-pink-100 text-[11px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-pink-500/80 hover:bg-pink-50 active:bg-pink-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-pink-400 group-hover:bg-black group-hover:text-pink-300 transition-all">
-									<Instagram className="w-4 h-4" />
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-pink-400 group-hover:bg-black group-hover:text-pink-300 transition-all">
+									<Instagram className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">Instagram</span>
 							</a>
@@ -206,10 +206,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								target="_blank"
 								rel="noreferrer"
 								aria-label="DDKA X (Twitter)"
-								className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-500/80 hover:bg-blue-50 active:bg-blue-100 text-[11px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-500/80 hover:bg-blue-50 active:bg-blue-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-sky-400 group-hover:bg-black group-hover:text-sky-300 transition-all">
-									<Twitter className="w-4 h-4" />
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-400 group-hover:bg-black group-hover:text-sky-300 transition-all">
+									<Twitter className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">X</span>
 							</a>
@@ -218,10 +218,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 									target="_blank"
 									rel="noreferrer"
 									aria-label="DDKA Facebook Page"
-								className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-700/80 hover:bg-blue-50 active:bg-blue-100 text-[11px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-700/80 hover:bg-blue-50 active:bg-blue-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 								>
-								<span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-blue-400 group-hover:bg-black group-hover:text-blue-300 transition-all">
-									<Facebook className="w-4 h-4" />
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-blue-400 group-hover:bg-black group-hover:text-blue-300 transition-all">
+									<Facebook className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">Facebook</span>
 								</a>
