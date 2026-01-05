@@ -233,6 +233,72 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
           </div>
         </div>
 
+        {/* Kabaddi Heritage & Mission Message */}
+        <div className="max-w-7xl mx-auto mb-20 md:mb-28">
+          <div className="relative group bg-gradient-to-br from-orange-50 via-white to-blue-50 rounded-[2.5rem] border border-orange-100/60 shadow-xl overflow-hidden">
+            <div className="absolute -right-24 -top-24 w-64 h-64 bg-orange-200/40 rounded-full blur-3xl" />
+            <div className="absolute -left-24 -bottom-24 w-64 h-64 bg-blue-200/40 rounded-full blur-3xl" />
+
+            <div className="relative z-10 p-6 md:p-12">
+              <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
+                <div className="w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-orange-500 flex items-center justify-center shadow-lg">
+                  <ScrollText className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <div>
+                  <p className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-orange-500 font-black mb-2">
+                    {lang === 'hi' ? 'अपनी माटी, अपना खेल' : 'OUR SOIL, OUR SPORT'}
+                  </p>
+                  <h2 className="text-2xl md:text-4xl font-oswald font-bold text-blue-900 leading-tight uppercase">
+                    {lang === 'hi'
+                      ? 'कबड्डी के गौरवशाली इतिहास और भविष्य की ओर एक कदम'
+                      : 'Celebrating the Glorious History and Future of Kabaddi'}
+                  </h2>
+                </div>
+              </div>
+
+              {lang === 'hi' ? (
+                <div className="space-y-4 md:space-y-5 text-slate-800 text-sm md:text-lg leading-relaxed">
+                  <p>
+                    कबड्डी का इतिहास हजारों वर्ष पुराना है। यह उस दौर की बात है जब हमारे पूर्वज वनों में निवास करते थे और अक्सर बाघ या शेर जैसे हिंसक पशु उनके साथियों को उठाकर ले जाते थे। अपनी रक्षा के लिए आदिवासियों ने एक योजनाबद्ध तरीका अपनाया—वे समूह बनाकर शेर को घेर लेते थे। यही रणनीति आज कबड्डी में 'रेडर' (शेर) और 'डिफेंडर' (समूह) के रूप में दिखाई देती है।
+                  </p>
+                  <p>
+                    यहीं से 'मल्लयुद्ध' की शुरुआत हुई, जिसका जिक्र महाभारत जैसे महाकाव्यों में भी मिलता है। समय के साथ यह मल्लयुद्ध कुश्ती और फिर कबड्डी में परिवर्तित हुआ। धीरे-धीरे इसके नियम बने और आज यह अपने आधुनिक रूप में पूरी दुनिया में खेला जा रहा है। जहाँ भारत के साथ-साथ कई देशों ने इसे अपनाया है, वहीं बांग्लादेश ने तो इसे अपना 'राष्ट्रीय खेल' घोषित किया है।
+                  </p>
+                  <p>
+                    कबड्डी भारत की आत्मा, मिट्टी और गाँव का खेल है। हमारे और आपके बुजुर्गों ने भी अपने समय में इसे अवश्य खेला होगा। इसी विरासत को संजोने के लिए, 'धनबाद जिला कबड्डी संघ' (DDKA), झारखंड राज्य कबड्डी संघ के मार्गदर्शन में निरंतर प्रयासरत है। हम विद्यालय, गाँव, प्रखंड से लेकर जिला और राज्य स्तर पर खिलाड़ियों को तराशने के लिए दिन-रात मेहनत कर रहे हैं।
+                  </p>
+                  <p>
+                    समाज के सभी जनप्रतिनिधियों, बुद्धिजीवियों और समाजसेवियों को इस मुहीम से जोड़ा जा रहा है। आप तमाम जिला वासियों से अपील है कि धनबाद जिला कबड्डी संघ की इस मुहीम से जुड़ें और अपनी मिट्टी के खेल को आगे बढ़ाएं।
+                  </p>
+                  <p className="font-semibold text-blue-900 mt-4">
+                    जय कबड्डी, जय मिट्टी!<br />
+                    मिंटू ठाकुर (NIS, BPed) – सचिव, धनबाद जिला कबड्डी संघ (DDKA)
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4 md:space-y-5 text-slate-800 text-sm md:text-lg leading-relaxed">
+                  <p>
+                    The history of Kabaddi spans thousands of years. It dates back to an era when our ancestors lived in forests and were often threatened by wild beasts like tigers or lions carrying away their companions. For self-defense, these tribes adopted a strategic approach — forming groups to surround and capture the predator. This ancient survival strategy is mirrored today in Kabaddi, where the Raider represents the tiger and the Defenders represent the group.
+                  </p>
+                  <p>
+                    This marked the origin of Mallayuddha, references to which are found in great epics like the Mahabharata. Over time, this Mallayuddha evolved into wrestling and eventually into Kabaddi. Gradually, rules were established, and today it is played globally in its modern avatar. While many countries have adopted it alongside India, Bangladesh has even declared it their National Sport.
+                  </p>
+                  <p>
+                    Kabaddi is the soul of India; it is the sport of our soil and our villages. Our elders undoubtedly played this game in their time. To preserve this rich heritage, the Dhanbad District Kabaddi Association (DDKA), under the guidance of the Jharkhand State Kabaddi Association, is making continuous efforts. We are working day and night to groom players from the school, village, and block levels up to the district and state levels.
+                  </p>
+                  <p>
+                    Public representatives, intellectuals, and social workers are actively joining this cause. We appeal to all the residents of Dhanbad to join the Dhanbad District Kabaddi Association's initiative and help propel the sport of our soil forward.
+                  </p>
+                  <p className="font-semibold text-blue-900 mt-4">
+                    Jai Kabaddi, Jai Mitti!<br />
+                    Mintoo Thakur (NIS, BPed) – Secretary, Dhanbad District Kabaddi Association (DDKA)
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* ------------------------------------------------------------------ */}
         {/* CHIEF PATRONS - FEATURED CARD SECTION */}
         {/* ------------------------------------------------------------------ */}
