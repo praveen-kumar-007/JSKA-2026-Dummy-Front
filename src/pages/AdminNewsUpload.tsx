@@ -218,10 +218,10 @@ const AdminNewsUpload = () => {
             <div key={item._id} className="bg-white rounded-2xl shadow border p-6 flex flex-col relative group">
               {/* Card Actions */}
               <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => setViewModal({ open: true, news: item })} className="p-1 rounded hover:bg-blue-50"><Eye size={18}/></button>
-                <button onClick={() => handleEdit(item)} className="p-1 rounded hover:bg-yellow-50"><Edit2 size={18}/></button>
+                <button onClick={() => setViewModal({ open: true, news: item })} className="p-1 rounded hover:bg-blue-50 text-blue-600"><Eye size={18}/></button>
+                <button onClick={() => handleEdit(item)} className="p-1 rounded hover:bg-yellow-50 text-yellow-600"><Edit2 size={18}/></button>
                 {canDelete && (
-                  <button onClick={() => handleDelete(item._id)} className="p-1 rounded hover:bg-red-50"><X size={18}/></button>
+                  <button onClick={() => handleDelete(item._id)} className="p-1 rounded hover:bg-red-50 text-red-600"><X size={18}/></button>
                 )}
               </div>
               {item.images && item.images.length > 0 && (

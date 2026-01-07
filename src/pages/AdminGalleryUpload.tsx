@@ -145,7 +145,7 @@ const AdminGalleryUpload = () => {
               <div key={img._id} className="relative group bg-white rounded-xl shadow border p-2 flex flex-col items-center">
                 <img src={img.url} alt="gallery-img" className="w-full h-40 object-cover rounded-lg" />
                 {canDelete && (
-                  <button onClick={() => handleDelete(img._id)} className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100 opacity-0 group-hover:opacity-100 transition-opacity"><X size={16} /></button>
+                  <button onClick={() => handleDelete(img._id)} className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><X size={16} /></button>
                 )}
               </div>
             ))}
