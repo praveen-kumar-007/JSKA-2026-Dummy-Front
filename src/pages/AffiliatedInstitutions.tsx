@@ -30,10 +30,10 @@ const AffiliatedInstitutions: React.FC<AffiliatedInstitutionsProps> = ({ lang })
   useEffect(() => {
     const fetchInstitutions = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/institutions`);
+        const res = await fetch(`${API_URL}/api/institutions/public`);
         const result = await res.json();
         if (result.success) {
-          // Only show approved institutions
+          // Only show approved institutions (backend already filters, but keep safeguard)
           const approved = result.data.filter((inst: Institution) => inst.status === 'Approved');
           setInstitutions(approved);
         }

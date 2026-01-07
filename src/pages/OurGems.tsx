@@ -34,7 +34,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
   const fetchData = async () => {
     try {
       const [playersRes, refereesRes] = await Promise.all([
-        fetch(`${import.meta.env.VITE_API_URL}/api/champion-players`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/champion-players/public`),
         fetch(`${import.meta.env.VITE_API_URL}/api/referees`)
       ]);
       
