@@ -154,125 +154,115 @@ const AdminManageAdmins: React.FC = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto -mx-2">
-          <table className="min-w-full text-left text-sm">
-            <thead>
-              <tr className="bg-slate-50 border-b">
-                <th className="px-3 py-3 font-semibold text-slate-500">Admin</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Role</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">All Access</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Gallery</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">News</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Contact Forms</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Our Champions</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Referee Board</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Technical Officials</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Player Details</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Institution Details</th>
-                <th className="px-3 py-3 font-semibold text-slate-500">Delete</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {admins.map((admin) => (
-                <tr key={admin._id} className="hover:bg-slate-50">
-                  <td className="px-3 py-3 flex flex-col">
-                    <span className="font-semibold text-slate-900 flex items-center gap-2">
-                      <UserCog size={16} /> {admin.username}
-                    </span>
-                    <span className="text-xs text-slate-500 flex items-center gap-1">
-                      <Mail size={12} /> {admin.email}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3">
+        {/* Mobile-friendly vertical cards instead of a wide table */}
+        <div className="space-y-4">
+          {admins.map((admin) => {
+            const allOn = admin.permissions?.canAccessGallery
+              && admin.permissions?.canAccessNews
+              && admin.permissions?.canAccessContacts
+              && admin.permissions?.canAccessChampions
+              && admin.permissions?.canAccessReferees
+              && admin.permissions?.canAccessTechnicalOfficials
+              && admin.permissions?.canAccessPlayerDetails
+              && admin.permissions?.canAccessInstitutionDetails
+              && admin.permissions?.canDelete;
+
+            const permissionEntries: { key: keyof AdminPermissions; label: string }[] = [
+              { key: 'canAccessGallery', label: 'Gallery' },
+              { key: 'canAccessNews', label: 'News' },
+              { key: 'canAccessContacts', label: 'Contact Forms' },
+              { key: 'canAccessChampions', label: 'Our Champions' },
+              { key: 'canAccessReferees', label: 'Referee Board' },
+              { key: 'canAccessTechnicalOfficials', label: 'Technical Officials' },
+              { key: 'canAccessPlayerDetails', label: 'Player Details' },
+              { key: 'canAccessInstitutionDetails', label: 'Institution Details' },
+              { key: 'canDelete', label: 'Delete' },
+            ];
+
+            return (
+              <div
+                key={admin._id}
+                className="border border-slate-200 rounded-2xl p-4 md:p-5 flex flex-col gap-4 bg-slate-50/40"
+              >
+                {/* Header: admin identity + role */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 mt-1">
+                      <div className="w-9 h-9 rounded-full bg-blue-900 text-white flex items-center justify-center text-xs font-bold">
+                        <UserCog size={16} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-900 flex flex-wrap items-center gap-2">
+                        {admin.username}
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-600">
+                          {admin.role === 'superadmin' ? 'SUPERADMIN' : 'ADMIN'}
+                        </span>
+                      </div>
+                      <div className="text-xs text-slate-500 flex items-center gap-1 mt-0.5 break-all">
+                        <Mail size={12} /> {admin.email}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Role</span>
                     <select
                       value={admin.role}
                       onChange={(e) => changeRole(admin, e.target.value as 'superadmin' | 'admin')}
-                      className="border border-slate-300 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest bg-white"
+                      className="border border-slate-300 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest bg-white"
                     >
                       <option value="superadmin">SUPERADMIN</option>
                       <option value="admin">ADMIN</option>
                     </select>
-                  </td>
-                  {/* All Access toggle to quickly give/remove all module permissions */}
-                  <td className="px-3 py-3">
+                  </div>
+                </div>
+
+                {/* All access toggle */}
+                <div className="flex items-center justify-between bg-white rounded-xl border border-slate-200 px-3 py-2">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-700">All Access</p>
+                    <p className="text-[11px] text-slate-400">Grant or remove all module permissions in one tap.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setAllAccess(admin, !allOn)}
+                    className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all ${
+                      allOn
+                        ? 'bg-blue-50 text-blue-700 border-blue-200'
+                        : 'bg-slate-50 text-slate-400 border-slate-200'
+                    }`}
+                  >
+                    {allOn ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+                    {allOn ? 'All On' : 'All Off'}
+                  </button>
+                </div>
+
+                {/* Permissions grid - vertical on mobile, compact on desktop */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
+                  {permissionEntries.map(({ key, label }) => (
                     <button
+                      key={key}
                       type="button"
-                      onClick={() => {
-                        const allOn = admin.permissions?.canAccessGallery
-                          && admin.permissions?.canAccessNews
-                          && admin.permissions?.canAccessContacts
-                          && admin.permissions?.canAccessChampions
-                          && admin.permissions?.canAccessReferees
-                          && admin.permissions?.canAccessTechnicalOfficials
-                          && admin.permissions?.canAccessPlayerDetails
-                          && admin.permissions?.canAccessInstitutionDetails
-                          && admin.permissions?.canDelete;
-                        setAllAccess(admin, !allOn);
-                      }}
-                      className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
-                        admin.permissions?.canAccessGallery
-                        && admin.permissions?.canAccessNews
-                        && admin.permissions?.canAccessContacts
-                        && admin.permissions?.canAccessChampions
-                        && admin.permissions?.canAccessReferees
-                        && admin.permissions?.canAccessTechnicalOfficials
-                        && admin.permissions?.canAccessPlayerDetails
-                        && admin.permissions?.canAccessInstitutionDetails
-                        && admin.permissions?.canDelete
-                          ? 'bg-blue-50 text-blue-700 border-blue-200'
+                      onClick={() => togglePermission(admin, key)}
+                      className={`flex items-center justify-between px-3 py-2 rounded-xl text-[11px] font-semibold border transition-all ${
+                        admin.permissions?.[key]
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                           : 'bg-slate-50 text-slate-400 border-slate-200'
                       }`}
                     >
-                      {admin.permissions?.canAccessGallery
-                      && admin.permissions?.canAccessNews
-                      && admin.permissions?.canAccessContacts
-                      && admin.permissions?.canAccessChampions
-                      && admin.permissions?.canAccessReferees
-                      && admin.permissions?.canAccessTechnicalOfficials
-                      && admin.permissions?.canAccessPlayerDetails
-                      && admin.permissions?.canAccessInstitutionDetails
-                      && admin.permissions?.canDelete ? (
+                      <span>{label}</span>
+                      {admin.permissions?.[key] ? (
                         <ToggleRight size={16} />
                       ) : (
                         <ToggleLeft size={16} />
                       )}
-                      All
                     </button>
-                  </td>
-                  {([
-                    'canAccessGallery',
-                    'canAccessNews',
-                    'canAccessContacts',
-                    'canAccessChampions',
-                    'canAccessReferees',
-                    'canAccessTechnicalOfficials',
-                    'canAccessPlayerDetails',
-                    'canAccessInstitutionDetails',
-                    'canDelete',
-                  ] as (keyof AdminPermissions)[]).map((key) => (
-                    <td key={key} className="px-3 py-3">
-                      <button
-                        type="button"
-                        onClick={() => togglePermission(admin, key)}
-                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
-                          admin.permissions?.[key]
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : 'bg-slate-50 text-slate-400 border-slate-200'
-                        }`}
-                      >
-                        {admin.permissions?.[key] ? (
-                          <ToggleRight size={16} />
-                        ) : (
-                          <ToggleLeft size={16} />
-                        )}
-                        {admin.permissions?.[key] ? 'On' : 'Off'}
-                      </button>
-                    </td>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-4 space-y-1 text-xs text-slate-400">
