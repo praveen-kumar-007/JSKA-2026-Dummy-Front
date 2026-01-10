@@ -20,21 +20,63 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
       role: lang === 'hi' ? 'अध्यक्ष' : 'President',
       org: 'DDKA',
       image: "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1766755551/Gemini_Generated_Image_ct0q4vct0q4vct0q_gavscz.png",
-      icon: <ShieldCheck className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />
+      icon: <ShieldCheck className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />,
+      highlights: {
+        hi: [
+          'पद: अध्यक्ष, धनबाद जिला कबड्डी एसोसिएशन',
+          'शिक्षा: स्नातक (बी.पी.एड)',
+          'पेशा: शिक्षक, एस एस वी एम टुंडी, धनबाद',
+          'उपलब्धि: राष्ट्रीय स्तर के कबड्डी खिलाड़ी'
+        ],
+        en: [
+          'Designation: President, Dhanbad District Kabaddi Association',
+          'Education: Graduate (B.P.Ed)',
+          'Profession: Teacher, S.S.V.M. Tundi, Dhanbad',
+          'Achievement: National-level Kabaddi player'
+        ]
+      }
     },
     {
       name: lang === 'hi' ? 'मिंटू ठाकुर' : 'Mintoo Thakur',
       role: lang === 'hi' ? 'सचिव' : 'Secretary',
       org: 'DDKA',
       image: "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1766756133/Gemini_Generated_Image_qer0xhqer0xhqer0_oynz0o.png",
-      icon: <Award className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />
+      icon: <Award className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />,
+      highlights: {
+        hi: [
+          'पद: सचिव, धनबाद जिला कबड्डी एसोसिएशन',
+          'शिक्षा: स्नातक (NIS, B.P.Ed)',
+          'पेशा: शिक्षक, राष्ट्रीय विद्यालय, कोडरमा',
+          'उपलब्धि: राष्ट्रीय स्तर के कबड्डी खिलाड़ी'
+        ],
+        en: [
+          'Designation: Secretary, Dhanbad District Kabaddi Association',
+          'Education: Graduate (NIS, B.P.Ed)',
+          'Profession: Teacher, National School, Koderma',
+          'Achievement: National-level Kabaddi player'
+        ]
+      }
     },
     {
       name: lang === 'hi' ? 'पप्पू कुमार यादव' : 'Pappu Kumar Yadav',
-      role: lang === 'hi' ? 'कोषाध्यक्ष और कोच' : 'Treasurer & Coach',
+      role: lang === 'hi' ? 'कोषाध्यक्ष एवं जिला प्रशिक्षक' : 'Treasurer & District Coach',
       org: 'DDKA',
       image: "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1766755331/WhatsApp_Image_2025-12-26_at_9.37.43_AM_kxzdyb.jpg",
-      icon: <Star className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />
+      icon: <Star className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />,
+      highlights: {
+        hi: [
+          'पद: कोषाध्यक्ष एवं जिला प्रशिक्षक, धनबाद जिला कबड्डी एसोसिएशन',
+          'शिक्षा: स्नातक (B.P.Ed)',
+          'पेशा: शिक्षक, जे.के. इंटरनेशनल स्कूल, धनबाद',
+          'उपलब्धि: राष्ट्रीय स्तर के कबड्डी खिलाड़ी'
+        ],
+        en: [
+          'Designation: Treasurer & District Coach, Dhanbad District Kabaddi Association',
+          'Education: Graduate (B.P.Ed)',
+          'Profession: Teacher, J.K. International School, Dhanbad',
+          'Achievement: National-level Kabaddi player'
+        ]
+      }
     },
     {
       name: lang === 'hi' ? 'प्रवीण कुमार' : 'Praveen Kumar',
@@ -42,7 +84,21 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
       org: 'DDKA',
       // 👇 PASTE PRAVEEN'S IMAGE LINK INSIDE THE QUOTES BELOW 👇
       image: "https://res.cloudinary.com/dmmll82la/image/upload/v1765632491/sp-club/passports/passport-1765632490936-299511838.jpg", 
-      icon: <Megaphone className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />
+      icon: <Megaphone className="w-4 h-4 md:w-6 md:h-6 text-orange-500" />,
+      highlights: {
+        hi: [
+          'पद: मीडिया प्रभारी, धनबाद जिला कबड्डी एसोसिएशन',
+          'शिक्षा: बी.टेक (CSE, AI/ML स्पेशलाइज़ेशन)',
+          'परिचय: समर्पित विद्यार्थी एवं कबड्डी प्रेमी',
+          'उपलब्धि: राज्य स्तर के कबड्डी खिलाड़ी'
+        ],
+        en: [
+          'Designation: Media Incharge, Dhanbad District Kabaddi Association',
+          'Education: B.Tech (CSE, AI/ML Specialisation)',
+          'Profile: Dedicated student and passionate Kabaddi promoter',
+          'Achievement: State-level Kabaddi player'
+        ]
+      }
     }
   ];
 
@@ -401,14 +457,29 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
                 </div>
 
                 {/* Text Content - Overlapping Effect */}
-                <div className="relative z-20 -mt-6 md:-mt-10 mx-2 md:mx-4 mb-3 md:mb-4 bg-white p-3 md:p-6 text-center rounded-xl md:rounded-3xl shadow-lg border border-slate-50">
-                  <h3 className="text-sm md:text-xl font-oswald font-bold text-blue-900 uppercase tracking-tight mb-1 leading-tight line-clamp-2 md:line-clamp-none">
+                <div className="relative z-20 -mt-6 md:-mt-10 mx-2 md:mx-4 mb-3 md:mb-4 bg-white p-3 md:p-6 text-left md:text-center rounded-xl md:rounded-3xl shadow-lg border border-slate-50">
+                  <h3 className="text-sm md:text-xl font-oswald font-bold text-blue-900 uppercase tracking-tight mb-1.5 leading-tight line-clamp-2 md:line-clamp-none">
                     {member.name}
                   </h3>
-                  <div className="w-8 md:w-12 h-0.5 md:h-1 bg-orange-500 mx-auto rounded-full mb-1 md:mb-3"></div>
-                  <p className="text-orange-600 font-bold uppercase text-[10px] md:text-xs tracking-wider md:tracking-widest">
+                  <div className="w-10 md:w-12 h-0.5 md:h-1 bg-orange-500 md:mx-auto rounded-full mb-1.5 md:mb-3"></div>
+                  <p className="text-orange-600 font-bold uppercase text-[10px] md:text-xs tracking-wider md:tracking-widest mb-1.5 md:mb-2">
                     {member.role}
                   </p>
+                  {member.highlights && (
+                    <ul className="mt-2 md:mt-3 space-y-1 md:space-y-1.5 text-[9px] md:text-xs text-slate-600 leading-snug">
+                      {(lang === 'hi' ? member.highlights.hi : member.highlights.en).map((line, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-1.5"
+                        >
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full bg-orange-500/80 flex-shrink-0" />
+                          <span className="md:text-left text-left">
+                            {line}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             ))}
