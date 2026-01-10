@@ -67,13 +67,13 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
         hi: [
           'पद: कोषाध्यक्ष एवं जिला प्रशिक्षक, धनबाद जिला कबड्डी एसोसिएशन',
           'शिक्षा: स्नातक (B.P.Ed)',
-          'पेशा: शिक्षक, जे.के. इंटरनेशनल स्कूल, धनबाद',
+          'पेशा: शिक्षक, डॉ. जे. के. सिन्हा मेमोरियल इंटरनेशनल स्कूल ऑफ लर्निंग, धनबाद',
           'उपलब्धि: राष्ट्रीय स्तर के कबड्डी खिलाड़ी'
         ],
         en: [
           'Designation: Treasurer & District Coach, Dhanbad District Kabaddi Association',
           'Education: Graduate (B.P.Ed)',
-          'Profession: Teacher, J.K. International School, Dhanbad',
+          'Profession: Teacher, Dr. J.K. Sinha Memorial International School of Learning, Dhanbad',
           'Achievement: National-level Kabaddi player'
         ]
       }
