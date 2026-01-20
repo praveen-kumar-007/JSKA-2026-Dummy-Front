@@ -444,7 +444,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 aria-expanded={showDocs}
                 aria-controls="important-docs-dropdown"
                 onClick={() => setShowDocs(s => !s)}
-                className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-emerald-50 transition-all min-h-[92px]"
+                className="flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all min-h-[92px] bg-white hover:bg-emerald-50 cursor-pointer"
+                style={{ minWidth: 285 }}
               >
                 <ImageIcon size={28} className="text-emerald-700 mb-2" />
                 <span className="font-bold text-xs text-emerald-900">Important Docs</span>

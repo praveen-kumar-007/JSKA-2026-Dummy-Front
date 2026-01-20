@@ -371,35 +371,69 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                   {deleting ? 'Deleting...' : 'Delete Certificate'}
                 </button>
               )}
-              <button
-                type="button"
-                disabled={official.status !== 'Approved' || !official.grade}
-                onClick={() => {
-                  if (!official) return;
-                  if (!official.grade) return;
-                  const suffix = (official._id || '').slice(-4).toUpperCase();
-                  const params = new URLSearchParams();
-                  params.set('name', official.candidateName);
-                  params.set('father', official.parentName);
-                  if (suffix && official.grade) params.set('regSuffix', suffix);
-                  const createdDate = official.createdAt ? new Date(official.createdAt) : null;
-                  if (createdDate && !Number.isNaN(createdDate.getTime())) {
-                    params.set('date', createdDate.toISOString().slice(0, 10));
-                  }
-                  if (official.grade) params.set('grade', official.grade);
-                  if (official.photoUrl) params.set('photoUrl', official.photoUrl);
-                  const url = `/important-docs/official-certificate.html?${params.toString()}`;
-                  window.open(url, '_blank', 'noopener,noreferrer');
-                }}
-                className="px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
-                title={official.status !== 'Approved'
-                  ? 'Certificate available only after approval'
-                  : !official.grade
-                    ? 'Set a grade to generate certificate'
-                    : 'Open Technical Official certificate'}
-              >
-                View / Download Certificate
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  disabled={official.status !== 'Approved' || !official.grade}
+                  onClick={() => {
+                    if (!official) return;
+                    const suffix = (official._id || '').slice(-4).toUpperCase();
+                    const params = new URLSearchParams();
+                    params.set('name', official.candidateName);
+                    if (suffix) {
+                      params.set('sno', suffix);
+                    }
+                    if (suffix) {
+                      params.set('uid', `DDKA-2026-${suffix}`);
+                    }
+                    const dobDate = official.dob ? new Date(official.dob) : null;
+                    if (dobDate && !Number.isNaN(dobDate.getTime())) {
+                      params.set('dob', dobDate.toISOString().slice(0, 10));
+                    }
+                    if (official.grade) params.set('grade', official.grade);
+                    if (official.photoUrl) params.set('photoUrl', official.photoUrl);
+                    const url = `/important-docs/technical-id-card.html?${params.toString()}`;
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                  }}
+                  className="px-4 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
+                  title={official.status !== 'Approved'
+                    ? 'ID card available only after approval'
+                    : !official.grade
+                      ? 'Set a grade to generate ID card'
+                      : 'Open Technical Official ID card'}
+                >
+                  View / Download ID Card
+                </button>
+                <button
+                  type="button"
+                  disabled={official.status !== 'Approved' || !official.grade}
+                  onClick={() => {
+                    if (!official) return;
+                    if (!official.grade) return;
+                    const suffix = (official._id || '').slice(-4).toUpperCase();
+                    const params = new URLSearchParams();
+                    params.set('name', official.candidateName);
+                    params.set('father', official.parentName);
+                    if (suffix && official.grade) params.set('regSuffix', suffix);
+                    const createdDate = official.createdAt ? new Date(official.createdAt) : null;
+                    if (createdDate && !Number.isNaN(createdDate.getTime())) {
+                      params.set('date', createdDate.toISOString().slice(0, 10));
+                    }
+                    if (official.grade) params.set('grade', official.grade);
+                    if (official.photoUrl) params.set('photoUrl', official.photoUrl);
+                    const url = `/important-docs/official-certificate.html?${params.toString()}`;
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                  }}
+                  className="px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
+                  title={official.status !== 'Approved'
+                    ? 'Certificate available only after approval'
+                    : !official.grade
+                      ? 'Set a grade to generate certificate'
+                      : 'Open Technical Official certificate'}
+                >
+                  View / Download Certificate
+                </button>
+              </div>
             </div>
           </div>
         </div>

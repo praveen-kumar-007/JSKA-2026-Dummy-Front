@@ -363,6 +363,7 @@
             <button id="clear-btn" type="button">Clear</button>
             <button id="print-btn" type="button" class="secondary">Print</button>
             <button id="save-jpg-btn" type="button" class="ghost">Save as JPG</button>
+            <button id="save-pdf-btn" type="button" class="ghost">Download PDF</button>
         </div>
     </div>
 
@@ -436,6 +437,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         (function(){
             const inputs = {
@@ -483,6 +485,71 @@
                 el.addEventListener('input', () => updateField(inp));
             });
 
+            // Auto-fill from query parameters when opened from admin panel
+            function applyQueryParams() {
+                if (!window.location.search) return;
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const qpSno = params.get('sno');
+                    const qpName = params.get('name');
+                    const qpUid = params.get('uid');
+                    const qpDob = params.get('dob');
+                    const qpGrade = params.get('grade');
+                    const qpPhoto = params.get('photoUrl');
+
+                    if (qpSno) {
+                        const el = document.getElementById('input-sno');
+                        if (el) {
+                            el.value = qpSno;
+                            updateField('input-sno');
+                        }
+                    }
+
+                    if (qpName) {
+                        const el = document.getElementById('input-name');
+                        if (el) {
+                            el.value = qpName;
+                            updateField('input-name');
+                        }
+                    }
+
+                    if (qpUid) {
+                        const el = document.getElementById('input-uid');
+                        if (el) {
+                            el.value = qpUid;
+                            updateField('input-uid');
+                        }
+                    }
+
+                    if (qpDob) {
+                        const el = document.getElementById('input-dob');
+                        if (el) {
+                            el.value = qpDob;
+                            updateField('input-dob');
+                        }
+                    }
+
+                    if (qpGrade) {
+                        const el = document.getElementById('input-grade');
+                        if (el) {
+                            el.value = qpGrade;
+                            updateField('input-grade');
+                        }
+                    }
+
+                    if (qpPhoto) {
+                        const imgEl = document.getElementById('photo-img');
+                        if (imgEl && imgEl.tagName === 'IMG') {
+                            imgEl.src = qpPhoto;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to apply query params for ID card:', e);
+                }
+            }
+
+            applyQueryParams();
+
             const photoInput = document.getElementById('input-photo');
             const photoImg = document.getElementById('photo-img');
             const defaultSrc = (photoImg && (photoImg.dataset && photoImg.dataset.defaultSrc)) || (photoImg && photoImg.src) || '';
@@ -522,6 +589,7 @@
                 window.print();
             });
 
+
             const saveBtn = document.getElementById('save-jpg-btn');
             if (saveBtn) saveBtn.addEventListener('click', async () => {
                 const el = document.querySelector('.id-card');
@@ -537,6 +605,23 @@
                     a.remove();
                 } catch (err) {
                     alert('Failed to export image: ' + (err && err.message));
+                }
+            });
+
+            // PDF download button
+            const savePdfBtn = document.getElementById('save-pdf-btn');
+            if (savePdfBtn) savePdfBtn.addEventListener('click', async () => {
+                const el = document.querySelector('.id-card');
+                if (!el) return;
+                try {
+                    const canvas = await html2canvas(el, {scale:3, backgroundColor: '#ffffff'});
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.save('ddka-id.pdf');
+                } catch (err) {
+                    alert('Failed to export PDF: ' + (err && err.message));
                 }
             });
 
