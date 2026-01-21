@@ -80,7 +80,7 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
     },
     {
       name: lang === 'hi' ? 'प्रवीण कुमार' : 'Praveen Kumar',
-      role: lang === 'hi' ? 'मीडिया प्रभारी' : 'Media Incharge',
+      role: lang === 'hi' ? 'मीडिया प्रभारी' : 'Media In-Charge',
       org: 'DDKA',
       // 👇 PASTE PRAVEEN'S IMAGE LINK INSIDE THE QUOTES BELOW 👇
       image: "https://res.cloudinary.com/dmmll82la/image/upload/v1765632491/sp-club/passports/passport-1765632490936-299511838.jpg", 
@@ -88,15 +88,15 @@ export const About: React.FC<AboutProps> = ({ lang }) => {
       highlights: {
         hi: [
           'पद: मीडिया प्रभारी, धनबाद जिला कबड्डी एसोसिएशन',
-          'शिक्षा: बी.टेक (CSE, AI/ML स्पेशलाइज़ेशन)',
-          'परिचय: समर्पित विद्यार्थी, कबड्डी प्रेमी एवं राज्य स्तर के खिलाड़ी',
-          'यह वेबसाइट प्रवीण कुमार द्वारा निर्मित और अनुरक्षित है।'
+          'शिक्षा: बी.टेक (CSE, AI/ML)',
+          'परिचय: प्रवीण कुमार — मीडिया प्रभारी व राज्यस्तरीय खिलाड़ी।',
+          'वेबसाइट: प्रवीण कुमार द्वारा डिज़ाइन व अनुरक्षित'
         ],
         en: [
-          'Designation: Media Incharge, Dhanbad District Kabaddi Association',
-          'Education: B.Tech (CSE, AI/ML Specialisation)',
-          'Profile: Dedicated student and passionate Kabaddi promoter & State-level Kabaddi player',
-          'Website: Made and maintained by Praveen Kumar'
+          'Designation: Media In-Charge, Dhanbad District Kabaddi Association',
+          'Education: B.Tech (CSE, AI/ML)',
+          'Profile: Praveen Kumar — Media In-Charge & state-level player',
+          'Website: Designed & maintained by Praveen Kumar'
         ]
       }
     }
