@@ -55,6 +55,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     };
   }, [showDocs]);
 
+  // Mobile detection to render a compact card list on small screens
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 640);
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const handleLogout = () => {
@@ -248,7 +257,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         {/* Top Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
           <div>
-            <h1 className="text-5xl font-oswald font-bold text-blue-900 uppercase tracking-tight">DDKA CONTROL CENTER</h1>
+            <h1 className="text-3xl md:text-5xl font-oswald font-bold text-blue-900 uppercase tracking-tight">DDKA CONTROL CENTER</h1>
             <p className="text-slate-500 font-medium flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               Admin Portal • Team DDKA (Build with Passion ❤️)
@@ -279,7 +288,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage gallery. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessGallery
                 ? 'bg-white hover:bg-blue-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -306,7 +315,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage news. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessNews
                 ? 'bg-white hover:bg-blue-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -333,7 +342,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage contact forms. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessContacts
                 ? 'bg-white hover:bg-blue-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -360,7 +369,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage champions. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessChampions
                 ? 'bg-white hover:bg-orange-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -387,7 +396,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage referees. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessReferees
                 ? 'bg-white hover:bg-slate-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -414,7 +423,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to manage technical officials. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               adminRole === 'superadmin' || adminPermissions?.canAccessTechnicalOfficials
                 ? 'bg-white hover:bg-slate-50 cursor-pointer'
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -431,7 +440,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             <span className="font-bold text-xs">Technical Officials</span>
           </button>
           {adminRole === 'superadmin' && (
-            <Link to="/admin/manage-admins" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-red-50 transition-all">
+            <Link to="/admin/manage-admins" className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-red-50 transition-all w-full min-h-[92px]">
               <Users size={28} className="text-red-700 mb-2" />
               <span className="font-bold text-xs text-red-900">Manage Admins</span>
             </Link>
@@ -444,8 +453,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 aria-expanded={showDocs}
                 aria-controls="important-docs-dropdown"
                 onClick={() => setShowDocs(s => !s)}
-                className="flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all min-h-[92px] bg-white hover:bg-emerald-50 cursor-pointer"
-                style={{ minWidth: 285 }}
+                className="flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all min-h-[92px] bg-white hover:bg-emerald-50 cursor-pointer w-full"
               >
                 <ImageIcon size={28} className="text-emerald-700 mb-2" />
                 <span className="font-bold text-xs text-emerald-900">Important Docs</span>
@@ -497,7 +505,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to view player details. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               activeTab === 'players'
                 ? 'bg-blue-900 text-white'
                 : (adminRole === 'superadmin' || adminPermissions?.canAccessPlayerDetails)
@@ -528,7 +536,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 alert('You do not have permission to view institution details. Please contact the superadmin.');
               }
             }}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all ${
+            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               activeTab === 'institutions'
                 ? 'bg-blue-900 text-white'
                 : (adminRole === 'superadmin' || adminPermissions?.canAccessInstitutionDetails)
@@ -556,7 +564,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
           <input 
             type="text" 
             placeholder="Search by name, email, phone, Aadhar, or transaction ID..." 
-            className="w-full pl-16 pr-6 py-4 bg-white border-4 border-white rounded-[2rem] shadow-xl focus:ring-8 focus:ring-blue-50 outline-none transition-all font-medium text-base"
+            className="w-full pl-12 md:pl-16 pr-4 md:pr-6 py-3 md:py-4 bg-white border-4 border-white rounded-[2rem] shadow-xl focus:ring-8 focus:ring-blue-50 outline-none transition-all font-medium text-base"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -609,128 +617,167 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
 
         {/* Table Container */}
         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50 border-b-2 border-slate-100">
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Photo</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Phone</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Age Group / Type</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Role</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Status</th>
-                  <th className="p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y-2 divide-slate-50">
-                {loading ? (
-                  <tr><td colSpan={8} className="p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
-                ) : filteredData.length === 0 ? (
-                  <tr><td colSpan={8} className="p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
-                ) : filteredData.map((item) => (
-                  <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
-                    {/* Photo */}
-                    <td className="p-6">
-                      <div className="flex items-center justify-center">
-                        {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
-                          <img
-                            src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo}
-                            alt={item.fullName || item.instName || 'Photo'}
-                            className="w-12 h-12 rounded-full object-cover border-2 border-slate-200"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
-                            {(item.fullName || item.instName || 'U')[0].toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                    </td>
-
-                    {/* Name */}
-                    <td className="p-6">
-                      <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
-                    </td>
-
-                    {/* Email */}
-                    <td className="p-6">
-                      <p className="text-sm text-slate-700 font-medium">{item.email || '-'}</p>
-                    </td>
-
-                    {/* Phone */}
-                    <td className="p-6">
-                      <p className="text-sm text-slate-700 font-medium">{item.phone || item.officePhone || '-'}</p>
-                    </td>
-
-                    {/* Age Group / Type */}
-                    <td className="p-6">
-                      {activeTab === 'players' ? (
-                        <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
-                          {getAgeGroup(item.dob)}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
-                          {item.instType || 'N/A'}
-                        </span>
-                      )}
-                    </td>
-
-                    {/* Role */}
-                    <td className="p-6">
-                      <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-widest">
-                        {activeTab === 'players' ? (item.memberRole || 'Player') : 'Institution'}
-                      </span>
-                    </td>
-
-                    {/* Status */}
-                    <td className="p-6">
-                      <span className={`inline-block px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border-2 ${
-                        item.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' : 
-                        item.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-100' : 'bg-amber-50 text-amber-700 border-amber-100'
-                      }`}>
-                        {item.status || 'Pending'}
-                      </span>
-                    </td>
-                    {/* Actions */}
-                    <td className="p-6">
-                      <div className="flex justify-end gap-2">
-                        <button 
-                          onClick={() => updateStatus(item._id, 'Approved')} 
-                          className="p-2 bg-green-50 text-green-600 rounded-2xl hover:bg-green-600 hover:text-white transition-all active:scale-90"
-                          title="Approve"
-                        >
-                          <CheckCircle size={18} />
-                        </button>
-                        <button 
-                          onClick={() => updateStatus(item._id, 'Rejected')} 
-                          className="p-2 bg-red-50 text-red-600 rounded-2xl hover:bg-red-600 hover:text-white transition-all active:scale-90"
-                          title="Reject"
-                        >
-                          <XCircle size={18} />
-                        </button>
-                        {adminRole === 'superadmin' && adminPermissions?.canDelete && (
-                          <button 
-                            onClick={() => deleteEntry(item._id)} 
-                            className="p-2 bg-slate-100 text-slate-400 rounded-2xl hover:bg-slate-950 hover:text-white transition-all active:scale-90"
-                            title="Delete"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        )}
-                        <a
-                          href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
-                          title="View Details"
-                        >
-                          <Eye size={16} /> View Details
-                        </a>
-                      </div>
-                    </td>
+          {!isMobile ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 border-b-2 border-slate-100">
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Photo</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Phone</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Age Group / Type</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Role</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Status</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y-2 divide-slate-50">
+                  {loading ? (
+                    <tr><td colSpan={8} className="p-12 md:p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
+                  ) : filteredData.length === 0 ? (
+                    <tr><td colSpan={8} className="p-12 md:p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
+                  ) : filteredData.map((item) => (
+                    <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
+                      <td className="p-3 md:p-6">
+                        <div className="flex items-center justify-center">
+                          {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
+                            <img
+                              src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo}
+                              alt={item.fullName || item.instName || 'Photo'}
+                              className="w-12 h-12 rounded-full object-cover border-2 border-slate-200"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                              {(item.fullName || item.instName || 'U')[0].toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <p className="text-sm text-slate-700 font-medium">{item.email || '-'}</p>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <p className="text-sm text-slate-700 font-medium">{item.phone || item.officePhone || '-'}</p>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        {activeTab === 'players' ? (
+                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                            {getAgeGroup(item.dob)}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                            {item.instType || 'N/A'}
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-widest">
+                          {activeTab === 'players' ? (item.memberRole || 'Player') : 'Institution'}
+                        </span>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <span className={`inline-block px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border-2 ${
+                          item.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' : 
+                          item.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-100' : 'bg-amber-50 text-amber-700 border-amber-100'
+                        }`}>
+                          {item.status || 'Pending'}
+                        </span>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <div className="flex justify-end gap-2">
+                          <button 
+                            onClick={() => updateStatus(item._id, 'Approved')} 
+                            className="p-2 bg-green-50 text-green-600 rounded-2xl hover:bg-green-600 hover:text-white transition-all active:scale-90"
+                            title="Approve"
+                          >
+                            <CheckCircle size={18} />
+                          </button>
+                          <button 
+                            onClick={() => updateStatus(item._id, 'Rejected')} 
+                            className="p-2 bg-red-50 text-red-600 rounded-2xl hover:bg-red-600 hover:text-white transition-all active:scale-90"
+                            title="Reject"
+                          >
+                            <XCircle size={18} />
+                          </button>
+                          {adminRole === 'superadmin' && adminPermissions?.canDelete && (
+                            <button 
+                              onClick={() => deleteEntry(item._id)} 
+                              className="p-2 bg-slate-100 text-slate-400 rounded-2xl hover:bg-slate-950 hover:text-white transition-all active:scale-90"
+                              title="Delete"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          )}
+                          <a
+                            href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
+                            title="View Details"
+                          >
+                            <Eye size={16} /> View Details
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-4 space-y-4">
+              {loading ? (
+                <div className="p-8 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={40} /></div>
+              ) : filteredData.length === 0 ? (
+                <div className="p-8 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</div>
+              ) : filteredData.map((item) => (
+                <div key={item._id} className="p-4 rounded-lg border bg-slate-50 shadow-sm flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
+                      <img src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo} alt={item.fullName || item.instName || 'Photo'} className="w-14 h-14 rounded-full object-cover border-2 border-slate-200" />
+                    ) : (
+                      <div className="w-14 h-14 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                        {(item.fullName || item.instName || 'U')[0].toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
+                        <p className="text-sm text-slate-600">{item.email || item.phone || '-'}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          item.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' : 
+                          item.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-100' : 'bg-amber-50 text-amber-700 border-amber-100'
+                        }`}>
+                          {item.status || 'Pending'}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <a href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`} className="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-black">View</a>
+                      <button onClick={() => updateStatus(item._id, 'Approved')} className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black">Approve</button>
+                      <button onClick={() => updateStatus(item._id, 'Rejected')} className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-black">Reject</button>
+                      {adminRole === 'superadmin' && adminPermissions?.canDelete && (
+                        <button onClick={() => deleteEntry(item._id)} className="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-xs font-black">Delete</button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )) }
+            </div>
+          )}
         </div>
       </div>
     </div>
