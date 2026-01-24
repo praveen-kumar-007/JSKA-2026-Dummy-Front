@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -17,7 +17,7 @@ import TermsConditions from './pages/TermsConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import KabaddiRules from './pages/KabaddiRules';
 import AdminNewsUpload from './pages/AdminNewsUpload';
-import AdminDashboard from './pages/AdminDashboard'; 
+const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
 import AdminInstitutionDetails from './pages/AdminInstitutionDetails';
 import AdminLogin from './pages/AdminLogin';
 import AdminSignup from './pages/AdminSignup';
@@ -25,18 +25,18 @@ import PublicLogin from './pages/PublicLogin';
 import Account from './pages/Account';
 import AdminRegistrationDetails from './pages/AdminRegistrationDetails';
 import PlayerIDCardPage from './pages/PlayerIDCardPage';
-import AdminGalleryUpload from './pages/AdminGalleryUpload';
-import AdminContact from './pages/AdminContact';
+const AdminGalleryUpload = React.lazy(() => import('./pages/AdminGalleryUpload'));
+const AdminContact = React.lazy(() => import('./pages/AdminContact'));
 import Contact from './pages/Contact';
 import OurGems from './pages/OurGems';
 import Donate from './pages/Donate';
-import AdminPlayersManagement from './pages/AdminPlayersManagement';
-import AdminRefereesManagement from './pages/AdminRefereesManagement';
-import AdminDonations from './pages/AdminDonations';
+const AdminPlayersManagement = React.lazy(() => import('./pages/AdminPlayersManagement'));
+const AdminRefereesManagement = React.lazy(() => import('./pages/AdminRefereesManagement'));
+const AdminDonations = React.lazy(() => import('./pages/AdminDonations'));
 import DonationReceipt from './pages/DonationReceipt';
-import AdminTechnicalOfficialsManagement from './pages/AdminTechnicalOfficialsManagement';
-import AdminTechnicalOfficialDetails from './pages/AdminTechnicalOfficialDetails';
-import AdminManageAdmins from './pages/AdminManageAdmins';
+const AdminTechnicalOfficialsManagement = React.lazy(() => import('./pages/AdminTechnicalOfficialsManagement'));
+const AdminTechnicalOfficialDetails = React.lazy(() => import('./pages/AdminTechnicalOfficialDetails'));
+const AdminManageAdmins = React.lazy(() => import('./pages/AdminManageAdmins'));
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
@@ -87,6 +87,7 @@ const App: React.FC = () => {
       />
       
       <main className="flex-grow">
+        <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
         <Routes>
           <Route path="/" element={<Home lang={lang} onNavigate={handlePageChange} />} />
           <Route path="/about" element={<About lang={lang} />} />
@@ -245,6 +246,7 @@ const App: React.FC = () => {
           <Route path="/id-card/:idNo" element={<PlayerIDCardPage />} />
           <Route path="/admin/institution/:id" element={<AdminInstitutionDetails />} />
         </Routes>
+        </Suspense>
       </main>
 
       {!isAdminPage && <Footer lang={lang} />}
