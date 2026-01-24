@@ -33,8 +33,6 @@ const AdminManageAdmins: React.FC = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const role = typeof window !== 'undefined' ? localStorage.getItem('adminRole') : null;
 
-  // Module visibility state (for toggles)
-  const [moduleVisibility, setModuleVisibility] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; }>({});
   const [showModuleModal, setShowModuleModal] = useState(false);
 
   useEffect(() => {
@@ -65,27 +63,7 @@ const AdminManageAdmins: React.FC = () => {
       }
     };
 
-    // Also fetch module visibility settings for toggles
-    const fetchModules = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/settings`, { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
-        const json = await res.json();
-        if (json && json.success && json.data) {
-          setModuleVisibility({
-            allowGallery: typeof json.data.allowGallery === 'boolean' ? json.data.allowGallery : true,
-            allowNews: typeof json.data.allowNews === 'boolean' ? json.data.allowNews : true,
-            allowContacts: typeof json.data.allowContacts === 'boolean' ? json.data.allowContacts : true,
-            allowDonations: typeof json.data.allowDonations === 'boolean' ? json.data.allowDonations : true,
-            allowImportantDocs: typeof json.data.allowImportantDocs === 'boolean' ? json.data.allowImportantDocs : true,
-          });
-        }
-      } catch (err) {
-        console.error('Failed to load module visibility', err);
-      }
-    };
-
     fetchAdmins();
-    fetchModules();
   }, [role, token]);
 
   const updateAdmin = async (id: string, update: Partial<Pick<AdminItem, 'role' | 'permissions'>>) => {
