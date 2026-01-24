@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MapPin, ShieldCheck, Mail, Youtube, Instagram, Twitter, Facebook } from 'lucide-react';
+import { Phone, MapPin, ShieldCheck, Mail, Youtube, Instagram, Twitter, Facebook, Heart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CONTACT_INFO, SOCIAL_LINKS } from '../../constants';
 import { translations } from '../../translations';
@@ -187,6 +187,18 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
             </div>
             <div className="font-oswald text-xl text-orange-500 font-bold uppercase">
               {translations[lang].hero.slogan}
+            </div>
+
+            {/* Donate CTA */}
+            <div className="mt-6">
+              <Link to="/donate" className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-400 text-white rounded-full font-bold shadow-lg hover:scale-105 transform transition-transform">
+                <Heart className="w-5 h-5" />
+                <span>{t.donate.title}</span>
+              </Link>
+              <div className="mt-2 text-sm text-white/80">
+                <div className="font-semibold text-[13px]">{t.donate.subtitle}</div>
+                <div className="mt-1 text-xs text-white/90">UPI: <span className="font-mono">{t.donate.upiId}</span></div>
+              </div>
             </div>
            </div>
         </div>

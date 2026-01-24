@@ -34,6 +34,19 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
       return;
     }
 
+    // Require email and phone
+    if (!email || !email.trim()) {
+      setStatus('error');
+      setResultMsg(lang === 'hi' ? 'कृपया अपना ईमेल दर्ज करें।' : 'Please enter your email address.');
+      return;
+    }
+
+    if (!phone || !phone.trim()) {
+      setStatus('error');
+      setResultMsg(lang === 'hi' ? 'कृपया अपना मोबाइल नंबर दर्ज करें।' : 'Please enter your mobile number.');
+      return;
+    }
+
     try {
       const form = new FormData();
       form.append('name', name);
@@ -52,9 +65,11 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
       const data = await res.json().catch(() => null);
       if (res.ok && data && data.success) {
         setStatus('success');
-        setResultMsg('Thank you! Your donation has been received. We will contact you with the receipt shortly.');
-        // capture the donation id so we can show a link to view/generate receipt
-        const donationId = data.data && data.data._id ? data.data._id : null;
+        setResultMsg(lang === 'hi'
+          ? 'आपका दान रिकॉर्ड कर लिया गया है और सत्यापन के लिए लंबित है। DDKA की स्वीकृति के बाद आप रिसीप्ट डाउनलोड करने के लिए /login पर लॉगिन कर सकते हैं — ईमेल आईडी को ID के रूप में और पंजीकृत मोबाइल नंबर को पासवर्ड के रूप में उपयोग करें।'
+          : 'Your donation has been submitted and is pending verification. After approval by DDKA you can get the receipt by logging in at /login using your Email as your ID and your registered mobile number as the password.'
+        );
+        // clear form
         setName('');
         setEmail('');
         setPhone('');
@@ -62,14 +77,6 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
         setAmount(500);
         setMessage('');
         setReceipt(null);
-        if (donationId) {
-          // show link to receipt for immediate generation/view
-          if (window && typeof window.history !== 'undefined') {
-            // show a short success toast via alert (simple) and open link in new tab if user wants to
-            const view = confirm('Donation recorded. Do you want to view/generate your receipt now?');
-            if (view) window.location.href = `/donation/${donationId}`;
-          }
-        }
       } else {
         setStatus('error');
         setResultMsg((data && data.message) || 'Failed to submit donation. Please try again.');
@@ -128,7 +135,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <input required value={name} onChange={(e) => setName(e.target.value)} placeholder={lang === 'hi' ? 'पूरा नाम' : 'Full name'} className="px-3 py-2 border rounded-lg" />
                 <input required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={lang === 'hi' ? 'ईमेल' : 'Email'} type="email" className="px-3 py-2 border rounded-lg" />
-                <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={lang === 'hi' ? 'फ़ोन नंबर (वैकल्पिक)' : 'Phone (optional)'} className="px-3 py-2 border rounded-lg" />
+                <input required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={lang === 'hi' ? 'फ़ोन नंबर' : 'Phone'} type="tel" className="px-3 py-2 border rounded-lg" />
               </div>
 
               <div>
@@ -159,7 +166,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                 <button type="submit" className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold shadow-sm" disabled={status === 'sending'}>
                   <Zap className="w-4 h-4" /> {status === 'sending' ? (lang === 'hi' ? 'प्रक्रिया...' : 'Processing...') : (lang === 'hi' ? 'दान करें' : 'Donate now')}
                 </button>
-                <div className="text-sm text-slate-600">{lang === 'hi' ? 'रिकॉर्ड प्राप्त होने पर हम ईमेल भेजेंगे।' : 'We will email you a receipt once the donation is processed.'}</div>
+                <div className="text-sm text-slate-600">{lang === 'hi' ? 'दान सत्यापन के लिए लंबित है। DDKA की स्वीकृति के बाद आप रिसीप्ट प्राप्त करने के लिए /login पर लॉगिन कर सकते हैं (ईमेल आईडी के रूप में ID और पंजीकृत मोबाइल नंबर पासवर्ड के रूप में)।' : 'Donation is pending verification. After approval by DDKA you can get the receipt by logging in at /login using your Email as ID and your registered mobile number as password.'}</div>
               </div>
 
               {status === 'error' && <div className="text-sm text-red-600">{resultMsg}</div>}

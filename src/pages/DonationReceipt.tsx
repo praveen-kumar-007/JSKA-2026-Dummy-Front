@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Download, ArrowRight, Printer } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { CONTACT_INFO } from '../constants';
 
 interface Donation {
   _id: string;
@@ -124,9 +125,16 @@ const DonationReceipt: React.FC = () => {
           <div className="md:col-span-2"><div className="text-xs text-slate-500">Message</div><div className="font-semibold">{donation.message || '-'}</div></div>
         </div>
 
-        <div className="mt-6 flex gap-3">
-          <button onClick={saveAsJpeg} disabled={busy} className="px-4 py-2 bg-green-600 text-white rounded-md flex items-center gap-2">{busy ? 'Saving...' : (<><Download className="w-4 h-4"/> Save as JPEG</>)}</button>
-          <button onClick={printReceipt} className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2"><Printer className="w-4 h-4"/> Print</button>
+        <div className="mt-6 flex gap-3 items-center">
+          {donation.status === 'confirmed' ? (
+            <>
+              <button onClick={saveAsJpeg} disabled={busy} className="px-4 py-2 bg-green-600 text-white rounded-md flex items-center gap-2">{busy ? 'Saving...' : (<><Download className="w-4 h-4"/> Save as JPEG</>)}</button>
+              <button onClick={printReceipt} className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2"><Printer className="w-4 h-4"/> Print</button>
+            </>
+          ) : (
+            <div className="text-sm text-yellow-700">This receipt is pending verification. It will be available after DDKA confirms the donation.</div>
+          )}
+
           {donation.receiptUrl && <a href={donation.receiptUrl} target="_blank" rel="noreferrer" className="px-4 py-2 bg-slate-100 rounded-md flex items-center gap-2">View uploaded proof <ArrowRight className="w-4 h-4"/></a>}
         </div>
       </div>
@@ -198,7 +206,11 @@ const DonationReceipt: React.FC = () => {
 
             <div className="text-xs text-slate-500 text-right">
               <div>For Dhanbad District Kabaddi Association</div>
-              <div className="mt-4">Website: ddka.in | Contact: 9504904499</div>
+              <div className="mt-4 text-sm">
+                <div>Website: <a href="https://dhanbadkabaddiassociation.tech" target="_blank" rel="noreferrer" className="text-blue-700 underline">dhanbadkabaddiassociation.tech</a></div>
+                <div>Email: <a href={`mailto:${CONTACT_INFO.email}`} className="text-blue-700 underline">{CONTACT_INFO.email}</a></div>
+                <div>Contact: <a href={`tel:${CONTACT_INFO.phone.replace(/\s+/g, '')}`} className="text-blue-700 underline">{CONTACT_INFO.phone}</a></div>
+              </div>
             </div>
           </div>
         </div>

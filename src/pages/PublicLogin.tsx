@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const PublicLogin: React.FC = () => {
-  const [type, setType] = useState<'player' | 'official' | 'institution'>('player');
+  const [type, setType] = useState<'player' | 'official' | 'institution' | 'donor'>('player');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -96,8 +96,7 @@ const PublicLogin: React.FC = () => {
             <select value={type} onChange={(e) => setType(e.target.value as any)} className="w-full py-3 px-4 rounded-2xl border border-slate-200 bg-slate-50">
               <option value="player">Player</option>
               <option value="official">Technical Official / Referee</option>
-              <option value="institution">Institution</option>
-            </select>
+              <option value="institution">Institution</option>              <option value="donor">Donor (Receipt)</option>            </select>
           </div>
 
           <div className="space-y-2">

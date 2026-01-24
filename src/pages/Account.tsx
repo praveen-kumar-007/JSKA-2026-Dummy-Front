@@ -299,6 +299,39 @@ const Account: React.FC = () => {
                       </div>
                     </div>
                   )}
+
+                  {role === 'donor' && (
+                    <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="text-2xl font-bold mb-1">My Donations</h3>
+                          <div className="text-sm text-slate-500">Confirmed donations & receipts available here.</div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 space-y-3">
+                        {profile.confirmedDonations && profile.confirmedDonations.length > 0 ? (
+                          profile.confirmedDonations.map((d: any) => (
+                            <div key={d.id} className="flex items-center justify-between p-3 border rounded">
+                              <div>
+                                <div className="text-sm text-slate-500">Date</div>
+                                <div className="font-semibold">{new Date(d.createdAt).toLocaleString()}</div>
+                                <div className="text-sm text-slate-500">Receipt # {d.receiptNumber || d.id.slice(0,8).toUpperCase()}</div>
+                              </div>
+                              <div className="text-right">
+                                <div className="font-semibold text-lg">₹{d.amount}</div>
+                                <div className="mt-2 flex items-center gap-2 justify-end">
+                                  <a href={`/donation/${d.id}`} className="px-3 py-2 bg-sky-600 text-white rounded text-sm">View Receipt</a>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-sm text-slate-600">No confirmed donations yet. Your donation may be pending verification.</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
