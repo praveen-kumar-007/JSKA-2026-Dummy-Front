@@ -239,12 +239,29 @@
             line-height: 1.4;
             font-weight: bold;
             color: #333;
+            margin-top: 10px;
         }
 
         .dotted-line {
             border-bottom: 2px dotted #000;
             display: inline-block;
             min-width: 120px;
+        }
+
+        /* New stable ID box placed after the details to avoid being pushed by variable-length fields */
+        .id-box {
+            margin: 12px 18px;
+            padding: 10px 12px;
+            border: 2px dashed var(--ddka-blue);
+            border-radius: 8px;
+            text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+        }
+        .id-box .id-label { font-size: 12px; font-weight: 800; color: var(--ddka-blue); margin-bottom: 6px; }
+        .id-box .id-value { font-family: 'Courier New', monospace; font-size: 18px; font-weight: 900; color: #111; letter-spacing: 1px; }
+
+        @media print {
+            .id-box { page-break-inside: avoid; }
         }
 
         /* Footer / Signatures */
@@ -391,13 +408,19 @@
             <div class="info-fields">
                 <div class="field empty" id="field-sno"><span class="label">S. No:</span> <span class="value" id="sno"></span></div>
                 <div class="field empty" id="field-name"><span class="label">Name:</span> <span class="value" id="name"></span></div>
-                <div class="field empty" id="field-uid"><span class="label">UID No:</span> <span class="value" id="uid"></span></div>
                 <div class="field empty" id="field-dob"><span class="label">Date of Birth:</span> <span class="value" id="dob"></span></div>
                 <div class="field empty" id="field-grade"><span class="label">Grade:</span> <span class="value" id="grade"></span></div>
             </div>
             <div class="photo-space">
                 <img id="photo-img" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766047322/sp-club/passports/passport-1766047320820-328224026.png" alt="Technical Official Photo" data-default-src="https://res.cloudinary.com/dmmll82la/image/upload/v1766047322/sp-club/passports/passport-1766047320820-328224026.png">
             </div>
+        </div>
+
+        <!-- Stable ID box: placed below details to prevent layout breakage -->
+        <div class="id-box" aria-hidden="false">
+            <div class="id-label">DDKA ID Number</div>
+            <div id="display-uid" class="id-value">N/A</div>
+        </div>
         </div>
 
         <div class="description-text">
@@ -443,7 +466,7 @@
             const inputs = {
                 'input-sno': 'sno',
                 'input-name': 'name',
-                'input-uid': 'uid',
+                'input-uid': 'display-uid',
                 'input-dob': 'dob',
                 'input-grade': 'grade'
             };
@@ -451,7 +474,6 @@
             const fieldMap = {
                 'input-sno': 'field-sno',
                 'input-name': 'field-name',
-                'input-uid': 'field-uid',
                 'input-dob': 'field-dob',
                 'input-grade': 'field-grade'
             };
@@ -473,6 +495,15 @@
                     if (cert) {
                         cert.textContent = val;
                         if (val === '') cert.classList.add('dotted-line'); else cert.classList.remove('dotted-line');
+                    }
+                }
+                // Ensure display-uid (stable, separate box) is kept in sync with UID input
+                if (inputId === 'input-uid') {
+                    const display = document.getElementById('display-uid');
+                    const wrapper = document.getElementById('field-uid'); // old wrapper may not exist
+                    if (display) display.textContent = val ? val : 'N/A';
+                    if (wrapper) {
+                        if (val === '') wrapper.classList.add('empty'); else wrapper.classList.remove('empty');
                     }
                 }
             }
@@ -515,10 +546,12 @@
 
                     if (qpUid) {
                         const el = document.getElementById('input-uid');
+                        const display = document.getElementById('display-uid');
                         if (el) {
                             el.value = qpUid;
                             updateField('input-uid');
                         }
+                        if (display) display.textContent = qpUid;
                     }
 
                     if (qpDob) {
