@@ -149,6 +149,10 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
               <StatusMark status={official.status} title={official.status} className="w-8 h-8" />
               <span className="sr-only">{official.status}</span>
             </div>
+            <div className="text-sm text-blue-100">
+              <div className="text-xs font-semibold">Reg No:</div>
+              <div className="font-mono text-[13px]">{official._id ? `DDKA-2026-${official._id.slice(-4).toUpperCase()}` : 'N/A'}</div>
+            </div>
           </div>
         </div>
 

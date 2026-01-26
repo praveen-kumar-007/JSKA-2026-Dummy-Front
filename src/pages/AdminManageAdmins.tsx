@@ -181,12 +181,6 @@ const AdminManageAdmins: React.FC = () => {
           >
             Manage Modules
           </button>
-          <button
-            onClick={() => (window.location.href = '/admin-portal-access')}
-            className="w-full px-3 py-2 rounded-full bg-blue-900 text-white text-sm font-semibold"
-          >
-            Back to Dashboard
-          </button>
         </div>
 
         {/* Manage Modules Modal */}

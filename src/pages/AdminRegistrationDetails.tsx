@@ -330,7 +330,14 @@ const AdminRegistrationDetails = () => {
               <h1 className="text-3xl font-extrabold text-blue-900 tracking-tight">
                 {type === 'player' ? data.fullName : data.instName}
               </h1>
-              {type === 'player' && <div className="text-blue-700 text-base font-medium">{data.email}</div>}
+              {type === 'player' && (
+                <>
+                  <div className="text-blue-700 text-base font-medium">{data.email}</div>
+                  <div className="mt-1">
+                    <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono">ID: {data.idNo ? data.idNo : (data.transactionId ? `DDKA-${String(data.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</span>
+                  </div>
+                </>
+              )}
             </div>
             <div className="flex flex-row items-center gap-4 md:gap-6">
               <StatusMark status={data.status} />

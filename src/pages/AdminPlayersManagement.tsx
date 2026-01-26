@@ -8,6 +8,8 @@ interface Player {
   category: string;
   gender: string;
   achievements: string;
+  idNo?: string;
+  transactionId?: string;
 }
 
 interface AdminPermissions {
@@ -275,6 +277,9 @@ const AdminPlayersManagement: React.FC = () => {
                     <div className="text-sm text-slate-500">#{index + 1}</div>
                     <div className="font-bold text-slate-900 truncate">{player.name}</div>
                     <div className="mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono">ID: {player.idNo ? player.idNo : (player.transactionId ? `DDKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</span>
+                    </div>
+                    <div className="mt-1">
                       <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${getCategoryColor(player.category)} break-words`}> 
                         {getCategoryIcon(player.category)}
                         <span className="break-words">{player.category}</span>
@@ -301,6 +306,7 @@ const AdminPlayersManagement: React.FC = () => {
                 <thead className="bg-blue-900 text-white">
                   <tr>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">#</th>
+                    <th className="px-6 py-4 text-left font-bold uppercase text-sm">ID</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Name</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Category</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Gender</th>
@@ -311,6 +317,7 @@ const AdminPlayersManagement: React.FC = () => {
                   {players.map((player, index) => (
                     <tr key={player._id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 text-slate-700 font-bold">{index + 1}</td>
+                      <td className="px-6 py-4 text-slate-700 font-mono">{player.idNo ? player.idNo : (player.transactionId ? `DDKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</td>
                       <td className="px-6 py-4 text-slate-900 font-bold">{player.name}</td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${getCategoryColor(player.category)}`}>
