@@ -418,7 +418,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             <h1 className="text-3xl md:text-5xl font-oswald font-bold text-blue-900 uppercase tracking-tight">DDKA CONTROL CENTER</h1>
             <p className="text-slate-500 font-medium flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Admin Portal • Team DDKA (Build with Passion ❤️)
+              Admin Portal • Team DDKA (Build By Praveen Kumar❤️)
             </p>
             <div className="flex items-center gap-4">
               {adminRole && (

@@ -146,7 +146,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
                         {lang === 'hi' ? 'प्रतियोगिता प्रारूप' : 'Tournament Format'}
                       </h4>
                       <p className="text-lg font-bold text-white leading-tight">
-                        {lang === 'hi' ? 'जनवरी में 2 रविवार' : '2 Sundays in Jan'}
+                        {lang === 'hi' ? 'मार्च में' : 'In March'}
                       </p>
                       <p className="text-xs text-blue-200 mt-1">
                         {lang === 'hi' ? 'उद्घाटन और समापन समारोह' : 'Opening & Closing Ceremony'}
