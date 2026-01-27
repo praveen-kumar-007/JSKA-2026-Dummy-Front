@@ -18,5 +18,7 @@ Allow: /id-card
 Disallow: /api/
 # Allow share preview endpoints so social crawlers can read OG tags and Google can discover social preview metadata
 Allow: /api/news/share/
+# Allow static page preview endpoints for better indexing
+Allow: /share/page/
 
 Sitemap: https://dhanbadkabaddiassociation.tech/sitemap.xml
