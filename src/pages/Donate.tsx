@@ -173,6 +173,22 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                 <label className="block text-sm font-semibold text-blue-900 mb-2">{lang === 'hi' ? 'भुगतान का प्रमाण (वैकल्पिक)' : 'Payment proof (optional)'}</label>
 
                 <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    // avoid triggering when user clicks a button inside the card
+                    const btn = (e.target as HTMLElement).closest('button');
+                    if (btn) return;
+                    const input = document.querySelector('input[data-receipt]') as HTMLInputElement | null;
+                    if (input) input.click();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      const input = document.querySelector('input[data-receipt]') as HTMLInputElement | null;
+                      if (input) input.click();
+                    }
+                  }}
                   onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
                   onDragLeave={(e) => { e.preventDefault(); setDragActive(false); }}
                   onDrop={(e) => {
@@ -195,7 +211,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                     setResultMsg('');
                     try { (document.querySelector('input[data-receipt]') as HTMLInputElement).value = ''; } catch(e) {}
                   }}
-                  className={`border rounded-lg p-4 flex items-center gap-4 ${dragActive ? 'border-dashed border-blue-400 bg-blue-50' : 'border-slate-200 bg-white'}`}
+                  className={`border rounded-lg p-4 flex items-center gap-4 cursor-pointer ${dragActive ? 'border-dashed border-blue-400 bg-blue-50' : 'border-slate-200 bg-white'}`}
                 >
                   <input
                     data-receipt
