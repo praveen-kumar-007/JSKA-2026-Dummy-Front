@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Edit2, Trash2, Save, X } from 'lucide-react';
+import { CheckCircle2, XCircle, Edit2, Trash2, Save, X, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
+import ExportCsvModal from '../components/admin/ExportCsvModal';
 import StatusMark from '../components/admin/StatusMark';
 
 interface TechnicalOfficial {
@@ -41,6 +42,18 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
+
+  // Selection/export
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const officialFields = [
+    'candidateName','parentName','dob','address','aadharNumber','gender','bloodGroup','playerLevel','work','mobile','education','email','transactionId','examFee','receiptUrl','signatureUrl','photoUrl','status','remarks','grade','createdAt'
+  ];
+
+  // Export fields: use the actual saved 'grade' field (A/B/C) as a single column
+  const exportFields = officialFields.map(k => ({ key: k, label: k }));
+
+  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => Object.fromEntries(officialFields.map(f => [f, true])));
 
   const navigate = useNavigate();
 
@@ -202,7 +215,13 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
       <AdminPageHeader
         title="Technical Officials"
         subtitle="Manage DDKA Technical Officials applications"
-        actions={null}
+        actions={(
+          <div className="flex items-center gap-2">
+            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+              <Download className="w-4 h-4" /> Export
+            </button>
+          </div>
+        )}
       />
 
       {loading ? (
@@ -215,6 +234,12 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
             {officials.map((off) => (
               <div key={off._id} className="bg-white rounded-xl shadow-sm border p-4">
                 <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(off._id)} onChange={(e) => {
+                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
+                      else setSelectedIds(prev => prev.filter(id => id !== off._id));
+                    }} />
+                  </div>
                   <div className="flex-shrink-0">
                     {off.photoUrl ? (
                       <img src={off.photoUrl} alt={off.candidateName} className="w-12 h-12 rounded-full object-cover border border-slate-200" />
@@ -249,6 +274,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-blue-900 text-white">
                   <tr>
+                    <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4" checked={officials.length>0 && selectedIds.length===officials.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(officials.map(o => o._id)); else setSelectedIds([]); }} /></th>
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Photo</th>
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Name</th>
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Contact</th>
@@ -262,6 +288,12 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                 <tbody className="divide-y divide-slate-100">
                   {officials.map((off) => (
                     <tr key={off._id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-4 py-3">
+                        <input type="checkbox" checked={selectedIds.includes(off._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== off._id));
+                        }} />
+                      </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center">
                           {off.photoUrl ? (
@@ -362,9 +394,19 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
         )
       )}
 
+      <ExportCsvModal
+        visible={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        records={selectedIds.length ? officials.filter(o => selectedIds.includes(o._id)) : officials}
+        fields={exportFields}
+        filenamePrefix="technical-officials"
+      />
+
       {editing && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-40">
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6">
+  
+
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-oswald font-bold text-blue-900 uppercase flex items-center gap-2">
                 <Edit2 className="w-5 h-5" /> Edit Technical Official

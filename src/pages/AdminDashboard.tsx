@@ -3,9 +3,10 @@ import {
   CheckCircle, XCircle, Trash2, 
   Users, Building, RefreshCcw, Search, Eye,
   LogOut, Newspaper, Image as ImageIcon, Mail, UserCheck, Heart,
-  Trophy, Gavel, UserCog, FileText, Award
+  Trophy, Gavel, UserCog, FileText, Award, Download
 } from 'lucide-react';
 import StatusMark from '../components/admin/StatusMark';
+import ExportCsvModal from '../components/admin/ExportCsvModal';
 import { Link } from 'react-router-dom';
 import type { Language } from '../translations';
 
@@ -39,6 +40,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
   const [showDocs, setShowDocs] = useState(false);
   const docsRef = useRef<HTMLDivElement | null>(null);
+
+  // Selection & export state for table exports
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+
+  const playerExportFields = [
+    { key: 'fullName', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'dob', label: 'DOB' },
+    { key: 'aadharNumber', label: 'Aadhar' },
+    { key: 'transactionId', label: 'Transaction ID' },
+    { key: 'memberRole', label: 'Role' },
+    { key: 'idNo', label: 'ID Number' },
+    { key: 'status', label: 'Status' }
+  ];
+
+  const institutionExportFields = [
+    { key: 'instName', label: 'Institution Name' },
+    { key: 'instType', label: 'Type' },
+    { key: 'officePhone', label: 'Office Phone' },
+    { key: 'email', label: 'Email' },
+    { key: 'address', label: 'Address' },
+    { key: 'regNo', label: 'Reg No' },
+    { key: 'status', label: 'Status' }
+  ];
 
   // Public/feature visibility settings (controlled by superadmin)
   const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; }>({});
@@ -853,7 +880,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               ))}
             </div>
           )}
+
+          {/* Export actions */}
+          <div className="flex items-center gap-2 ml-auto">
+            <button
+              onClick={() => setSelectedIds([])}
+              disabled={selectedIds.length === 0}
+              className="px-4 py-2 rounded-full text-xs font-bold border bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+            >
+              Clear Selection
+            </button>
+            <button
+              onClick={() => setShowExportModal(true)}
+              disabled={filteredData.length === 0}
+              className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-bold border bg-white text-blue-900 hover:bg-blue-50 disabled:opacity-50 inline-flex items-center gap-2"
+            >
+              <Download size={14} /> Export
+            </button>
+          </div>
         </div>
+
+        {/* Export modal (reusable) */}
+        <ExportCsvModal
+          visible={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          records={selectedIds.length ? filteredData.filter(i => selectedIds.includes(i._id)) : filteredData}
+          fields={activeTab === 'players' ? playerExportFields : institutionExportFields}
+          filenamePrefix={activeTab === 'players' ? 'players' : 'institutions'}
+        />
 
         {/* Table Container */}
         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
@@ -862,6 +916,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b-2 border-slate-100">
+                    <th className="p-3 md:p-6">
+                      <input type="checkbox" className="h-4 w-4" checked={filteredData.length > 0 && selectedIds.length === filteredData.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(filteredData.map(d => d._id)); else setSelectedIds([]); }} />
+                    </th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Photo</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
@@ -874,11 +931,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 </thead>
                 <tbody className="divide-y-2 divide-slate-50">
                   {loading ? (
-                    <tr><td colSpan={8} className="p-12 md:p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
+                    <tr><td colSpan={9} className="p-12 md:p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
                   ) : filteredData.length === 0 ? (
-                    <tr><td colSpan={8} className="p-12 md:p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
+                    <tr><td colSpan={9} className="p-12 md:p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
                   ) : filteredData.map((item) => (
                     <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
+                      <td className="p-3 md:p-6">
+                        <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== item._id));
+                        }} />
+                      </td>
+
                       <td className="p-3 md:p-6">
                         <div className="flex items-center justify-center">
                           {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
@@ -893,7 +957,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                             </div>
                           )}
                         </div>
-                      </td>
+                      </td> 
 
                       <td className="p-3 md:p-6">
                         <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
@@ -980,6 +1044,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               ) : filteredData.map((item) => (
                 <div key={item._id} className="p-4 rounded-lg border bg-slate-50 shadow-sm flex items-start gap-4">
                   <div className="flex-shrink-0">
+                    <input type="checkbox" checked={selectedIds.includes(item._id)} onChange={(e) => {
+                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
+                      else setSelectedIds(prev => prev.filter(id => id !== item._id));
+                    }} />
+                  </div>
+                  <div className="flex-shrink-0">
                     {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
                       <img src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo} alt={item.fullName || item.instName || 'Photo'} className="w-14 h-14 rounded-full object-cover border-2 border-slate-200" />
                     ) : (
@@ -987,7 +1057,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                         {(item.fullName || item.instName || 'U')[0].toUpperCase()}
                       </div>
                     )}
-                  </div>
+                  </div> 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <div>

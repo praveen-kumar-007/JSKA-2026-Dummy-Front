@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Edit2, Trash2, Star, Award, Trophy, Save, X } from 'lucide-react';
+import { UserPlus, Edit2, Trash2, Star, Award, Trophy, Save, X, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
+import ExportCsvModal from '../components/admin/ExportCsvModal';
 
 interface Player {
   _id: string;
@@ -30,6 +31,19 @@ const AdminPlayersManagement: React.FC = () => {
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
+
+  // Selection & Export state
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const playerFields = ['name','idNo','transactionId','category','gender','achievements'];
+  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => ({
+    name: true,
+    idNo: true,
+    transactionId: true,
+    category: true,
+    gender: true,
+    achievements: true
+  }));
 
   useEffect(() => {
     fetchPlayers();
@@ -168,10 +182,16 @@ const AdminPlayersManagement: React.FC = () => {
         title="Players Management"
         subtitle="Manage DDKA's champion players"
         actions={(
-          <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
-            {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-            {showForm ? 'Cancel' : 'Add Player'}
-          </button>
+          <div className="flex flex-col sm:flex-row items-stretch gap-2">
+            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
+              {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
+              {showForm ? 'Cancel' : 'Add Player'}
+            </button>
+
+            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+              <Download className="w-4 h-4" /> Export
+            </button>
+          </div>
         )}
       />
 
@@ -273,6 +293,12 @@ const AdminPlayersManagement: React.FC = () => {
             {players.map((player, index) => (
               <div key={player._id} className="bg-white rounded-xl shadow-sm border p-4">
                 <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <input type="checkbox" className="form-checkbox" checked={selectedIds.includes(player._id)} onChange={(e) => {
+                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, player._id])));
+                      else setSelectedIds(prev => prev.filter(id => id !== player._id));
+                    }} />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-slate-500">#{index + 1}</div>
                     <div className="font-bold text-slate-900 truncate">{player.name}</div>
@@ -305,6 +331,12 @@ const AdminPlayersManagement: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-blue-900 text-white">
                   <tr>
+                    <th className="px-4 py-3">
+                      <input type="checkbox" className="h-4 w-4 form-checkbox" checked={players.length>0 && selectedIds.length===players.length} onChange={(e) => {
+                        if (e.currentTarget.checked) setSelectedIds(players.map(p => p._id));
+                        else setSelectedIds([]);
+                      }} />
+                    </th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">#</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">ID</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Name</th>
@@ -316,6 +348,12 @@ const AdminPlayersManagement: React.FC = () => {
                 <tbody className="divide-y divide-slate-200">
                   {players.map((player, index) => (
                     <tr key={player._id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-4 py-3">
+                        <input type="checkbox" className="h-4 w-4 form-checkbox" checked={selectedIds.includes(player._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, player._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== player._id));
+                        }} />
+                      </td>
                       <td className="px-6 py-4 text-slate-700 font-bold">{index + 1}</td>
                       <td className="px-6 py-4 text-slate-700 font-mono">{player.idNo ? player.idNo : (player.transactionId ? `DDKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</td>
                       <td className="px-6 py-4 text-slate-900 font-bold">{player.name}</td>
@@ -358,8 +396,19 @@ const AdminPlayersManagement: React.FC = () => {
           </div>
         )
       )}
+
+      {/* Export modal (reusable) */}
+      <ExportCsvModal
+        visible={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        records={selectedIds.length ? players.filter(p => selectedIds.includes(p._id)) : players}
+        fields={playerFields.map(k => ({ key: k, label: k }))}
+        filenamePrefix="players"
+      />
     </div>
   );
+
+
 };
 
 export default AdminPlayersManagement;

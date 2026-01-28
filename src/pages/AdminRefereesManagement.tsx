@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Edit2, Trash2, Shield, Save, X } from 'lucide-react';
+import { UserPlus, Edit2, Trash2, Shield, Save, X, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
+import ExportCsvModal from '../components/admin/ExportCsvModal';
 
 interface Referee {
   _id: string;
@@ -39,6 +40,12 @@ const AdminRefereesManagement: React.FC = () => {
 
     fetchReferees();
   }, []);
+
+  // Selection & export
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const refereeFields = ['name','qualification'];
+  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => ({ name: true, qualification: true }));
 
   // Mobile detection for responsive admin views
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -147,10 +154,15 @@ const AdminRefereesManagement: React.FC = () => {
         title="Referees Management"
         subtitle="Manage DDKA's referee board"
         actions={(
-          <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
-            {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-            {showForm ? 'Cancel' : 'Add Referee'}
-          </button>
+          <div className="flex flex-col sm:flex-row items-stretch gap-2">
+            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
+              {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
+              {showForm ? 'Cancel' : 'Add Referee'}
+            </button>
+            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+              <Download className="w-4 h-4" /> Export
+            </button>
+          </div>
         )}
       />
 
@@ -222,6 +234,12 @@ const AdminRefereesManagement: React.FC = () => {
             {referees.map((referee, index) => (
               <div key={referee._id} className="bg-white rounded-xl shadow-sm border p-4">
                 <div className="flex items-start justify-between gap-4">
+                  <div className="flex-shrink-0">
+                    <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(referee._id)} onChange={(e) => {
+                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, referee._id])));
+                      else setSelectedIds(prev => prev.filter(id => id !== referee._id));
+                    }} />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-slate-500">#{index + 1}</div>
                     <div className="font-bold text-slate-900 truncate">{referee.name}</div>
@@ -241,6 +259,9 @@ const AdminRefereesManagement: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-blue-900 text-white">
                   <tr>
+                    <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4 form-checkbox" checked={referees.length>0 && selectedIds.length===referees.length} onChange={(e) => {
+                      if (e.currentTarget.checked) setSelectedIds(referees.map(r => r._id)); else setSelectedIds([]);
+                    }} /></th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">#</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Name</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Qualification</th>
@@ -250,6 +271,12 @@ const AdminRefereesManagement: React.FC = () => {
                 <tbody className="divide-y divide-slate-200">
                   {referees.map((referee, index) => (
                     <tr key={referee._id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-4 py-3">
+                        <input type="checkbox" checked={selectedIds.includes(referee._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, referee._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== referee._id));
+                        }} />
+                      </td>
                       <td className="px-6 py-4 text-slate-700 font-bold">{index + 1}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -290,8 +317,20 @@ const AdminRefereesManagement: React.FC = () => {
           </div>
         )
       )}
+
+      <ExportCsvModal
+        visible={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        records={selectedIds.length ? referees.filter(r => selectedIds.includes(r._id)) : referees}
+        fields={refereeFields.map(k => ({ key: k, label: k }))}
+        filenamePrefix="referees"
+      />
+
+      
     </div>
   );
+
+
 };
 
 export default AdminRefereesManagement;

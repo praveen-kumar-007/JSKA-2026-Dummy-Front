@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, Trash2, CheckCircle, XCircle, RefreshCcw, Eye, ListChecks } from 'lucide-react';
+import { Mail, Phone, Trash2, CheckCircle, XCircle, RefreshCcw, Eye, ListChecks, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
+import ExportCsvModal from '../components/admin/ExportCsvModal';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -29,6 +30,25 @@ const AdminContact: React.FC = () => {
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
+
+  // Selection & export state
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+
+  const contactFields = [
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'subject', label: 'Subject' },
+    { key: 'message', label: 'Message' },
+    { key: 'status', label: 'Status' },
+    { key: 'createdAt', label: 'Received At' }
+  ];
+
+  const newsletterFields = [
+    { key: 'email', label: 'Email' },
+    { key: 'createdAt', label: 'Subscribed At' }
+  ];
 
   const fetchContacts = async () => {
     setLoading(true);
@@ -136,6 +156,11 @@ const AdminContact: React.FC = () => {
     }
   };
 
+  // NOTE: Export handled via ExportCsvModal component for better UX and mobile support
+  // Use selectedIds to export only selected rows, or export all items/newsletters
+
+
+
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
@@ -143,15 +168,15 @@ const AdminContact: React.FC = () => {
           title="Admin Inbox"
           subtitle="Manage contact messages and newsletter subscriptions"
           actions={(
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch gap-2">
               <button
-                onClick={() => { setActiveTab('contacts'); fetchContacts(); }}
+                onClick={() => { setActiveTab('contacts'); setSelectedIds([]); fetchContacts(); }}
                 className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'contacts' ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-900 hover:bg-blue-50'}`}>
                 <Mail size={14} /> Contacts
               </button>
 
               <button
-                onClick={() => { setActiveTab('newsletter'); fetchNewsletters(); }}
+                onClick={() => { setActiveTab('newsletter'); setSelectedIds([]); fetchNewsletters(); }}
                 className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'newsletter' ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-900 hover:bg-blue-50'}`}>
                 <ListChecks size={14} /> Newsletter
               </button>
@@ -160,6 +185,13 @@ const AdminContact: React.FC = () => {
                 onClick={activeTab === 'contacts' ? fetchContacts : fetchNewsletters}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-blue-900 hover:bg-blue-50">
                 <RefreshCcw size={16} /> Refresh
+              </button>
+
+              <button
+                onClick={() => setShowExportModal(true)}
+                disabled={activeTab === 'contacts' ? items.length === 0 : newsletters.length === 0}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-blue-900 hover:bg-blue-50 w-full sm:w-auto disabled:opacity-50">
+                <Download size={16} /> Export CSV
               </button>
             </div>
           )}
@@ -180,6 +212,7 @@ const AdminContact: React.FC = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50 border-b-2 border-slate-100">
+                      <th className="p-4"><input type="checkbox" className="h-4 w-4" checked={items.length>0 && selectedIds.length===items.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(items.map(it => it._id)); else setSelectedIds([]); }} /></th>
                       <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest">From</th>
                       <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Subject</th>
                       <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Received</th>
@@ -190,6 +223,12 @@ const AdminContact: React.FC = () => {
                   <tbody className="divide-y divide-slate-50">
                     {items.map((item) => (
                     <tr key={item._id} className="hover:bg-blue-50/40 transition-colors">
+                      <td className="p-4">
+                        <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== item._id));
+                        }} />
+                      </td>
                       <td className="p-4">
                         <div className="flex flex-col">
                           <span className="font-semibold text-blue-900 text-sm">{item.name}</span>
@@ -264,6 +303,7 @@ const AdminContact: React.FC = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b-2 border-slate-100">
+                    <th className="p-4"><input type="checkbox" className="h-4 w-4" checked={newsletters.length>0 && selectedIds.length===newsletters.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(newsletters.map(n => n._id)); else setSelectedIds([]); }} /></th>
                     <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Email</th>
                     <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Subscribed At</th>
                     <th className="p-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
@@ -272,6 +312,12 @@ const AdminContact: React.FC = () => {
                 <tbody className="divide-y divide-slate-50">
                   {newsletters.map((n) => (
                     <tr key={n._id} className="hover:bg-blue-50/40 transition-colors">
+                      <td className="p-4">
+                        <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(n._id)} onChange={(e) => {
+                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, n._id])));
+                          else setSelectedIds(prev => prev.filter(id => id !== n._id));
+                        }} />
+                      </td>
                       <td className="p-4 text-sm text-slate-800 flex items-center gap-2">
                         <Mail size={14} className="text-orange-500" /> {n.email}
                       </td>
@@ -298,6 +344,15 @@ const AdminContact: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Export modal (contacts/newsletter) */}
+        <ExportCsvModal
+          visible={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          records={selectedIds.length ? (activeTab === 'contacts' ? items.filter(i => selectedIds.includes(i._id)) : newsletters.filter(n => selectedIds.includes(n._id))) : (activeTab === 'contacts' ? items : newsletters)}
+          fields={activeTab === 'contacts' ? contactFields : newsletterFields}
+          filenamePrefix={activeTab === 'contacts' ? 'contacts' : 'newsletters'}
+        />
 
         {selected && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
