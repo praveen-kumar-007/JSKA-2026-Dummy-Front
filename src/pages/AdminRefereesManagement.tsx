@@ -45,7 +45,6 @@ const AdminRefereesManagement: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showExportModal, setShowExportModal] = useState(false);
   const refereeFields = ['name','qualification'];
-  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => ({ name: true, qualification: true }));
 
   // Mobile detection for responsive admin views
   const [isMobile, setIsMobile] = useState<boolean>(false);

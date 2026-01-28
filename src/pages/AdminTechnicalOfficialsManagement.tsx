@@ -53,8 +53,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   // Export fields: use the actual saved 'grade' field (A/B/C) as a single column
   const exportFields = officialFields.map(k => ({ key: k, label: k }));
 
-  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => Object.fromEntries(officialFields.map(f => [f, true])));
-
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';

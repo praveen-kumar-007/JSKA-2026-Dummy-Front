@@ -36,14 +36,6 @@ const AdminPlayersManagement: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showExportModal, setShowExportModal] = useState(false);
   const playerFields = ['name','idNo','transactionId','category','gender','achievements'];
-  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => ({
-    name: true,
-    idNo: true,
-    transactionId: true,
-    category: true,
-    gender: true,
-    achievements: true
-  }));
 
   useEffect(() => {
     fetchPlayers();
