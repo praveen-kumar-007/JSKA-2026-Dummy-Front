@@ -50,6 +50,8 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
     'candidateName','parentName','dob','address','aadharNumber','gender','bloodGroup','playerLevel','work','mobile','education','email','transactionId','examFee','receiptUrl','signatureUrl','photoUrl','status','remarks','grade','createdAt'
   ];
 
+  const [allowExportAll, setAllowExportAll] = useState<boolean>(true);
+
   // Export fields: use the actual saved 'grade' field (A/B/C) as a single column
   const exportFields = officialFields.map(k => ({ key: k, label: k }));
 
@@ -93,6 +95,34 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
     }
 
     fetchOfficials();
+
+    // Load public settings to respect export toggles
+    (async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/settings/public`);
+        const json = await res.json();
+        if (json && json.success) {
+          if (typeof json.data?.allowExportAll === 'boolean') setAllowExportAll(json.data.allowExportAll);
+          else if (typeof json.data?.allowExportTechnicalOfficials === 'boolean') setAllowExportAll(json.data.allowExportTechnicalOfficials);
+        }
+      } catch (e) {
+        console.error('Failed to load public settings for export toggles', e);
+      }
+    })();
+
+    // Listen for settings updates from admin toggles
+    const onSettingsUpdated = (e: any) => {
+      if (!e?.detail) return;
+      if (typeof e.detail.allowExportAll === 'boolean') {
+        setAllowExportAll(e.detail.allowExportAll);
+        if (e.detail.allowExportAll === false) setSelectedIds([]);
+      } else if (typeof e.detail.allowExportTechnicalOfficials === 'boolean') {
+        setAllowExportAll(e.detail.allowExportTechnicalOfficials);
+        if (e.detail.allowExportTechnicalOfficials === false) setSelectedIds([]);
+      }
+    };
+    window.addEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
+    return () => window.removeEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
   }, []);
 
   // Mobile detection for responsive admin views
@@ -215,9 +245,11 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
         subtitle="Manage DDKA Technical Officials applications"
         actions={(
           <div className="flex items-center gap-2">
-            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
-              <Download className="w-4 h-4" /> Export
-            </button>
+            {allowExportAll && (
+              <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+                <Download className="w-4 h-4" /> Export
+              </button>
+            )}
           </div>
         )}
       />
@@ -232,12 +264,14 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
             {officials.map((off) => (
               <div key={off._id} className="bg-white rounded-xl shadow-sm border p-4">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(off._id)} onChange={(e) => {
-                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
-                      else setSelectedIds(prev => prev.filter(id => id !== off._id));
-                    }} />
-                  </div>
+                  {allowExportAll && !showExportModal && (
+                    <div className="flex-shrink-0">
+                      <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(off._id)} onChange={(e) => {
+                        if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
+                        else setSelectedIds(prev => prev.filter(id => id !== off._id));
+                      }} />
+                    </div>
+                  )}
                   <div className="flex-shrink-0">
                     {off.photoUrl ? (
                       <img src={off.photoUrl} alt={off.candidateName} className="w-12 h-12 rounded-full object-cover border border-slate-200" />
@@ -272,7 +306,9 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-blue-900 text-white">
                   <tr>
-                    <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4" checked={officials.length>0 && selectedIds.length===officials.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(officials.map(o => o._id)); else setSelectedIds([]); }} /></th>
+                    {allowExportAll && !showExportModal && (
+                      <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4" checked={officials.length>0 && selectedIds.length===officials.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(officials.map(o => o._id)); else setSelectedIds([]); }} /></th>
+                    )}
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Photo</th>
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Name</th>
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase">Contact</th>
@@ -286,12 +322,14 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                 <tbody className="divide-y divide-slate-100">
                   {officials.map((off) => (
                     <tr key={off._id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-3">
-                        <input type="checkbox" checked={selectedIds.includes(off._id)} onChange={(e) => {
-                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
-                          else setSelectedIds(prev => prev.filter(id => id !== off._id));
-                        }} />
-                      </td>
+                      {allowExportAll && !showExportModal && (
+                        <td className="px-4 py-3">
+                          <input type="checkbox" checked={selectedIds.includes(off._id)} onChange={(e) => {
+                            if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
+                            else setSelectedIds(prev => prev.filter(id => id !== off._id));
+                          }} />
+                        </td>
+                      )}
                       <td className="px-4 py-3">
                         <div className="flex items-center">
                           {off.photoUrl ? (

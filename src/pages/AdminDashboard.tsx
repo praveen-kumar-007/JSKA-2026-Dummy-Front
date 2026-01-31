@@ -68,7 +68,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   ];
 
   // Public/feature visibility settings (controlled by superadmin)
-  const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; }>({});
+  const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; allowExportAll?: boolean; allowExportPlayers?: boolean; allowExportTechnicalOfficials?: boolean; allowExportInstitutions?: boolean }>({});
 
 
 
@@ -162,6 +162,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             allowContacts: typeof json.data.allowContacts === 'boolean' ? json.data.allowContacts : true,
             allowDonations: typeof json.data.allowDonations === 'boolean' ? json.data.allowDonations : true,
             allowImportantDocs: typeof json.data.allowImportantDocs === 'boolean' ? json.data.allowImportantDocs : true,
+            allowExportAll: typeof json.data.allowExportAll === 'boolean' ? json.data.allowExportAll : true,
+            allowExportPlayers: typeof json.data.allowExportPlayers === 'boolean' ? json.data.allowExportPlayers : true,
+            allowExportTechnicalOfficials: typeof json.data.allowExportTechnicalOfficials === 'boolean' ? json.data.allowExportTechnicalOfficials : true,
+            allowExportInstitutions: typeof json.data.allowExportInstitutions === 'boolean' ? json.data.allowExportInstitutions : true,
           });
         }
       } catch (e) {
@@ -171,6 +175,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     loadPublicSettings();
   }, [API_URL]);
 
+  // Clear table selections when exports are turned off
+  useEffect(() => {
+    const onSettingsUpdate = (e: any) => {
+      if (!e?.detail) return;
+      // If the unified export toggle was turned off, clear any selected rows for export
+      if (typeof e.detail.allowExportAll === 'boolean' && e.detail.allowExportAll === false) {
+        setSelectedIds([]);
+      }
+    };
+    window.addEventListener('ddka-settings-updated', onSettingsUpdate as EventListener);
+    return () => window.removeEventListener('ddka-settings-updated', onSettingsUpdate as EventListener);
+  }, [activeTab]);
 
 
   const handleLogout = () => {
@@ -346,6 +362,79 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     );
   };
 
+  // Generic small toggle for export-related settings
+  const ToggleSetting: React.FC<{ label: string; settingKey: 'allowExportAll' | 'allowExportPlayers' | 'allowExportTechnicalOfficials' | 'allowExportInstitutions' }> = ({ label, settingKey }) => {
+    const [loadingSetting, setLoadingSetting] = useState(false);
+    const [value, setValue] = useState<boolean | null>(null);
+
+    useEffect(() => {
+      const load = async () => {
+        setLoadingSetting(true);
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch(`${API_URL}/api/settings`, { headers: { Authorization: `Bearer ${token}` } });
+          const json = await res.json();
+          if (json && json.success && typeof json.data?.[settingKey] === 'boolean') {
+            setValue(json.data[settingKey]);
+          } else {
+            setValue(true);
+          }
+        } catch (err) {
+          console.error('Failed to load setting', err);
+          setValue(true);
+        } finally {
+          setLoadingSetting(false);
+        }
+      };
+      load();
+    }, [settingKey]);
+
+    const toggle = async () => {
+      if (value === null) return;
+      try {
+        setLoadingSetting(true);
+        const token = localStorage.getItem('token');
+        const body: any = {};
+        body[settingKey] = !value;
+        const res = await fetch(`${API_URL}/api/settings`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Failed to update setting');
+          return;
+        }
+        setValue(!value);
+        alert('Updated setting successfully');
+        // Update global publicSettings so current session reflects change immediately
+        setPublicSettings(prev => ({ ...prev, [settingKey]: !value }));
+        // Notify other parts of the app to re-fetch or update their UI
+        window.dispatchEvent(new CustomEvent('ddka-settings-updated', { detail: { [settingKey]: !value } }));
+      } catch (err) {
+        console.error(err);
+        alert('Failed to update setting');
+      } finally {
+        setLoadingSetting(false);
+      }
+    };
+
+    return (
+      <button
+        onClick={toggle}
+        disabled={loadingSetting}
+        title={`${label}: ${value ? 'ON' : 'OFF'}`}
+        aria-pressed={value === true}
+        className={`flex items-center gap-2 px-3 py-2 rounded-xl font-bold shadow-sm border transition-all active:scale-95 ${loadingSetting ? 'opacity-60 cursor-not-allowed' : ''} ${value ? 'bg-white text-green-600 border-green-50 hover:bg-green-600 hover:text-white' : 'bg-white text-slate-700 border-slate-50 hover:bg-slate-700 hover:text-white'}`}
+      >
+        {value ? <CheckCircle size={16} /> : <XCircle size={16} />}<span className="text-xs">{label}: {value ? 'ON' : 'OFF'}</span>
+      </button>
+    );
+  };
+
+  const ToggleExportAll: React.FC = () => <ToggleSetting label="Export All" settingKey="allowExportAll" />;
+
   // Toggle for allowing admins to manage Donations (superadmin only)
 
 
@@ -458,6 +547,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
           <div className="flex items-center gap-3">
             {adminRole === 'superadmin' && <ToggleShowIDs />}
 
+            {adminRole === 'superadmin' && (
+              <div className="flex gap-2 items-center">
+                <ToggleExportAll />
+              </div>
+            )}
 
             <button 
               onClick={handleLogout}
@@ -890,13 +984,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             >
               Clear Selection
             </button>
-            <button
-              onClick={() => setShowExportModal(true)}
-              disabled={filteredData.length === 0}
-              className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-bold border bg-white text-blue-900 hover:bg-blue-50 disabled:opacity-50 inline-flex items-center gap-2"
-            >
-              <Download size={14} /> Export
-            </button>
+
+            {/* Only show export when public settings allow it for the active tab */}
+            {publicSettings.allowExportAll !== false && (
+              <button
+                onClick={() => setShowExportModal(true)}
+                disabled={filteredData.length === 0}
+                className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-bold border bg-white text-blue-900 hover:bg-blue-50 disabled:opacity-50 inline-flex items-center gap-2"
+              >
+                <Download size={14} /> Export
+              </button>
+            )}
           </div>
         </div>
 
@@ -916,9 +1014,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b-2 border-slate-100">
-                    <th className="p-3 md:p-6">
-                      <input type="checkbox" className="h-4 w-4" checked={filteredData.length > 0 && selectedIds.length === filteredData.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(filteredData.map(d => d._id)); else setSelectedIds([]); }} />
-                    </th>
+                    {publicSettings.allowExportAll !== false && !showExportModal && (
+                      <th className="p-3 md:p-6">
+                        <input type="checkbox" className="h-4 w-4" checked={filteredData.length > 0 && selectedIds.length === filteredData.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(filteredData.map(d => d._id)); else setSelectedIds([]); }} />
+                      </th>
+                    )}
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Photo</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
@@ -936,12 +1036,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                     <tr><td colSpan={9} className="p-12 md:p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
                   ) : filteredData.map((item) => (
                     <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
-                      <td className="p-3 md:p-6">
-                        <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
-                          if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
-                          else setSelectedIds(prev => prev.filter(id => id !== item._id));
-                        }} />
-                      </td>
+                      {publicSettings.allowExportAll !== false && !showExportModal && (
+                        <td className="p-3 md:p-6">
+                          <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
+                            if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
+                            else setSelectedIds(prev => prev.filter(id => id !== item._id));
+                          }} />
+                        </td>
+                      )}
 
                       <td className="p-3 md:p-6">
                         <div className="flex items-center justify-center">
@@ -1043,12 +1145,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 <div className="p-8 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</div>
               ) : filteredData.map((item) => (
                 <div key={item._id} className="p-4 rounded-lg border bg-slate-50 shadow-sm flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <input type="checkbox" checked={selectedIds.includes(item._id)} onChange={(e) => {
-                      if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
-                      else setSelectedIds(prev => prev.filter(id => id !== item._id));
-                    }} />
-                  </div>
+                  {publicSettings.allowExportAll !== false && !showExportModal && (
+                    <div className="flex-shrink-0">
+                      <input type="checkbox" checked={selectedIds.includes(item._id)} onChange={(e) => {
+                        if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
+                        else setSelectedIds(prev => prev.filter(id => id !== item._id));
+                      }} />
+                    </div>
+                  )}
                   <div className="flex-shrink-0">
                     {item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo ? (
                       <img src={item.photo || item.photoUrl || item.instLogoUrl || item.instLogo || item.logo} alt={item.fullName || item.instName || 'Photo'} className="w-14 h-14 rounded-full object-cover border-2 border-slate-200" />
