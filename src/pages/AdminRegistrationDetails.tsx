@@ -9,6 +9,22 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const DEFAULT_ROLES = ['Player', 'Coach', 'Referee', 'Official', 'Manager', 'Support Staff'];
 
+const getAgeGroup = (dob?: string) => {
+  if (!dob) return 'N/A';
+  const birth = new Date(dob);
+  if (Number.isNaN(birth.getTime())) return 'N/A';
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  if (age < 10) return 'Under 10';
+  if (age <= 14) return '10-14';
+  if (age <= 16) return '14-16';
+  if (age <= 19) return '16-19';
+  if (age <= 25) return '19-25';
+  return 'Over 25';
+};
+
 const AdminRegistrationDetails = () => {
   const { id } = useParams();
   const [data, setData] = useState<any>(null);
@@ -206,6 +222,18 @@ const AdminRegistrationDetails = () => {
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   if (error || !data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
 
+  const statusValue = data?.status || 'Pending';
+  const statusKey = String(statusValue).toLowerCase();
+  const statusClass = statusKey === 'approved'
+    ? 'bg-emerald-100 text-emerald-700'
+    : statusKey === 'rejected'
+      ? 'bg-red-100 text-red-700'
+      : 'bg-amber-100 text-amber-700';
+  const ageGroup = type === 'player' ? getAgeGroup(data?.dob) : 'N/A';
+  const idDisplay = data?.idNo
+    ? data.idNo
+    : (data?.transactionId ? `DDKA-${String(data.transactionId).slice(-6).toUpperCase()}` : 'N/A');
+
   // --- Layout: Two columns on desktop, stacked on mobile ---
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 p-4 md:p-8">
@@ -324,24 +352,28 @@ const AdminRegistrationDetails = () => {
             </div>
           )}
 
-          {/* Header: Name, Email, Status, Registered Date */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-            <div className="flex flex-col gap-0.5">
-              <h1 className="text-3xl font-extrabold text-blue-900 tracking-tight">
-                {type === 'player' ? data.fullName : data.instName}
-              </h1>
-              {type === 'player' && (
-                <>
-                  <div className="text-blue-700 text-base font-medium">{data.email}</div>
-                  <div className="mt-1">
-                    <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono">ID: {data.idNo ? data.idNo : (data.transactionId ? `DDKA-${String(data.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</span>
+          {/* Summary Header */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {type === 'player' ? data.fullName : data.instName}
+                </h1>
+                {type === 'player' && (
+                  <p className="text-slate-600 text-sm mt-1">{data.email}</p>
+                )}
+                {type === 'player' && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">ID: {idDisplay}</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">Age Group: {ageGroup}</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">Role: {data.memberRole || 'Player'}</span>
                   </div>
-                </>
-              )}
-            </div>
-            <div className="flex flex-row items-center gap-4 md:gap-6">
-              <StatusMark status={data.status} />
-              <span className="text-xs text-gray-500 whitespace-nowrap">Registered: {new Date(data.createdAt).toLocaleDateString()}</span>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>{statusValue}</span>
+                <span className="text-xs text-slate-500 whitespace-nowrap">Registered: {new Date(data.createdAt).toLocaleDateString()}</span>
+              </div>
             </div>
           </div>
 
@@ -349,47 +381,114 @@ const AdminRegistrationDetails = () => {
           {type === 'player' && (
             <div className="flex flex-col gap-6 w-full">
               {/* Personal Information */}
-              <div className="bg-white rounded-xl shadow border p-6 w-full">
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <User className="text-orange-500 bg-orange-100 rounded-full p-1" size={28} />
-                  <span className="font-extrabold text-lg text-orange-700 tracking-wide">PERSONAL INFORMATION</span>
+                  <User className="text-orange-600 bg-orange-100 rounded-full p-1" size={28} />
+                  <span className="font-extrabold text-lg text-slate-900 tracking-wide">Personal Information</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                  <div><span className="font-semibold">Full Name:</span> {data.fullName}</div>
-                  <div><span className="font-semibold">Father's Name:</span> {data.fathersName}</div>
-                  <div><span className="font-semibold">Date of Birth:</span> {formatDateMDY(data.dob)}</div>
-                  <div><span className="font-semibold">Gender:</span> {data.gender}</div>
-                  <div><span className="font-semibold">Blood Group:</span> {data.bloodGroup}</div>
-                  <div><span className="font-semibold">Aadhar Number:</span> {data.aadharNumber}</div>
-                  <div className="md:col-span-2"><span className="font-semibold">Address:</span> {data.address}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Full Name</p>
+                    <p className="font-semibold text-slate-900">{data.fullName}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Father's Name</p>
+                    <p className="font-semibold text-slate-900">{data.fathersName}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Date of Birth</p>
+                    <p className="font-semibold text-slate-900">{formatDateMDY(data.dob)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Gender</p>
+                    <p className="font-semibold text-slate-900">{data.gender}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Blood Group</p>
+                    <p className="font-semibold text-slate-900">{data.bloodGroup || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Aadhar Number</p>
+                    <p className="font-semibold text-slate-900">{data.aadharNumber}</p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <p className="text-xs font-semibold text-slate-500">Address</p>
+                    <p className="font-semibold text-slate-900">{data.address}</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Contact & Identity */}
-              <div className="bg-white rounded-xl shadow border p-6 w-full">
+              {/* Contact Information */}
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <Phone className="text-blue-500 bg-blue-100 rounded-full p-1" size={28} />
-                  <span className="font-extrabold text-lg text-blue-700 tracking-wide">CONTACT & IDENTITY</span>
+                  <Phone className="text-blue-600 bg-blue-100 rounded-full p-1" size={28} />
+                  <span className="font-extrabold text-lg text-slate-900 tracking-wide">Contact Information</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                  <div><span className="font-semibold">Email:</span> {data.email}</div>
-                  <div><span className="font-semibold">Phone:</span> {data.phone}</div>
-                  <div><span className="font-semibold">Parent's Phone:</span> {data.parentsPhone}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Email</p>
+                    <p className="font-semibold text-slate-900 break-words">{data.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Phone</p>
+                    <p className="font-semibold text-slate-900">{data.phone}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Parent's Phone</p>
+                    <p className="font-semibold text-slate-900">{data.parentsPhone}</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Other Details */}
-              <div className="bg-white rounded-xl shadow border p-6 w-full">
+              {/* Club Information */}
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <Info className="text-green-500 bg-green-100 rounded-full p-1" size={28} />
-                  <span className="font-extrabold text-lg text-green-700 tracking-wide">OTHER DETAILS</span>
+                  <Info className="text-emerald-600 bg-emerald-100 rounded-full p-1" size={28} />
+                  <span className="font-extrabold text-lg text-slate-900 tracking-wide">Club Information</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                  {data.sportsExperience && <div className="md:col-span-2"><span className="font-semibold">Sports Experience:</span> {data.sportsExperience}</div>}
-                  {data.reasonForJoining && <div className="md:col-span-2"><span className="font-semibold">Reason for Joining:</span> {data.reasonForJoining}</div>}
-                  <div><span className="font-semibold">Transaction ID:</span> {data.transactionId}</div>
-                  <div><span className="font-semibold">Registered At:</span> {new Date(data.createdAt).toLocaleString()}</div>
-                  <div className="flex items-center gap-2"><span className="font-semibold">Status:</span> <StatusMark status={data.status} /></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Role</p>
+                    <p className="font-semibold text-slate-900">{data.memberRole || 'Player'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Age Group</p>
+                    <p className="font-semibold text-slate-900">{ageGroup}</p>
+                  </div>
+                  {data.sportsExperience && (
+                    <div className="md:col-span-2">
+                      <p className="text-xs font-semibold text-slate-500">Sports Experience</p>
+                      <p className="font-semibold text-slate-900">{data.sportsExperience}</p>
+                    </div>
+                  )}
+                  {data.reasonForJoining && (
+                    <div className="md:col-span-2">
+                      <p className="text-xs font-semibold text-slate-500">Reason for Joining</p>
+                      <p className="font-semibold text-slate-900">{data.reasonForJoining}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Registration Details */}
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <Wallet className="text-indigo-600 bg-indigo-100 rounded-full p-1" size={28} />
+                  <span className="font-extrabold text-lg text-slate-900 tracking-wide">Registration Details</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Transaction ID</p>
+                    <p className="font-semibold text-slate-900">{data.transactionId || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Registered At</p>
+                    <p className="font-semibold text-slate-900">{new Date(data.createdAt).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Status</p>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>{statusValue}</span>
+                  </div>
                 </div>
               </div>
             </div>

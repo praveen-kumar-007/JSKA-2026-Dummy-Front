@@ -21,6 +21,7 @@ interface AdminPermissions {
   canAccessChampions?: boolean;
   canAccessReferees?: boolean;
   canAccessTechnicalOfficials?: boolean;
+  canAccessUnifiedSearch?: boolean;
   canAccessPlayerDetails?: boolean;
   canAccessInstitutionDetails?: boolean;
   canAccessDonations?: boolean;
@@ -68,7 +69,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   ];
 
   // Public/feature visibility settings (controlled by superadmin)
-  const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; allowExportAll?: boolean; allowExportPlayers?: boolean; allowExportTechnicalOfficials?: boolean; allowExportInstitutions?: boolean }>({});
+  const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; allowUnifiedSearch?: boolean; allowExportAll?: boolean; allowExportPlayers?: boolean; allowExportTechnicalOfficials?: boolean; allowExportInstitutions?: boolean }>({});
 
 
 
@@ -162,6 +163,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
             allowContacts: typeof json.data.allowContacts === 'boolean' ? json.data.allowContacts : true,
             allowDonations: typeof json.data.allowDonations === 'boolean' ? json.data.allowDonations : true,
             allowImportantDocs: typeof json.data.allowImportantDocs === 'boolean' ? json.data.allowImportantDocs : true,
+            allowUnifiedSearch: typeof json.data.allowUnifiedSearch === 'boolean' ? json.data.allowUnifiedSearch : true,
             allowExportAll: typeof json.data.allowExportAll === 'boolean' ? json.data.allowExportAll : true,
             allowExportPlayers: typeof json.data.allowExportPlayers === 'boolean' ? json.data.allowExportPlayers : true,
             allowExportTechnicalOfficials: typeof json.data.allowExportTechnicalOfficials === 'boolean' ? json.data.allowExportTechnicalOfficials : true,
@@ -182,6 +184,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
       // If the unified export toggle was turned off, clear any selected rows for export
       if (typeof e.detail.allowExportAll === 'boolean' && e.detail.allowExportAll === false) {
         setSelectedIds([]);
+      }
+      if (typeof e.detail.allowUnifiedSearch === 'boolean') {
+        setPublicSettings(prev => ({ ...prev, allowUnifiedSearch: e.detail.allowUnifiedSearch }));
       }
     };
     window.addEventListener('ddka-settings-updated', onSettingsUpdate as EventListener);
@@ -514,6 +519,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     (item.fullName || item.instName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (item.transactionId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (item.aadharNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.idNo || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (item.phone || item.email || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -653,6 +659,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 }`}
               />
               <span className="font-bold text-xs">Contact Forms</span>
+            </button>
+          )}
+
+          {/* Unified Search */}
+          {(adminRole === 'superadmin' || adminPermissions?.canAccessUnifiedSearch) && (
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = '/admin/unified-search';
+              }}
+              className="flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] bg-white hover:bg-slate-50 cursor-pointer"
+            >
+              <Search size={28} className="text-slate-700 mb-2" />
+              <span className="font-bold text-xs">Unified Search</span>
             </button>
           )}
 
@@ -924,16 +944,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
-          <input 
-            type="text" 
-            placeholder="Search by name, email, phone, Aadhar, or transaction ID..." 
-            className="w-full pl-12 md:pl-16 pr-4 md:pr-6 py-3 md:py-4 bg-white border-4 border-white rounded-[2rem] shadow-xl focus:ring-8 focus:ring-blue-50 outline-none transition-all font-medium text-base"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        {/* Header + Search Bar */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900">Registrations</h2>
+            <p className="text-sm text-slate-500">Manage player and institution approvals</p>
+          </div>
+          <div className="relative w-full md:max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search by name, email, or Aadhar" 
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-50 outline-none transition-all text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* Filters: Status + Age Group */}
@@ -943,10 +969,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               <button
                 key={status}
                 onClick={() => setStatusFilter(status)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${
                   statusFilter === status
-                    ? 'bg-blue-900 text-white border-blue-900'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-white'
                 }`}
               >
                 {status}
@@ -968,10 +994,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 <button
                   key={age}
                   onClick={() => setAgeFilter(age)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${
                     ageFilter === age
-                      ? 'bg-orange-500 text-white border-orange-500'
-                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                      ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-white'
                   }`}
                 >
                   {age}
@@ -1013,7 +1039,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         />
 
         {/* Table Container */}
-        <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow border border-slate-200 overflow-hidden">
           {!isMobile ? (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -1036,11 +1062,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                 </thead>
                 <tbody className="divide-y-2 divide-slate-50">
                   {loading ? (
-                    <tr><td colSpan={9} className="p-12 md:p-32 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={48} /></td></tr>
+                    // show a few skeleton rows while table data loads
+                    Array.from({ length: 4 }).map((_, i) => (
+                      <tr key={i} className="opacity-90">
+                        <td className="p-4 md:p-6"><div className="h-4 w-4 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-10 w-10 rounded-full bg-slate-200 animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-40 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-56 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-32 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-44 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-28 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6"><div className="h-4 w-24 bg-slate-200 rounded animate-pulse"></div></td>
+                        <td className="p-4 md:p-6 text-right"><div className="inline-block h-8 w-20 bg-slate-200 rounded animate-pulse"></div></td>
+                      </tr>
+                    ))
                   ) : filteredData.length === 0 ? (
                     <tr><td colSpan={9} className="p-12 md:p-32 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</td></tr>
-                  ) : filteredData.map((item) => (
-                    <tr key={item._id} className="hover:bg-blue-50/50 transition-colors">
+                  ) : filteredData.map((item) => {
+                    const statusValue = (item.status || 'Pending');
+                    const statusKey = statusValue.toLowerCase();
+                    const statusClass = statusKey === 'approved'
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : statusKey === 'rejected'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-amber-100 text-amber-700';
+                    const isPending = statusKey === 'pending';
+
+                    return (
+                    <tr key={item._id} className="hover:bg-slate-50 transition-colors">
                       {publicSettings.allowExportAll !== false && !showExportModal && (
                         <td className="p-3 md:p-6">
                           <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
@@ -1097,48 +1146,52 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                       </td>
 
                       <td className="p-3 md:p-6">
-                        <div className="flex items-center gap-2">
-                          <StatusMark status={item.status} className="w-6 h-6" title={item.status || 'Pending'} />
-                          <span className="sr-only">{item.status || 'Pending'}</span>
-                        </div>
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
+                          {statusValue}
+                        </span>
                       </td>
 
                       <td className="p-3 md:p-6">
                         <div className="flex justify-end gap-2">
-                          <button 
-                            onClick={() => updateStatus(item._id, 'Approved')} 
-                            className="p-2 bg-green-50 text-green-600 rounded-2xl hover:bg-green-600 hover:text-white transition-all active:scale-90"
-                            title="Approve"
+                          {isPending && (
+                            <>
+                              <button 
+                                onClick={() => updateStatus(item._id, 'Approved')} 
+                                className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all active:scale-90"
+                                title="Approve"
+                              >
+                                <CheckCircle size={18} />
+                              </button>
+                              <button 
+                                onClick={() => updateStatus(item._id, 'Rejected')} 
+                                className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
+                                title="Reject"
+                              >
+                                <XCircle size={18} />
+                              </button>
+                            </>
+                          )}
+                          <a
+                            href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
+                            title="View Details"
                           >
-                            <CheckCircle size={18} />
-                          </button>
-                          <button 
-                            onClick={() => updateStatus(item._id, 'Rejected')} 
-                            className="p-2 bg-red-50 text-red-600 rounded-2xl hover:bg-red-600 hover:text-white transition-all active:scale-90"
-                            title="Reject"
-                          >
-                            <XCircle size={18} />
-                          </button>
+                            <Eye size={16} /> View Details
+                          </a>
                           {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
                             <button 
                               onClick={() => deleteEntry(item._id)} 
-                              className="p-2 bg-slate-100 text-slate-400 rounded-2xl hover:bg-slate-950 hover:text-white transition-all active:scale-90"
+                              className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
                               title="Delete"
                             >
                               <Trash2 size={18} />
                             </button>
                           )}
-                          <a
-                            href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
-                            title="View Details"
-                          >
-                            <Eye size={16} /> View Details
-                          </a>
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  );
+                  })}
                 </tbody>
               </table>
             </div>

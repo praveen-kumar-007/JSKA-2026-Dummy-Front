@@ -39,6 +39,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<TechnicalOfficial | null>(null);
   const [editForm, setEditForm] = useState<Partial<TechnicalOfficial>>({});
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
@@ -58,6 +59,11 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const getOfficialId = (off: TechnicalOfficial) => {
+    if (!off?._id) return '';
+    return `DDKA-2026-${off._id.slice(-4).toUpperCase()}`;
+  };
 
   const fetchOfficials = async () => {
     setLoading(true);
@@ -254,6 +260,18 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
         )}
       />
 
+      <div className="mt-4 mb-6">
+        <div className="relative max-w-md">
+          <input
+            type="text"
+            placeholder="Search by name, email, mobile, or ID"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white shadow-sm text-sm focus:ring-4 focus:ring-blue-50 outline-none"
+          />
+        </div>
+      </div>
+
       {loading ? (
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900" />
@@ -261,8 +279,31 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
       ) : (
         isMobile ? (
           <div className="space-y-4">
-            {officials.map((off) => (
-              <div key={off._id} className="bg-white rounded-xl shadow-sm border p-4">
+            {officials
+              .filter((off) => {
+                if (!searchTerm.trim()) return true;
+                const q = searchTerm.toLowerCase();
+                return (
+                  (off.candidateName || '').toLowerCase().includes(q) ||
+                  (off.email || '').toLowerCase().includes(q) ||
+                  (off.mobile || '').toLowerCase().includes(q) ||
+                  (off.aadharNumber || '').toLowerCase().includes(q) ||
+                  (off.transactionId || '').toLowerCase().includes(q) ||
+                  getOfficialId(off).toLowerCase().includes(q)
+                );
+              })
+              .map((off) => {
+              const statusValue = off.status || 'Pending';
+              const statusKey = statusValue.toLowerCase();
+              const statusClass = statusKey === 'approved'
+                ? 'bg-emerald-100 text-emerald-700'
+                : statusKey === 'rejected'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-amber-100 text-amber-700';
+              const isPending = statusKey === 'pending';
+
+              return (
+              <div key={off._id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                 <div className="flex items-start gap-4">
                   {allowExportAll && !showExportModal && (
                     <div className="flex-shrink-0">
@@ -283,6 +324,11 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                     <div className="font-bold text-slate-900 truncate">{off.candidateName}</div>
                     <div className="text-xs text-slate-600 break-words">{off.email} • +91 {off.mobile}</div>
                     <div className="text-xs text-slate-600 mt-1">{off.playerLevel} • {off.gender}</div>
+                    <div className="mt-2">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
+                        {statusValue}
+                      </span>
+                    </div>
                     <div className="text-sm font-semibold mt-2">₹{off.examFee || 1000}</div>
                     <div className="text-xs text-slate-500 mt-1 break-words">TXN: {off.transactionId || '-'}</div>
                     <div className="mt-2">{off.receiptUrl ? <a href={off.receiptUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline break-words">View Receipt</a> : <span className="text-slate-400">No receipt</span>}</div>
@@ -291,36 +337,64 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                 </div>
 
                 <div className="mt-3 flex gap-2 flex-wrap">
-                  <button onClick={() => navigate(`/admin/technical-officials/${off._id}`)} className="flex-1 min-w-0 px-3 py-2 bg-blue-50 text-blue-700 rounded-md text-sm">View</button>
-                  <button onClick={() => handleStatusChange(off._id, 'Approved')} className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-md text-sm">Approve</button>
-                  <button onClick={() => handleStatusChange(off._id, 'Rejected')} className="px-3 py-2 bg-red-50 text-red-700 rounded-md text-sm">Reject</button>
-                  <button onClick={() => openEdit(off)} className="px-3 py-2 bg-slate-50 text-slate-700 rounded-md text-sm">Edit</button>
-                  {canDelete && <button onClick={() => handleDelete(off._id)} className="px-3 py-2 bg-red-500 text-white rounded-md text-sm">Delete</button>}
+                  <button onClick={() => navigate(`/admin/technical-officials/${off._id}`)} className="flex-1 min-w-0 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold">View Details</button>
+                  {isPending && (
+                    <>
+                      <button onClick={() => handleStatusChange(off._id, 'Approved')} className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-sm">Approve</button>
+                      <button onClick={() => handleStatusChange(off._id, 'Rejected')} className="px-3 py-2 bg-red-50 text-red-700 rounded-lg text-sm">Reject</button>
+                    </>
+                  )}
+                  <button onClick={() => openEdit(off)} className="px-3 py-2 bg-slate-50 text-slate-700 rounded-lg text-sm">Edit</button>
+                  {canDelete && <button onClick={() => handleDelete(off._id)} className="px-3 py-2 bg-red-50 text-red-700 rounded-lg text-sm">Delete</button>}
                 </div>
               </div>
-            ))} 
+            );
+            })} 
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow border border-slate-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-900 text-white">
+                <thead>
                   <tr>
                     {allowExportAll && !showExportModal && (
-                      <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4" checked={officials.length>0 && selectedIds.length===officials.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(officials.map(o => o._id)); else setSelectedIds([]); }} /></th>
+                      <th className="px-4 py-3 border-b text-left"><input type="checkbox" className="h-4 w-4" checked={officials.length>0 && selectedIds.length===officials.length} onChange={(e) => { if (e.currentTarget.checked) setSelectedIds(officials.map(o => o._id)); else setSelectedIds([]); }} /></th>
                     )}
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Photo</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Contact</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Level</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Payment</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold uppercase">Remarks</th>
-                    <th className="px-4 py-3 text-right text-xs font-bold uppercase">Actions</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Photo</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Name</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Contact</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Level</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Payment</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Status</th>
+                    <th className="px-4 py-3 border-b text-left text-xs font-semibold uppercase text-slate-500">Remarks</th>
+                    <th className="px-4 py-3 border-b text-right text-xs font-semibold uppercase text-slate-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {officials.map((off) => (
+                  {officials
+                    .filter((off) => {
+                      if (!searchTerm.trim()) return true;
+                      const q = searchTerm.toLowerCase();
+                      return (
+                        (off.candidateName || '').toLowerCase().includes(q) ||
+                        (off.email || '').toLowerCase().includes(q) ||
+                        (off.mobile || '').toLowerCase().includes(q) ||
+                        (off.aadharNumber || '').toLowerCase().includes(q) ||
+                        (off.transactionId || '').toLowerCase().includes(q) ||
+                        getOfficialId(off).toLowerCase().includes(q)
+                      );
+                    })
+                    .map((off) => {
+                    const statusValue = off.status || 'Pending';
+                    const statusKey = statusValue.toLowerCase();
+                    const statusClass = statusKey === 'approved'
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : statusKey === 'rejected'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-amber-100 text-amber-700';
+                    const isPending = statusKey === 'pending';
+
+                    return (
                     <tr key={off._id} className="hover:bg-slate-50 transition-colors">
                       {allowExportAll && !showExportModal && (
                         <td className="px-4 py-3">
@@ -372,40 +446,43 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                         )}
                       </td>
                       <td className="px-4 py-3 text-sm">
-                        <div className="flex items-center gap-2">
-                          <StatusMark status={off.status} className="w-6 h-6" title={off.status} />
-                          <span className="sr-only">{off.status}</span>
-                        </div>
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
+                          {statusValue}
+                        </span>
                       </td>
                       <td className="px-4 py-3 text-xs text-slate-600 max-w-xs truncate">
                         {off.remarks || '-'}
                       </td>
                       <td className="px-4 py-3 text-right text-xs">
                         <div className="flex justify-end gap-2">
+                          {isPending && (
+                            <>
+                              <button
+                                onClick={() => handleStatusChange(off._id, 'Approved')}
+                                className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                                title="Approve"
+                              >
+                                <CheckCircle2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleStatusChange(off._id, 'Rejected')}
+                                className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-700 hover:bg-red-100"
+                                title="Reject"
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
                           <button
                             onClick={() => navigate(`/admin/technical-officials/${off._id}`)}
-                            className="inline-flex items-center justify-center px-3 h-8 rounded-full bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold"
-                            title="View more"
+                            className="inline-flex items-center justify-center px-3 h-8 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold"
+                            title="View details"
                           >
-                            View
-                          </button>
-                          <button
-                            onClick={() => handleStatusChange(off._id, 'Approved')}
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                            title="Approve"
-                          >
-                            <CheckCircle2 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleStatusChange(off._id, 'Rejected')}
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50 text-red-700 hover:bg-red-100"
-                            title="Reject"
-                          >
-                            <XCircle className="w-4 h-4" />
+                            View Details
                           </button>
                           <button
                             onClick={() => openEdit(off)}
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-slate-700 hover:bg-slate-100"
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-100"
                             title="Edit"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -413,7 +490,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                           {canDelete && (
                             <button
                               onClick={() => handleDelete(off._id)}
-                              className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50 text-red-700 hover:bg-red-100"
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-700 hover:bg-red-100"
                               title="Delete"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -422,7 +499,8 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  );
+                  })}
                 </tbody>
               </table>
             </div>

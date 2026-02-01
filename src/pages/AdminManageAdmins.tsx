@@ -11,6 +11,7 @@ interface AdminPermissions {
   canAccessChampions: boolean;            // Our Champions tab
   canAccessReferees: boolean;             // Referee Board tab
   canAccessTechnicalOfficials: boolean;   // Technical Officials tab
+  canAccessUnifiedSearch: boolean;        // Unified Search page
   canAccessPlayerDetails: boolean;        // Player Details tab
   canAccessInstitutionDetails: boolean;   // Institution Details tab
   canAccessDonations: boolean;            // Donations tab
@@ -103,6 +104,7 @@ const AdminManageAdmins: React.FC = () => {
       canAccessChampions: value,
       canAccessReferees: value,
       canAccessTechnicalOfficials: value,
+      canAccessUnifiedSearch: value,
       canAccessPlayerDetails: value,
       canAccessInstitutionDetails: value,
       canAccessDonations: value,
@@ -183,6 +185,7 @@ const AdminManageAdmins: React.FC = () => {
           </button>
         </div>
 
+
         {/* Manage Modules Modal */}
         {showModuleModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -211,6 +214,7 @@ const AdminManageAdmins: React.FC = () => {
               && admin.permissions?.canAccessChampions
               && admin.permissions?.canAccessReferees
               && admin.permissions?.canAccessTechnicalOfficials
+              && admin.permissions?.canAccessUnifiedSearch
               && admin.permissions?.canAccessPlayerDetails
               && admin.permissions?.canAccessInstitutionDetails
               && admin.permissions?.canDelete;
@@ -222,6 +226,7 @@ const AdminManageAdmins: React.FC = () => {
               { key: 'canAccessChampions', label: 'Our Champions' },
               { key: 'canAccessReferees', label: 'Referee Board' },
               { key: 'canAccessTechnicalOfficials', label: 'Technical Officials' },
+              { key: 'canAccessUnifiedSearch', label: 'Unified Search' },
               { key: 'canAccessPlayerDetails', label: 'Player Details' },
               { key: 'canAccessInstitutionDetails', label: 'Institution Details' },
               { key: 'canAccessDonations', label: 'Donations' },

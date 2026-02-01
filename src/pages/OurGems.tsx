@@ -137,9 +137,96 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
         <div className="max-w-7xl mx-auto px-4 py-12 relative z-20">
           
           {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
-            </div>
+            // show skeleton placeholders for page sections
+            <>
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
+                <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-8 py-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
+                  <div className="h-6 w-56 bg-white/10 rounded-md" />
+                </div>
+                <div className="p-4 md:p-10">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-slate-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-slate-200 animate-pulse" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse" />
+                            <div className="h-3 bg-slate-200 rounded w-1/2 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
+                <div className="bg-gradient-to-r from-teal-600 to-emerald-500 px-8 py-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
+                  <div className="h-6 w-44 bg-white/10 rounded-md" />
+                </div>
+                <div className="p-4 md:p-10">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-emerald-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-slate-200 animate-pulse" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse" />
+                            <div className="h-3 bg-slate-200 rounded w-1/2 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
+                <div className="bg-gradient-to-r from-fuchsia-600 to-purple-600 px-8 py-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
+                  <div className="h-6 w-48 bg-white/10 rounded-md" />
+                </div>
+                <div className="p-4 md:p-10">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-purple-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-slate-200 animate-pulse" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse" />
+                            <div className="h-3 bg-slate-200 rounded w-1/2 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-800 via-indigo-800 to-cyan-700 px-8 py-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
+                  <div className="h-6 w-40 bg-white/10 rounded-md" />
+                </div>
+                <div className="p-4 md:p-10">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-slate-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-slate-200 animate-pulse" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse" />
+                            <div className="h-3 bg-slate-200 rounded w-1/2 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
             <>
               {/* National Players Section */}
@@ -324,7 +411,6 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
 
           {/* Pride Message */}
           <div className="mt-12 bg-gradient-to-r from-indigo-700 via-slate-800 to-cyan-700 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
             <div className="relative z-10">
               <Users className="w-16 h-16 text-white mx-auto mb-6 opacity-90" />
               <h3 className="text-3xl font-oswald font-bold text-white mb-4 uppercase drop-shadow-lg">

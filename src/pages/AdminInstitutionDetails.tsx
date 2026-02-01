@@ -118,6 +118,7 @@ const AdminInstitutionDetails = () => {
           <AdminPageHeader
             title={data.instName}
             subtitle="View institution registration and payment proof"
+            showBack={false}
             actions={(
               <div className="flex items-center gap-2">
                 <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-blue-900 font-bold hover:underline w-fit"><ArrowLeft size={22} /> Back</button>

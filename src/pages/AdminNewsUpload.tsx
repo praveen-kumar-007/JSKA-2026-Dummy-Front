@@ -200,7 +200,19 @@ const AdminNewsUpload = () => {
       {/* News Management Cards */}
       <h2 className="text-2xl font-bold mb-4">All News</h2>
       {loading ? (
-        <div>Loading...</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl shadow border p-6 flex flex-col relative">
+              <div className="h-40 bg-slate-200 rounded-md mb-4 animate-pulse" />
+              <div className="h-4 bg-slate-200 rounded w-3/4 mb-2 animate-pulse" />
+              <div className="h-3 bg-slate-200 rounded w-1/2 mb-4 animate-pulse" />
+              <div className="mt-auto flex gap-2">
+                <div className="h-8 w-24 bg-slate-200 rounded animate-pulse" />
+                <div className="h-8 w-20 bg-slate-200 rounded animate-pulse" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {news

@@ -125,6 +125,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
         <AdminPageHeader
           title="Technical Official Details"
           subtitle={official ? official.candidateName : ''}
+          showBack={false}
           actions={(
             <div className="flex items-center gap-2">
               <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-blue-900"><ArrowLeft className="w-4 h-4" /> Back</button>

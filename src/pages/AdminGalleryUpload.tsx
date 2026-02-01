@@ -136,7 +136,13 @@ const AdminGalleryUpload = () => {
         <div className="w-full h-0.5 bg-gradient-to-r from-blue-200 via-slate-100 to-orange-100 mb-12 rounded-full" />
         <h2 className="text-2xl font-bold mb-4">Gallery Images</h2>
         {loading ? (
-          <div>Loading...</div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="relative group bg-white rounded-xl shadow border p-2 flex flex-col items-center">
+                <div className="w-full h-40 rounded-lg bg-slate-200 animate-pulse" />
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {gallery.map((img) => (

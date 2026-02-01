@@ -38,6 +38,7 @@ import DonationReceipt from './pages/DonationReceipt';
 const AdminTechnicalOfficialsManagement = React.lazy(() => import('./pages/AdminTechnicalOfficialsManagement'));
 const AdminTechnicalOfficialDetails = React.lazy(() => import('./pages/AdminTechnicalOfficialDetails'));
 const AdminManageAdmins = React.lazy(() => import('./pages/AdminManageAdmins'));
+const AdminUnifiedSearch = React.lazy(() => import('./pages/AdminUnifiedSearch'));
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
@@ -128,6 +129,10 @@ const App: React.FC = () => {
           } />
           <Route path="/admin/technical-officials/:id" element={
             isAuthenticated ? <AdminTechnicalOfficialDetails /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+          {/* Unified Admin Search (protected) */}
+          <Route path="/admin/unified-search" element={
+            isAuthenticated ? <AdminUnifiedSearch /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
           } />
           {/* Admin News Upload Route (protected) */}
           <Route path="/admin-news-upload" element={

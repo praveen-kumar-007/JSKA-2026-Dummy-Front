@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import type { Language } from '../translations';
 import { translations } from '../translations';
+import Skeleton from '../components/ui/Skeleton';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -12,21 +13,27 @@ interface GalleryProps {
 export const Gallery: React.FC<GalleryProps> = ({ lang }) => {
   const t = translations[lang];
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isZoomed, setIsZoomed] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Fetch gallery images from backend
+    // Fetch gallery images from backend with loading state
     const fetchImages = async () => {
+      setIsLoading(true);
       try {
         const res = await fetch(`${API_URL}/api/gallery`);
         const result = await res.json();
         if (result.success && Array.isArray(result.data)) {
           setGalleryImages(result.data.map((img: any) => img.url));
+        } else {
+          setGalleryImages([]);
         }
       } catch (e) {
         setGalleryImages([]);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchImages();
@@ -111,7 +118,12 @@ export const Gallery: React.FC<GalleryProps> = ({ lang }) => {
           </p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-          {galleryImages.length === 0 ? (
+          {isLoading ? (
+            // show a set of skeleton tiles while loading
+            Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="aspect-square rounded-xl bg-slate-200 animate-pulse shadow-sm" />
+            ))
+          ) : galleryImages.length === 0 ? (
             <div className="col-span-full text-center text-slate-400 py-12 text-lg">No images in the gallery yet.</div>
           ) : (
             galleryImages.map((url, index) => (
