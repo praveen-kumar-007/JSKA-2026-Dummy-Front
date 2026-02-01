@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, XCircle, Edit2, Trash2, Save, X, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import ExportCsvModal from '../components/admin/ExportCsvModal';
-import StatusMark from '../components/admin/StatusMark';
 
 interface TechnicalOfficial {
   _id: string;

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import type { Language } from '../translations';
 import { translations } from '../translations';
-import Skeleton from '../components/ui/Skeleton';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
