@@ -544,6 +544,8 @@
         cert.style.width = '1100px';
         cert.style.height = '780px';
         const removedStylesheets = [];
+        let exportHost = null;
+        let exportClone = null;
         const removeExternalStylesheets = () => {
           const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
           links.forEach((link) => {
@@ -574,6 +576,24 @@
           await waitForImages();
           await new Promise(r => setTimeout(r, 120));
 
+          exportHost = document.createElement('div');
+          exportHost.style.position = 'fixed';
+          exportHost.style.left = '-10000px';
+          exportHost.style.top = '0';
+          exportHost.style.width = '1100px';
+          exportHost.style.height = '780px';
+          exportHost.style.background = '#ffffff';
+          exportHost.style.zIndex = '-1';
+
+          exportClone = cert.cloneNode(true);
+          exportClone.style.transform = 'scale(1)';
+          exportClone.style.transformOrigin = 'top left';
+          exportClone.style.width = '1100px';
+          exportClone.style.height = '780px';
+
+          exportHost.appendChild(exportClone);
+          document.body.appendChild(exportHost);
+
           const renderOptions = {
             cacheBust: true,
             pixelRatio: 3,
@@ -592,7 +612,7 @@
           if (format === 'pdf') {
             const targetWidthPx = 1920;
             const pixelRatio = Math.max(1, Math.ceil(targetWidthPx / 1100));
-            const dataUrl = await window.htmlToImage.toPng(cert, { ...renderOptions, pixelRatio });
+            const dataUrl = await window.htmlToImage.toPng(exportClone || cert, { ...renderOptions, pixelRatio });
             const img = new Image();
             img.src = dataUrl;
             await img.decode();
@@ -601,7 +621,7 @@
             pdf.addImage(img, 'PNG', 0, 0, img.width, img.height);
             pdf.save('DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.pdf');
           } else {
-            const dataUrl = await window.htmlToImage.toPng(cert, renderOptions);
+            const dataUrl = await window.htmlToImage.toPng(exportClone || cert, renderOptions);
             const a=document.createElement('a');
             a.href=dataUrl;
             a.download = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.png';
@@ -611,6 +631,7 @@
           alert('Could not generate file. Try Print.');
           console.error(err);
         } finally {
+          if (exportHost && exportHost.parentNode) exportHost.parentNode.removeChild(exportHost);
           cert.style.transform = prevCertTransform;
           cert.style.transformOrigin = prevCertTransformOrigin;
           cert.style.width = prevCertWidth;
