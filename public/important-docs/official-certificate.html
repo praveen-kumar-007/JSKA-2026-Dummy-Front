@@ -610,7 +610,9 @@
           };
 
           if (format === 'pdf') {
-            const targetWidthPx = 1920;
+            // support high-resolution targets via URL param `resolution=8k` (defaults to 1920)
+            const resParam = urlParams.get('resolution') || '';
+            const targetWidthPx = resParam === '8k' ? 7680 : 1920;
             const pixelRatio = Math.max(1, Math.ceil(targetWidthPx / 1100));
             const dataUrl = await window.htmlToImage.toPng(exportClone || cert, { ...renderOptions, pixelRatio });
             const img = new Image();
@@ -619,9 +621,37 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [img.width, img.height] });
             pdf.addImage(img, 'PNG', 0, 0, img.width, img.height);
+
+            // If opened from another window/parent, post the PDF blob back via postMessage
+            try {
+              if (window.opener || window.parent) {
+                const blob = pdf.output('blob');
+                const target = window.opener || window.parent;
+                target.postMessage({ type: 'ddka:certificate', format: 'pdf', blob }, window.location.origin);
+                setTimeout(() => { try { window.close(); } catch (e) {} }, 300);
+                return;
+              }
+            } catch (e) {
+              console.error('PostMessage failed for PDF:', e);
+            }
+
             pdf.save('DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.pdf');
           } else {
-            const dataUrl = await window.htmlToImage.toPng(exportClone || cert, renderOptions);
+            // For PNGs, support high-resolution via resolution param as well
+            const resParam = urlParams.get('resolution') || '';
+            const highPixelRatio = resParam === '8k' ? 7 : 3;
+            const dataUrl = await window.htmlToImage.toPng(exportClone || cert, { ...renderOptions, pixelRatio: highPixelRatio });
+            try {
+              if (window.opener || window.parent) {
+                const target = window.opener || window.parent;
+                target.postMessage({ type: 'ddka:certificate', format: 'png', dataUrl }, window.location.origin);
+                setTimeout(() => { try { window.close(); } catch (e) {} }, 300);
+                return;
+              }
+            } catch (e) {
+              console.error('PostMessage failed for PNG:', e);
+            }
+
             const a=document.createElement('a');
             a.href=dataUrl;
             a.download = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.png';

@@ -101,7 +101,7 @@ const Account: React.FC = () => {
     }
     if (profile.grade) params.set('grade', profile.grade);
     if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
-    if (autoDownload) params.set('download', 'pdf');
+    if (autoDownload) { params.set('download', 'pdf'); params.set('resolution', '8k'); }
     return `/important-docs/technical-id-card.html?${params.toString()}`;
   };
 
@@ -118,16 +118,59 @@ const Account: React.FC = () => {
     params.set('date', '2026-01-18');
     if (profile.grade) params.set('grade', profile.grade);
     if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
-    if (autoDownload) params.set('download', 'pdf');
+    if (autoDownload) { params.set('download', 'pdf'); params.set('resolution', '8k'); }
     return `/important-docs/official-certificate.html?${params.toString()}`;
   };
 
-  const triggerDownload = (url: string) => {
+  const triggerDownload = (url: string, filenameBase?: string) => {
     if (!url) return;
     const win = window.open(url, '_blank');
     if (!win) {
       window.location.href = url;
+      return;
     }
+
+    const handler = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return;
+      const data = e.data || {};
+      if (data.type !== 'ddka:certificate') return;
+
+      try {
+        if (data.format === 'png' && data.dataUrl) {
+          const a = document.createElement('a');
+          a.href = data.dataUrl;
+          a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else if (data.format === 'pdf') {
+          if (data.blob) {
+            const url = URL.createObjectURL(data.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          } else if (data.dataUrl) {
+            const a = document.createElement('a');
+            a.href = data.dataUrl;
+            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          }
+        }
+      } catch (err) {
+        console.error('Download handler failed', err);
+      } finally {
+        window.removeEventListener('message', handler as any);
+        try { win.close(); } catch (e) {}
+      }
+    };
+
+    window.addEventListener('message', handler as any);
   };
 
   const canViewOfficialAssets = role === 'official' && profile?.status === 'Approved' && !!profile?.grade;
@@ -426,7 +469,7 @@ const Account: React.FC = () => {
                                 onClick={() => {
                                   const url = buildTechnicalIdCardUrl(true);
                                   if (!url) return;
-                                  triggerDownload(url);
+                                  triggerDownload(url, `ID_${(profile && (profile.candidateName || profile.fullName) || 'id').replace(/\s+/g,'_')}`);
                                 }}
                                 className="px-3 py-2 rounded-md bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
                               >
@@ -455,7 +498,7 @@ const Account: React.FC = () => {
                               onClick={() => {
                                 const url = buildOfficialCertificateUrl(true);
                                 if (!url) return;
-                                triggerDownload(url);
+                                triggerDownload(url, (profile && (profile.candidateName || profile.fullName) || 'certificate').replace(/\s+/g,'_'));
                               }}
                               className="px-3 py-2 rounded-md bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
                             >

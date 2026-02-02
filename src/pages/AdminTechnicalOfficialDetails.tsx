@@ -389,16 +389,61 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     params.set('date', '2026-01-18');
                     if (official.grade) params.set('grade', official.grade);
                     if (official.photoUrl) params.set('photoUrl', official.photoUrl);
-                    if (autoDownload) params.set('download', 'pdf');
+                    if (autoDownload) { params.set('download', 'pdf'); params.set('resolution','8k'); }
                     return `/important-docs/official-certificate.html?${params.toString()}`;
                   };
 
-                  const triggerDownload = (url: string) => {
+                  const triggerDownload = (url: string, filenameBase?: string) => {
                     if (!url) return;
                     const win = window.open(url, '_blank');
                     if (!win) {
+                      // fallback to navigation if popup blocked
                       window.location.href = url;
+                      return;
                     }
+
+                    const handler = (e: MessageEvent) => {
+                      if (e.origin !== window.location.origin) return;
+                      const data = e.data || {};
+                      if (data.type !== 'ddka:certificate') return;
+
+                      try {
+                        if (data.format === 'png' && data.dataUrl) {
+                          const a = document.createElement('a');
+                          a.href = data.dataUrl;
+                          a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+                          document.body.appendChild(a);
+                          a.click();
+                          a.remove();
+                        } else if (data.format === 'pdf') {
+                          // Blob may be posted directly
+                          if (data.blob) {
+                            const url = URL.createObjectURL(data.blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            URL.revokeObjectURL(url);
+                          } else if (data.dataUrl) {
+                            const a = document.createElement('a');
+                            a.href = data.dataUrl;
+                            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                          }
+                        }
+                      } catch (err) {
+                        console.error('Download handler failed', err);
+                      } finally {
+                        window.removeEventListener('message', handler as any);
+                        try { win.close(); } catch (e) {}
+                      }
+                    };
+
+                    window.addEventListener('message', handler as any);
                   };
 
                   return (
@@ -458,7 +503,8 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                   onClick={() => {
                     const url = buildCertificateUrl(true);
                     if (!url) return;
-                    triggerDownload(url);
+                    const filenameBase = official ? (official.candidateName || 'certificate').replace(/\s+/g, '_') : 'certificate';
+                    triggerDownload(url, filenameBase);
                   }}
                   className="w-full sm:w-auto px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-widest hover:bg-emerald-100 disabled:bg-slate-300 disabled:text-slate-600 border border-emerald-200"
                   title={official.status !== 'Approved'
