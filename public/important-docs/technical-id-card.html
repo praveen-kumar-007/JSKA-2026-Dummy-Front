@@ -646,9 +646,12 @@
             if (savePdfBtn) savePdfBtn.addEventListener('click', exportPdf);
 
             if (window.__ddkaAutoDownload) {
-                setTimeout(() => {
-                    if (window.__ddkaAutoDownload === 'pdf') exportPdf();
-                    else exportJpg();
+                setTimeout(async () => {
+                    if (window.__ddkaAutoDownload === 'pdf') await exportPdf();
+                    else await exportJpg();
+                    setTimeout(() => {
+                        try { window.close(); } catch (e) { /* ignore */ }
+                    }, 300);
                 }, 200);
             }
 

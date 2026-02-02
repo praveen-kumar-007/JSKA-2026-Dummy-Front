@@ -393,6 +393,15 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     return `/important-docs/official-certificate.html?${params.toString()}`;
                   };
 
+                  const triggerDownload = (url: string) => {
+                    if (!url) return;
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = url;
+                    document.body.appendChild(iframe);
+                    setTimeout(() => iframe.remove(), 3000);
+                  };
+
                   return (
                     <>
                 <button
@@ -450,7 +459,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                   onClick={() => {
                     const url = buildCertificateUrl(true);
                     if (!url) return;
-                    window.open(url, '_blank', 'noopener,noreferrer');
+                    triggerDownload(url);
                   }}
                   className="w-full sm:w-auto px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-widest hover:bg-emerald-100 disabled:bg-slate-300 disabled:text-slate-600 border border-emerald-200"
                   title={official.status !== 'Approved'

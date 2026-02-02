@@ -122,6 +122,15 @@ const Account: React.FC = () => {
     return `/important-docs/official-certificate.html?${params.toString()}`;
   };
 
+  const triggerDownload = (url: string) => {
+    if (!url) return;
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    setTimeout(() => iframe.remove(), 3000);
+  };
+
   const canViewOfficialAssets = role === 'official' && profile?.status === 'Approved' && !!profile?.grade;
 
   // Show institution logo in the profile slot when no photo is uploaded
@@ -418,7 +427,7 @@ const Account: React.FC = () => {
                                 onClick={() => {
                                   const url = buildTechnicalIdCardUrl(true);
                                   if (!url) return;
-                                  window.open(url, '_blank', 'noopener,noreferrer');
+                                  triggerDownload(url);
                                 }}
                                 className="px-3 py-2 rounded-md bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
                               >
@@ -447,7 +456,7 @@ const Account: React.FC = () => {
                               onClick={() => {
                                 const url = buildOfficialCertificateUrl(true);
                                 if (!url) return;
-                                window.open(url, '_blank', 'noopener,noreferrer');
+                                triggerDownload(url);
                               }}
                               className="px-3 py-2 rounded-md bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
                             >

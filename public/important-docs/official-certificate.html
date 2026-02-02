@@ -619,7 +619,12 @@
       }
 
       if (window.__ddkaAutoDownload) {
-        setTimeout(() => exportCertificate(window.__ddkaAutoDownload), 220);
+        setTimeout(async () => {
+          await exportCertificate(window.__ddkaAutoDownload);
+          setTimeout(() => {
+            try { window.close(); } catch (e) { /* ignore */ }
+          }, 300);
+        }, 220);
       }
     })();
   </script>
