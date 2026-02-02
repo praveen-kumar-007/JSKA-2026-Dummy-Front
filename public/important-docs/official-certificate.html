@@ -529,6 +529,71 @@
         }));
       }
 
+      const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
+      function isHttpUrl(url){
+        return /^https?:/i.test(url || '');
+      }
+
+      function getOriginProxy(url){
+        return `${window.location.origin}/api/proxy/image?url=${encodeURIComponent(url)}`;
+      }
+
+      async function fetchAsDataUrl(url){
+        try {
+          const res = await fetch(url, { mode: 'cors', cache: 'reload' });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const blob = await res.blob();
+          return await new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result);
+            r.onerror = () => reject(new Error('FileReader failed'));
+            r.readAsDataURL(blob);
+          });
+        } catch (e) {
+          return null;
+        }
+      }
+
+      async function sanitizeImages(rootEl){
+        if (!rootEl) return;
+        const imgs = Array.from(rootEl.querySelectorAll('img'));
+        await Promise.all(imgs.map(async (img) => {
+          try {
+            const rawSrc = img.getAttribute('src') || '';
+            if (!rawSrc || rawSrc.startsWith('data:')) return;
+            img.crossOrigin = 'anonymous';
+            const absSrc = new URL(rawSrc, window.location.href).toString();
+            const candidates = [];
+            const pushUnique = (u) => { if (u && !candidates.includes(u)) candidates.push(u); };
+
+            const proxied = toProxy(absSrc);
+            if (proxied && proxied !== absSrc) pushUnique(proxied);
+            if (isHttpUrl(absSrc)) pushUnique(absSrc);
+            if (!apiPrefix && isHttpUrl(absSrc) && !absSrc.startsWith(window.location.origin)) {
+              pushUnique(getOriginProxy(absSrc));
+            }
+
+            let dataUrl = null;
+            for (const u of candidates) {
+              dataUrl = await fetchAsDataUrl(u);
+              if (dataUrl) break;
+            }
+
+            if (dataUrl) {
+              img.src = dataUrl;
+              if (img.decode) {
+                try { await img.decode(); } catch (e) { /* ignore */ }
+              }
+            } else {
+              img.src = TRANSPARENT_PIXEL;
+            }
+          } catch (e) {
+            img.src = TRANSPARENT_PIXEL;
+          }
+        }));
+      }
+
       async function exportCertificate(format){
         const prevScale = getComputedStyle(certFrame).getPropertyValue('--scale') || '1';
         const prevCertTransform = cert.style.transform;
@@ -593,6 +658,8 @@
 
           exportHost.appendChild(exportClone);
           document.body.appendChild(exportHost);
+
+          await sanitizeImages(exportClone || cert);
 
           const renderOptions = {
             cacheBust: true,
