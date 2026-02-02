@@ -167,6 +167,16 @@
     /* non-printable helper */
     .no-print{display:block}
     @media print{.no-print{display:none}aside, .btn{display:none}} 
+
+    /* Export mode: force fixed desktop layout for downloads */
+    body.exporting{background:#fff}
+    body.exporting .app{padding:0;margin:0;max-width:none}
+    body.exporting aside{display:none}
+    body.exporting .preview-wrap{padding:0}
+    body.exporting .certificate-frame{width:1100px;height:780px}
+    body.exporting .certificate{transform:scale(1) !important;box-shadow:none}
+    body.exporting .hindi-line{font-size:20px}
+    body.exporting .title{font-size:32px}
   </style>
 </head>
 <body>
@@ -233,7 +243,7 @@
           <div class="content">
           <div class="header">
             <div class="logo">
-              <div class="badge"><img id="logo-img" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png" alt="DDKA" style="width:100%;height:100%;object-fit:contain" /></div>
+              <div class="badge"><img id="logo-img" crossorigin="anonymous" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png" alt="DDKA" style="width:100%;height:100%;object-fit:contain" /></div>
               <div>
                 <div class="hindi-line">मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल</div>
                 <div class="title">Dhanbad District Kabaddi Association</div>
@@ -242,8 +252,8 @@
                   <div class="meta-line">Recognition - Affiliated for - A.K.F.I. &amp; Jharkhand Olympic Association</div>
                 </div>
                 <div style="display:flex;gap:8px;margin-top:8px;justify-content:center;align-items:center">
-                  <img src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" alt="JSKA" style="height:60px;object-fit:contain;border-radius:6px" />
-                  <img src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" style="height:65px;object-fit:contain;border-radius:6px" />
+                  <img crossorigin="anonymous" src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" alt="JSKA" style="height:60px;object-fit:contain;border-radius:6px" />
+                  <img crossorigin="anonymous" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png" alt="AKFI" style="height:65px;object-fit:contain;border-radius:6px" />
                 </div>
               </div>
             </div>
@@ -314,8 +324,13 @@
       const cert = document.getElementById('certificate');
       const certFrame = document.querySelector('.certificate-frame');
 
+      function isExporting(){
+        return document.body.classList.contains('exporting');
+      }
+
       function fitCertificate(){
         try{
+          if (isExporting()) return;
           const padding = 24; // keep small page margin
           const maxW = Math.max(320, window.innerWidth - padding);
           const maxH = Math.max(320, window.innerHeight - padding - 80);
@@ -329,6 +344,7 @@
 
       function setPrintScale(){
         try{
+          if (isExporting()) return;
           const padding = 16;
           const maxW = Math.max(300, window.innerWidth - padding);
           const maxH = Math.max(300, window.innerHeight - padding);
@@ -384,6 +400,7 @@
           const qpDate = params.get('date');
           const qpGrade = params.get('grade');
           const qpPhoto = params.get('photoUrl');
+          const qpDownload = params.get('download');
 
           if (qpName) nameInput.value = qpName;
           if (qpFather) fatherInput.value = qpFather;
@@ -397,6 +414,7 @@
           // Apply photo from a URL if provided
           if (qpPhoto) {
             const imgThumb = document.createElement('img');
+            imgThumb.crossOrigin = 'anonymous';
             imgThumb.src = qpPhoto;
             imgThumb.style.width='100%';
             imgThumb.style.height='100%';
@@ -405,6 +423,7 @@
             photoThumb.appendChild(imgThumb);
 
             const imgMain = document.createElement('img');
+            imgMain.crossOrigin = 'anonymous';
             imgMain.src = qpPhoto;
             imgMain.style.width='100%';
             imgMain.style.height='100%';
@@ -415,6 +434,7 @@
 
           // Grade is applied after grade helpers are wired up
           window.__ddkaInitialGrade = qpGrade ? qpGrade.toUpperCase() : '';
+          window.__ddkaAutoDownload = qpDownload === '1' || qpDownload === 'true' ? 'png' : (qpDownload === 'pdf' ? 'pdf' : '');
 
           updateFields();
         } catch (e) {
@@ -476,21 +496,51 @@
         aiBtn.disabled=false; aiBtn.textContent='✨ AI Language Assist';
       });
 
+      async function exportCertificate(format){
+        const prevScale = getComputedStyle(certFrame).getPropertyValue('--scale') || '1';
+        document.body.classList.add('exporting');
+        certFrame.style.setProperty('--scale', '1');
+        certFrame.style.width = '1100px';
+        certFrame.style.height = '780px';
+        try{
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+          await new Promise(r => setTimeout(r, 120));
+
+          if (format === 'pdf') {
+            const rect = cert.getBoundingClientRect();
+            const targetWidthPx = 1920;
+            const pixelRatio = Math.max(1, Math.ceil(targetWidthPx / rect.width));
+            const dataUrl = await window.htmlToImage.toPng(cert, {cacheBust:true, pixelRatio, backgroundColor:'#ffffff', useCORS:true});
+            const img = new Image();
+            img.src = dataUrl;
+            await img.decode();
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [img.width, img.height] });
+            pdf.addImage(img, 'PNG', 0, 0, img.width, img.height);
+            pdf.save('DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.pdf');
+          } else {
+            const dataUrl = await window.htmlToImage.toPng(cert, {cacheBust:true, pixelRatio:3, backgroundColor:'#ffffff', useCORS:true});
+            const a=document.createElement('a');
+            a.href=dataUrl;
+            a.download = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.png';
+            a.click();
+          }
+        }catch(err){
+          alert('Could not generate file. Try Print.');
+          console.error(err);
+        } finally {
+          document.body.classList.remove('exporting');
+          certFrame.style.setProperty('--scale', prevScale);
+          fitCertificate();
+        }
+      }
+
       // Download
       downloadBtn.addEventListener('click', async ()=>{
         downloadBtn.disabled = true; downloadBtn.textContent = 'Rendering...';
-        try{
-          // temporarily disable scaling for export to get full-resolution original
-          const prevScale = getComputedStyle(certFrame).getPropertyValue('--scale') || '1';
-          certFrame.style.setProperty('--scale', '1');
-          await new Promise(r => setTimeout(r, 80));
-
-          const dataUrl = await window.htmlToImage.toPng(cert, {cacheBust:true, pixelRatio:3, backgroundColor:'#ffffff'});
-          const a=document.createElement('a'); a.href=dataUrl; a.download = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.png'; a.click();
-
-          // restore scale
-          certFrame.style.setProperty('--scale', prevScale);
-        }catch(err){ alert('Could not generate PNG. Try Print.'); console.error(err); }
+        await exportCertificate('png');
         downloadBtn.disabled=false; downloadBtn.textContent='⬇️ Download PNG';
       });
 
@@ -498,31 +548,7 @@
       if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', async ()=>{
           downloadPdfBtn.disabled = true; downloadPdfBtn.textContent = 'Rendering PDF...';
-          try{
-            // temporarily disable scaling to capture full original resolution
-            const prevScale = getComputedStyle(certFrame).getPropertyValue('--scale') || '1';
-            certFrame.style.setProperty('--scale', '1');
-            await new Promise(r => setTimeout(r, 80));
-
-            // Generate high-res image for PDF using html-to-image
-            const rect = cert.getBoundingClientRect();
-            const targetWidthPx = 1920; // aim for ~Full HD width
-            const pixelRatio = Math.max(1, Math.ceil(targetWidthPx / rect.width));
-            const dataUrl = await window.htmlToImage.toPng(cert, {cacheBust:true, pixelRatio, backgroundColor:'#ffffff'});
-
-            const img = new Image();
-            img.src = dataUrl;
-            await img.decode();
-
-            const { jsPDF } = window.jspdf;
-            // Fit to exact image size so the PDF has no extra margins
-            const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [img.width, img.height] });
-            pdf.addImage(img, 'PNG', 0, 0, img.width, img.height);
-            pdf.save('DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.pdf');
-
-            // restore scale
-            certFrame.style.setProperty('--scale', prevScale);
-          }catch(err){ alert('Could not create PDF. Try downloading PNG then converting to PDF.'); console.error(err); }
+          await exportCertificate('pdf');
           downloadPdfBtn.disabled=false; downloadPdfBtn.textContent='📄 Download PDF';
         });
       }
@@ -590,6 +616,10 @@
       if (window.__ddkaInitialGrade && ['A','B','C'].includes(window.__ddkaInitialGrade)){
         gradeSelect.value = window.__ddkaInitialGrade;
         setGrade(window.__ddkaInitialGrade);
+      }
+
+      if (window.__ddkaAutoDownload) {
+        setTimeout(() => exportCertificate(window.__ddkaAutoDownload), 220);
       }
     })();
   </script>

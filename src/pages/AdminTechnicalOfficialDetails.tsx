@@ -335,7 +335,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
               <p className="text-sm text-slate-900 min-h-[2.5rem]">{official.remarks || 'No remarks added yet.'}</p>
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               {canDelete && (
                 <button
                   type="button"
@@ -374,7 +374,27 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                   {deleting ? 'Deleting...' : 'Delete Certificate'}
                 </button>
               )}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 md:justify-end">
+                {(() => {
+                  const buildCertificateUrl = (autoDownload?: boolean) => {
+                    if (!official) return '';
+                    const suffix = (official._id || '').slice(-4).toUpperCase();
+                    const params = new URLSearchParams();
+                    params.set('name', official.candidateName);
+                    params.set('father', official.parentName);
+                    if (suffix && official.grade) params.set('regSuffix', suffix);
+                    const createdDate = official.createdAt ? new Date(official.createdAt) : null;
+                    if (createdDate && !Number.isNaN(createdDate.getTime())) {
+                      params.set('date', createdDate.toISOString().slice(0, 10));
+                    }
+                    if (official.grade) params.set('grade', official.grade);
+                    if (official.photoUrl) params.set('photoUrl', official.photoUrl);
+                    if (autoDownload) params.set('download', 'pdf');
+                    return `/important-docs/official-certificate.html?${params.toString()}`;
+                  };
+
+                  return (
+                    <>
                 <button
                   type="button"
                   disabled={official.status !== 'Approved' || !official.grade}
@@ -398,7 +418,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     const url = `/important-docs/technical-id-card.html?${params.toString()}`;
                     window.open(url, '_blank', 'noopener,noreferrer');
                   }}
-                  className="px-4 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
+                  className="w-full sm:w-auto px-4 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
                   title={official.status !== 'Approved'
                     ? 'ID card available only after approval'
                     : !official.grade
@@ -411,31 +431,39 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                   type="button"
                   disabled={official.status !== 'Approved' || !official.grade}
                   onClick={() => {
-                    if (!official) return;
-                    if (!official.grade) return;
-                    const suffix = (official._id || '').slice(-4).toUpperCase();
-                    const params = new URLSearchParams();
-                    params.set('name', official.candidateName);
-                    params.set('father', official.parentName);
-                    if (suffix && official.grade) params.set('regSuffix', suffix);
-                    const createdDate = official.createdAt ? new Date(official.createdAt) : null;
-                    if (createdDate && !Number.isNaN(createdDate.getTime())) {
-                      params.set('date', createdDate.toISOString().slice(0, 10));
-                    }
-                    if (official.grade) params.set('grade', official.grade);
-                    if (official.photoUrl) params.set('photoUrl', official.photoUrl);
-                    const url = `/important-docs/official-certificate.html?${params.toString()}`;
+                    const url = buildCertificateUrl(false);
+                    if (!url) return;
                     window.open(url, '_blank', 'noopener,noreferrer');
                   }}
-                  className="px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
+                  className="w-full sm:w-auto px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
                   title={official.status !== 'Approved'
                     ? 'Certificate available only after approval'
                     : !official.grade
                       ? 'Set a grade to generate certificate'
                       : 'Open Technical Official certificate'}
                 >
-                  View / Download Certificate
+                  View Certificate
                 </button>
+                <button
+                  type="button"
+                  disabled={official.status !== 'Approved' || !official.grade}
+                  onClick={() => {
+                    const url = buildCertificateUrl(true);
+                    if (!url) return;
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                  }}
+                  className="w-full sm:w-auto px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-widest hover:bg-emerald-100 disabled:bg-slate-300 disabled:text-slate-600 border border-emerald-200"
+                  title={official.status !== 'Approved'
+                    ? 'Certificate available only after approval'
+                    : !official.grade
+                      ? 'Set a grade to generate certificate'
+                      : 'Download Technical Official certificate'}
+                >
+                  Download Certificate
+                </button>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

@@ -81,6 +81,49 @@ const Account: React.FC = () => {
     return formatDateMDY(d);
   };
 
+  const getIdSuffix = (p: any) => {
+    const raw = (p && (p._id || p.id || p.applicationId || '')) as string;
+    return raw ? raw.slice(-4).toUpperCase() : '';
+  };
+
+  const buildTechnicalIdCardUrl = (autoDownload?: boolean) => {
+    if (!profile) return '';
+    const suffix = getIdSuffix(profile);
+    const params = new URLSearchParams();
+    const name = profile.candidateName || profile.fullName || profile.instName || '';
+    params.set('name', name);
+    if (suffix) params.set('sno', suffix);
+    if (suffix) params.set('uid', `DDKA-2026-${suffix}`);
+    const dobDate = profile.dob ? new Date(profile.dob) : null;
+    if (dobDate && !Number.isNaN(dobDate.getTime())) {
+      params.set('dob', dobDate.toISOString().slice(0, 10));
+    }
+    if (profile.grade) params.set('grade', profile.grade);
+    if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
+    if (autoDownload) params.set('download', 'pdf');
+    return `/important-docs/technical-id-card.html?${params.toString()}`;
+  };
+
+  const buildOfficialCertificateUrl = (autoDownload?: boolean) => {
+    if (!profile) return '';
+    const suffix = getIdSuffix(profile);
+    const params = new URLSearchParams();
+    const name = profile.candidateName || profile.fullName || profile.instName || '';
+    params.set('name', name);
+    if (profile.parentName) params.set('father', profile.parentName);
+    if (suffix && profile.grade) params.set('regSuffix', suffix);
+    const createdDate = profile.createdAt ? new Date(profile.createdAt) : null;
+    if (createdDate && !Number.isNaN(createdDate.getTime())) {
+      params.set('date', createdDate.toISOString().slice(0, 10));
+    }
+    if (profile.grade) params.set('grade', profile.grade);
+    if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
+    if (autoDownload) params.set('download', 'pdf');
+    return `/important-docs/official-certificate.html?${params.toString()}`;
+  };
+
+  const canViewOfficialAssets = role === 'official' && profile?.status === 'Approved' && !!profile?.grade;
+
   // Show institution logo in the profile slot when no photo is uploaded
   const displayProfileImage = profile ? (profile.photoUrl || (role === 'institution' ? profile.instLogoUrl : '')) : '';
 
@@ -278,8 +321,8 @@ const Account: React.FC = () => {
                         {profile.playerLevel && <div><strong>Level:</strong> {profile.playerLevel}</div>}
                         {profile.work && <div><strong>Work:</strong> {profile.work}</div>}
                         {profile.education && <div><strong>Education:</strong> {profile.education}</div>}
-                        {profile.grade && <div><strong>Grade:</strong> {profile.grade}</div>}
-                        {profile.remarks && <div><strong>Remarks:</strong> {profile.remarks}</div>}
+                        {canViewOfficialAssets && profile.grade && <div><strong>Grade:</strong> {profile.grade}</div>}
+                        {canViewOfficialAssets && profile.remarks && <div><strong>Remarks:</strong> {profile.remarks}</div>}
                       </div>
                     </div>
                   )}
@@ -334,6 +377,89 @@ const Account: React.FC = () => {
                   )}
                 </div>
               </div>
+
+              {/* Assets table (User downloads) */}
+              {role === 'official' && canViewOfficialAssets && (
+                <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">My Assets</h3>
+                      <div className="text-sm text-slate-500">Download your approved assets anytime.</div>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-slate-500">
+                          <th className="py-2 px-3">Asset</th>
+                          <th className="py-2 px-3">Status</th>
+                          <th className="py-2 px-3 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {showIdsToUsers && (
+                          <tr>
+                            <td className="py-3 px-3">
+                              <div className="font-semibold text-slate-800">Technical Official ID Card</div>
+                              <div className="text-xs text-slate-500">Download JPG / PDF from the asset page.</div>
+                            </td>
+                            <td className="py-3 px-3">
+                              {canViewOfficialAssets ? (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">Available</span>
+                              ) : (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Not available</span>
+                              )}
+                            </td>
+                            <td className="py-3 px-3 text-right">
+                              <button
+                                type="button"
+                                disabled={!canViewOfficialAssets}
+                                onClick={() => {
+                                  const url = buildTechnicalIdCardUrl(true);
+                                  if (!url) return;
+                                  window.open(url, '_blank', 'noopener,noreferrer');
+                                }}
+                                className="px-3 py-2 rounded-md bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-600"
+                              >
+                                Download
+                              </button>
+                            </td>
+                          </tr>
+                        )}
+
+                        <tr>
+                          <td className="py-3 px-3">
+                            <div className="font-semibold text-slate-800">Official Certificate</div>
+                            <div className="text-xs text-slate-500">Issued after approval and grade assignment.</div>
+                          </td>
+                          <td className="py-3 px-3">
+                            {canViewOfficialAssets ? (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">Available</span>
+                            ) : (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Not available</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-3 text-right">
+                            <button
+                              type="button"
+                              disabled={!canViewOfficialAssets}
+                              onClick={() => {
+                                const url = buildOfficialCertificateUrl(true);
+                                if (!url) return;
+                                window.open(url, '_blank', 'noopener,noreferrer');
+                              }}
+                              className="px-3 py-2 rounded-md bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-600"
+                            >
+                              Download
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
 
               {/* ID Card card */}
 {profile.idNo && showIdsToUsers && (
