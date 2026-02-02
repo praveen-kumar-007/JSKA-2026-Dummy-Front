@@ -480,11 +480,13 @@
                 const el = document.querySelector('.id-card');
                 if (!el) return;
                 try {
+                    const JPG_SCALE = 2;
+                    const JPG_QUALITY = 0.9;
                     document.body.classList.add('exporting');
                     await waitForImages();
                     await new Promise(r => setTimeout(r, 80));
-                    const canvas = await html2canvas(el, {scale:2, backgroundColor: '#ffffff', useCORS: true});
-                    const data = canvas.toDataURL('image/jpeg', 0.95);
+                    const canvas = await html2canvas(el, {scale: JPG_SCALE, backgroundColor: '#ffffff', useCORS: true});
+                    const data = canvas.toDataURL('image/jpeg', JPG_QUALITY);
                     const a = document.createElement('a');
                     a.href = data;
                     a.download = 'ddka-id.jpg';
@@ -512,14 +514,16 @@
                 const el = document.querySelector('.id-card');
                 if (!el) return;
                 try {
+                    const PDF_SCALE = 2;
+                    const PDF_QUALITY = 0.9;
                     document.body.classList.add('exporting');
                     await waitForImages();
                     await new Promise(r => setTimeout(r, 80));
-                    const canvas = await html2canvas(el, {scale:3, backgroundColor: '#ffffff', useCORS: true});
-                    const imgData = canvas.toDataURL('image/png');
+                    const canvas = await html2canvas(el, {scale: PDF_SCALE, backgroundColor: '#ffffff', useCORS: true});
+                    const imgData = canvas.toDataURL('image/jpeg', PDF_QUALITY);
                     const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height], compress: true });
+                    pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height, undefined, 'FAST');
                     pdf.save('ddka-id.pdf');
                 } catch (err) {
                     console.error('Failed to export PDF:', err);
