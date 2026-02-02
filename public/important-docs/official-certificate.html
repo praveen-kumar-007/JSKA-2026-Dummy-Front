@@ -621,13 +621,14 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [img.width, img.height] });
             pdf.addImage(img, 'PNG', 0, 0, img.width, img.height);
+            const filenameBase = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-');
+            const pdfBlob = pdf.output('blob');
 
             // If opened from another window/parent, post the PDF blob back via postMessage
             try {
               if (window.opener || window.parent) {
-                const blob = pdf.output('blob');
                 const target = window.opener || window.parent;
-                target.postMessage({ type: 'ddka:certificate', format: 'pdf', blob }, window.location.origin);
+                target.postMessage({ type: 'ddka:certificate', format: 'pdf', blob: pdfBlob }, window.location.origin);
                 setTimeout(() => { try { window.close(); } catch (e) {} }, 300);
                 return;
               }
@@ -635,16 +636,40 @@
               console.error('PostMessage failed for PDF:', e);
             }
 
-            pdf.save('DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.pdf');
+            // Fallback: download directly in this window
+            try {
+              const pdfUrl = URL.createObjectURL(pdfBlob);
+              const a = document.createElement('a');
+              a.href = pdfUrl;
+              a.download = `${filenameBase}.pdf`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(pdfUrl);
+            } catch (e) {
+              console.error('PDF download failed, falling back to save()', e);
+              pdf.save(`${filenameBase}.pdf`);
+            }
           } else {
             // For PNGs, support high-resolution via resolution param as well
             const resParam = urlParams.get('resolution') || '';
             const highPixelRatio = resParam === '8k' ? 7 : 3;
             const dataUrl = await window.htmlToImage.toPng(exportClone || cert, { ...renderOptions, pixelRatio: highPixelRatio });
+            const filenameBase = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-');
+            let pngBlob = null;
+            try {
+              pngBlob = await (await fetch(dataUrl)).blob();
+            } catch (e) {
+              console.error('Failed to convert PNG dataUrl to blob', e);
+            }
             try {
               if (window.opener || window.parent) {
                 const target = window.opener || window.parent;
-                target.postMessage({ type: 'ddka:certificate', format: 'png', dataUrl }, window.location.origin);
+                if (pngBlob) {
+                  target.postMessage({ type: 'ddka:certificate', format: 'png', blob: pngBlob }, window.location.origin);
+                } else {
+                  target.postMessage({ type: 'ddka:certificate', format: 'png', dataUrl }, window.location.origin);
+                }
                 setTimeout(() => { try { window.close(); } catch (e) {} }, 300);
                 return;
               }
@@ -653,9 +678,21 @@
             }
 
             const a=document.createElement('a');
-            a.href=dataUrl;
-            a.download = 'DDKA-Certificate-'+(nameInput.value||'candidate').replace(/\s+/g,'-')+'.png';
-            a.click();
+            if (pngBlob) {
+              const pngUrl = URL.createObjectURL(pngBlob);
+              a.href=pngUrl;
+              a.download = `${filenameBase}.png`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(pngUrl);
+            } else {
+              a.href=dataUrl;
+              a.download = `${filenameBase}.png`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            }
           }
         }catch(err){
           alert('Could not generate file. Try Print.');

@@ -408,13 +408,24 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                       if (data.type !== 'ddka:certificate') return;
 
                       try {
-                        if (data.format === 'png' && data.dataUrl) {
-                          const a = document.createElement('a');
-                          a.href = data.dataUrl;
-                          a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
-                          document.body.appendChild(a);
-                          a.click();
-                          a.remove();
+                        if (data.format === 'png') {
+                          if (data.blob) {
+                            const url = URL.createObjectURL(data.blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            URL.revokeObjectURL(url);
+                          } else if (data.dataUrl) {
+                            const a = document.createElement('a');
+                            a.href = data.dataUrl;
+                            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                          }
                         } else if (data.format === 'pdf') {
                           // Blob may be posted directly
                           if (data.blob) {
