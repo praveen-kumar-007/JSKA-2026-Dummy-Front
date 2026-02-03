@@ -71,7 +71,12 @@ const AdminInstitutionDetails = () => {
       },
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error('Not found');
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+        if (!res.ok) {
+          throw new Error('Failed to load');
+        }
         const result = await res.json();
         if (result.success) {
           setData(result.data);
@@ -79,12 +84,19 @@ const AdminInstitutionDetails = () => {
           throw new Error('Not found');
         }
       })
-        .catch(() => setError('Institution registration not found'))
+        .catch((err) => {
+          console.error('Failed to fetch institution details', err);
+          if (String(err.message).toLowerCase() === 'not found') {
+            setError('Institution registration not found');
+          } else if (!initialData) {
+            setError('Unable to load institution. Please try again.');
+          }
+        })
         .finally(() => setLoading(false));
       }, [id, initialData]);
 
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
-  if (error || !data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
+  if (!data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 p-4 md:p-8">

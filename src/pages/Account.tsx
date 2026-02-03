@@ -200,10 +200,10 @@ const Account: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => navigate('/admin-portal-access')}
+              onClick={() => navigate('/')}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
             >
-              GO TO DASHBOARD
+              GO TO HOME
             </button>
 
             <button onClick={logout} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Logout</button>

@@ -230,7 +230,7 @@ const AdminRegistrationDetails = () => {
   };
 
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
-  if (error || !data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
+  if (!data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;
 
   const statusValue = data?.status || 'Pending';
   const statusKey = String(statusValue).toLowerCase();
