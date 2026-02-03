@@ -39,6 +39,8 @@ const AdminTechnicalOfficialsManagement = React.lazy(() => import('./pages/Admin
 const AdminTechnicalOfficialDetails = React.lazy(() => import('./pages/AdminTechnicalOfficialDetails'));
 const AdminManageAdmins = React.lazy(() => import('./pages/AdminManageAdmins'));
 const AdminUnifiedSearch = React.lazy(() => import('./pages/AdminUnifiedSearch'));
+const AdminBulkEmail = React.lazy(() => import('./pages/AdminBulkEmail'));
+const AdminRegistrations = React.lazy(() => import('./pages/AdminRegistrations'));
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
@@ -118,6 +120,14 @@ const App: React.FC = () => {
           {/* Admin Referees Management (protected) */}
           <Route path="/admin/referees" element={
             isAuthenticated ? <AdminRefereesManagement /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+          {/* Admin Registrations (protected) */}
+          <Route path="/admin/registrations" element={
+            isAuthenticated ? <AdminRegistrations /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+          {/* Admin Bulk Email (protected) */}
+          <Route path="/admin/bulk-email" element={
+            isAuthenticated ? <AdminBulkEmail /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
           } />
           {/* Admin Donations Management (protected) */}
           <Route path="/admin/donations" element={

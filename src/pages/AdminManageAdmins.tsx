@@ -16,6 +16,7 @@ interface AdminPermissions {
   canAccessInstitutionDetails: boolean;   // Institution Details tab
   canAccessDonations: boolean;            // Donations tab
   canAccessImportantDocs: boolean;        // Important Docs dropdown
+  canAccessBulkEmail: boolean;            // Bulk Email page
   canDelete: boolean;                     // Delete actions
 }
 
@@ -109,6 +110,7 @@ const AdminManageAdmins: React.FC = () => {
       canAccessInstitutionDetails: value,
       canAccessDonations: value,
       canAccessImportantDocs: value,
+      canAccessBulkEmail: value,
       canDelete: value,
     };
 
@@ -217,6 +219,7 @@ const AdminManageAdmins: React.FC = () => {
               && admin.permissions?.canAccessUnifiedSearch
               && admin.permissions?.canAccessPlayerDetails
               && admin.permissions?.canAccessInstitutionDetails
+              && admin.permissions?.canAccessBulkEmail
               && admin.permissions?.canDelete;
 
             const permissionEntries: { key: keyof AdminPermissions; label: string }[] = [
@@ -231,6 +234,7 @@ const AdminManageAdmins: React.FC = () => {
               { key: 'canAccessInstitutionDetails', label: 'Institution Details' },
               { key: 'canAccessDonations', label: 'Donations' },
               { key: 'canAccessImportantDocs', label: 'Important Docs' },
+              { key: 'canAccessBulkEmail', label: 'Bulk Email' },
               { key: 'canDelete', label: 'Delete' },
             ];
 
