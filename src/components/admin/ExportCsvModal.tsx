@@ -11,12 +11,14 @@ interface Props {
 }
 
 const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, filenamePrefix = 'export' }) => {
-  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => Object.fromEntries(fields.map(f => [f.key, true])));
+  const safeFields = Array.isArray(fields) ? fields.filter((f): f is Field => !!f && typeof f.key === 'string') : [];
+  const safeRecords = Array.isArray(records) ? records : [];
+  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => Object.fromEntries(safeFields.map(f => [f.key, true])));
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    setSelectedFields(Object.fromEntries(fields.map(f => [f.key, true])));
-  }, [fields]);
+    setSelectedFields(Object.fromEntries(safeFields.map(f => [f.key, true])));
+  }, [safeFields]);
 
   useEffect(() => {
     if (visible) {
@@ -33,7 +35,7 @@ const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, fi
       return;
     }
 
-    const header = keys.map(k => fields.find(f => f.key === k)?.label || k);
+    const header = keys.map(k => safeFields.find(f => f.key === k)?.label || k);
     const rows = recordsToExport.map(r => keys.map(k => esc((r as any)[k] ?? '')).join(','));
     // Include UTF-8 BOM for Excel compatibility
     const csv = '\uFEFF' + [header.join(','), ...rows].join('\r\n');
@@ -52,8 +54,8 @@ const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, fi
 
   const keysSelected = Object.keys(selectedFields).filter(k => selectedFields[k]);
 
-  const gradeFields = fields.filter(f => f.key.startsWith('grade_'));
-  const otherFields = fields.filter(f => !f.key.startsWith('grade_'));
+  const gradeFields = safeFields.filter(f => f.key.startsWith('grade_'));
+  const otherFields = safeFields.filter(f => !f.key.startsWith('grade_'));
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
@@ -98,16 +100,16 @@ const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, fi
 
         <div className="flex flex-col sm:flex-row gap-2 justify-end">
           <button
-            onClick={() => { onClose(); doExport(records, keysSelected); }}
-            disabled={records.length === 0 || keysSelected.length === 0}
+            onClick={() => { onClose(); doExport(safeRecords, keysSelected); }}
+            disabled={safeRecords.length === 0 || keysSelected.length === 0}
             className="w-full sm:w-auto px-4 py-2 bg-blue-900 text-white rounded-lg disabled:opacity-50"
           >
             Export
           </button>
 
           <button
-            onClick={() => { onClose(); doExport(records, fields.map(f => f.key)); }}
-            disabled={records.length === 0}
+            onClick={() => { onClose(); doExport(safeRecords, safeFields.map(f => f.key)); }}
+            disabled={safeRecords.length === 0}
             className="w-full sm:w-auto px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
           >
             Export All Details

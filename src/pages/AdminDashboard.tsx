@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  CheckCircle, XCircle, Trash2, 
-  Users, Building, RefreshCcw, Search, Eye,
+  CheckCircle, XCircle,
+  Users, Building, Search,
   LogOut, Newspaper, Image as ImageIcon, Mail, UserCheck, Heart,
-  Trophy, Gavel, UserCog, FileText, Award, Download
+  Trophy, Gavel, UserCog, FileText, Award
 } from 'lucide-react';
-import StatusMark from '../components/admin/StatusMark';
-import ExportCsvModal from '../components/admin/ExportCsvModal';
 import { Link } from 'react-router-dom';
 import type { Language } from '../translations';
 
@@ -31,12 +29,7 @@ interface AdminPermissions {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => { 
-  const [activeTab, setActiveTab] = useState<'players' | 'institutions'>('players');
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected'>('All');
-  const [ageFilter, setAgeFilter] = useState<'All Ages' | 'Under 10' | '10-14' | '14-16' | '16-19' | '19-25' | 'Over 25'>('All Ages');
+  const [activeTab] = useState<'players' | 'institutions'>('players');
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
@@ -45,31 +38,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   const [showManage, setShowManage] = useState(false);
   const manageRef = useRef<HTMLDivElement | null>(null);
 
-  // Selection & export state for table exports
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [showExportModal, setShowExportModal] = useState(false);
-
-  const playerExportFields = [
-    { key: 'fullName', label: 'Name' },
-    { key: 'email', label: 'Email' },
-    { key: 'phone', label: 'Phone' },
-    { key: 'dob', label: 'DOB' },
-    { key: 'aadharNumber', label: 'Aadhar' },
-    { key: 'transactionId', label: 'Transaction ID' },
-    { key: 'memberRole', label: 'Role' },
-    { key: 'idNo', label: 'ID Number' },
-    { key: 'status', label: 'Status' }
-  ];
-
-  const institutionExportFields = [
-    { key: 'instName', label: 'Institution Name' },
-    { key: 'instType', label: 'Type' },
-    { key: 'officePhone', label: 'Office Phone' },
-    { key: 'email', label: 'Email' },
-    { key: 'address', label: 'Address' },
-    { key: 'regNo', label: 'Reg No' },
-    { key: 'status', label: 'Status' }
-  ];
+  // Selection & export state removed (moved to dedicated Registrations page)
 
   // Public/feature visibility settings (controlled by superadmin)
   const [publicSettings, setPublicSettings] = useState<{ allowGallery?: boolean; allowNews?: boolean; allowContacts?: boolean; allowDonations?: boolean; allowImportantDocs?: boolean; allowUnifiedSearch?: boolean; allowExportAll?: boolean; allowExportPlayers?: boolean; allowExportTechnicalOfficials?: boolean; allowExportInstitutions?: boolean }>({});
@@ -109,14 +78,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     };
   }, [showDocs, showManage]);
 
-  // Mobile detection to render a compact card list on small screens
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 640);
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
+  // Mobile detection removed (moved to dedicated Registrations page)
 
   // Pending counts for admin attention
   const [pendingPlayers, setPendingPlayers] = useState<number>(0);
@@ -191,14 +153,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     loadPublicSettings();
   }, [API_URL]);
 
-  // Clear table selections when exports are turned off
+  // Keep public settings in sync
   useEffect(() => {
     const onSettingsUpdate = (e: any) => {
       if (!e?.detail) return;
-      // If the unified export toggle was turned off, clear any selected rows for export
-      if (typeof e.detail.allowExportAll === 'boolean' && e.detail.allowExportAll === false) {
-        setSelectedIds([]);
-      }
       if (typeof e.detail.allowUnifiedSearch === 'boolean') {
         setPublicSettings(prev => ({ ...prev, allowUnifiedSearch: e.detail.allowUnifiedSearch }));
       }
@@ -217,31 +175,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     window.location.href = '/admin-portal-access';
   };
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const endpoint = activeTab === 'players' ? '/api/players' : '/api/institutions';
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-      const result = await response.json();
-      if (result.success) {
-        setData(result.data);
-      }
-    } catch (error) {
-      console.error("Fetch Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Load data when tab changes
-  useEffect(() => {
-    fetchData();
-  }, [activeTab]);
+  // Data loading moved to dedicated Registrations page
 
   // Resolve admin role from localStorage or JWT token once on mount
   useEffect(() => {
@@ -529,93 +463,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
 
 
 
-  const updateStatus = async (id: string, newStatus: 'Pending' | 'Approved' | 'Rejected') => {
-    try {
-      const endpoint = activeTab === 'players' ? '/api/players/status' : '/api/institutions/status';
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({ id, status: newStatus }),
-      });
-      if (response.ok) {
-        const resJson = await response.json();
-        fetchData();
-        if (resJson.emailSent) {
-          const type = resJson.emailType === 'rejection' ? 'Rejection' : resJson.emailType === 'approval' ? 'Approval' : 'Notification';
-          alert(`${type} email sent`);
-        }
-      } else {
-        const errData = await response.json();
-        alert(errData.message || "Error updating status");
-      }
-    } catch (error) {
-      alert("Error updating status");
-    }
-  };
+  // Status update/delete moved to dedicated Registrations page
 
-  const deleteEntry = async (id: string) => {
-    if (!window.confirm("Permanently delete this record? This cannot be undone.")) return;
-    try {
-      const endpoint = activeTab === 'players' ? `/api/players/${id}` : `/api/institutions/${id}`;
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        method: 'DELETE',
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-      if (response.ok) {
-        fetchData();
-      } else {
-        alert("Delete failed on server");
-      }
-    } catch (error) {
-      alert("Error deleting entry");
-    }
-  };
-
-  const calculateAge = (dob?: string) => {
-    if (!dob) return null;
-    const birth = new Date(dob);
-    if (Number.isNaN(birth.getTime())) return null;
-    const diff = Date.now() - birth.getTime();
-    const ageDate = new Date(diff);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-  };
-
-  const getAgeGroup = (dob?: string) => {
-    const age = calculateAge(dob);
-    if (age === null) return 'N/A';
-    if (age < 10) return 'Under 10';
-    if (age <= 14) return '10-14';
-    if (age <= 16) return '14-16';
-    if (age <= 19) return '16-19';
-    if (age <= 25) return '19-25';
-    return 'Over 25';
-  };
-
-  const searchFiltered = data.filter(item => 
-    (item.fullName || item.instName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.transactionId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.aadharNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.idNo || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.phone || item.email || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const statusFiltered = searchFiltered.filter(item => {
-    if (statusFilter === 'All') return true;
-    return (item.status || 'Pending') === statusFilter;
-  });
-
-  const filteredData = statusFiltered.filter(item => {
-    if (activeTab !== 'players' || ageFilter === 'All Ages') return true;
-    const group = getAgeGroup(item.dob);
-    return group === ageFilter;
-  });
+  // Filtering/search moved to dedicated Registrations page
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
