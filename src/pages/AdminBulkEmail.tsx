@@ -140,7 +140,11 @@ const AdminBulkEmail: React.FC = () => {
         alert(json.message || 'Failed to send emails');
         return;
       }
-      alert(`Sent: ${json.data.sent}, Failed: ${json.data.failed}`);
+      const skipped = Number(json.data?.skipped || 0);
+      const sent = Number(json.data?.sent || 0);
+      const failed = Number(json.data?.failed || 0);
+      const skippedText = skipped > 0 ? `, Skipped: ${skipped}` : '';
+      alert(`Sent: ${sent}, Failed: ${failed}${skippedText}`);
       setManualEmails('');
     } catch (err) {
       alert('Failed to send emails');

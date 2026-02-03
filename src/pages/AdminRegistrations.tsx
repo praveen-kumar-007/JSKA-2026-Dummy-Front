@@ -137,7 +137,10 @@ const AdminRegistrations: React.FC = () => {
       if (response.ok) {
         const resJson = await response.json();
         fetchData();
-        if (resJson.emailSent) {
+        if (resJson.emailSkipped) {
+          const reason = resJson.emailSkipReason ? ` (${resJson.emailSkipReason})` : '';
+          alert(`Email skipped${reason}`);
+        } else if (resJson.emailSent) {
           const type = resJson.emailType === 'rejection' ? 'Rejection' : resJson.emailType === 'approval' ? 'Approval' : 'Notification';
           alert(`${type} email sent`);
         }
