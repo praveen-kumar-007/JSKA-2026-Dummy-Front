@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, UserCheck } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
@@ -37,10 +37,12 @@ interface AdminPermissions {
 const AdminTechnicalOfficialDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [official, setOfficial] = useState<TechnicalOfficial | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const location = useLocation();
+  const initialOfficial = (location.state as { official?: TechnicalOfficial } | null)?.official || null;
+  const [official, setOfficial] = useState<TechnicalOfficial | null>(initialOfficial);
+  const [loading, setLoading] = useState<boolean>(!initialOfficial);
   const [error, setError] = useState<string | null>(null);
-  const [grade, setGrade] = useState<string>('');
+  const [grade, setGrade] = useState<string>(initialOfficial?.grade || '');
   const [savingGrade, setSavingGrade] = useState<boolean>(false);
    const [adminRole, setAdminRole] = useState<string | null>(null);
    const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
@@ -63,7 +65,9 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
 
     const fetchOfficial = async () => {
       if (!id) return;
-      setLoading(true);
+      if (!initialOfficial || initialOfficial._id !== id) {
+        setLoading(true);
+      }
       setError(null);
       try {
         const response = await fetch(`${API_URL}/api/technical-officials/${id}`, {
@@ -89,7 +93,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
     };
 
     fetchOfficial();
-  }, [API_URL, id]);
+  }, [API_URL, id, initialOfficial]);
 
   const canDelete = adminRole === 'superadmin' || !!adminPermissions?.canDelete;
 

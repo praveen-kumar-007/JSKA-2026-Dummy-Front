@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo, useState, useDeferredValue } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { CheckCircle, Download, Eye, RefreshCcw, Search, Trash2, XCircle } from 'lucide-react';
 import ExportCsvModal from '../components/admin/ExportCsvModal';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
@@ -19,6 +19,7 @@ const AdminRegistrations: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const deferredSearchTerm = useDeferredValue(searchTerm);
   const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected'>('All');
   const [ageFilter, setAgeFilter] = useState<'All Ages' | 'Under 10' | '10-14' | '14-16' | '16-19' | '19-25' | 'Over 25'>('All Ages');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -194,24 +195,30 @@ const AdminRegistrations: React.FC = () => {
     return 'Over 25';
   };
 
-  const searchFiltered = data.filter(item =>
-    (item.fullName || item.instName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.transactionId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.aadharNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.idNo || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.phone || item.email || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredData = useMemo(() => {
+    const q = deferredSearchTerm.trim().toLowerCase();
+    return data.filter((item) => {
+      if (q) {
+        const match = (
+          (item.fullName || item.instName || '').toLowerCase().includes(q) ||
+          (item.transactionId || '').toLowerCase().includes(q) ||
+          (item.aadharNumber || '').toLowerCase().includes(q) ||
+          (item.idNo || '').toLowerCase().includes(q) ||
+          (item.phone || item.email || '').toLowerCase().includes(q)
+        );
+        if (!match) return false;
+      }
 
-  const statusFiltered = searchFiltered.filter(item => {
-    if (statusFilter === 'All') return true;
-    return (item.status || 'Pending') === statusFilter;
-  });
+      if (statusFilter !== 'All' && (item.status || 'Pending') !== statusFilter) return false;
 
-  const filteredData = statusFiltered.filter(item => {
-    if (activeTab !== 'players' || ageFilter === 'All Ages') return true;
-    const group = getAgeGroup(item.dob);
-    return group === ageFilter;
-  });
+      if (activeTab === 'players' && ageFilter !== 'All Ages') {
+        const group = getAgeGroup(item.dob);
+        if (group !== ageFilter) return false;
+      }
+
+      return true;
+    });
+  }, [data, deferredSearchTerm, statusFilter, ageFilter, activeTab]);
 
   const canSeePlayers = adminRole === 'superadmin' || adminPermissions?.canAccessPlayerDetails;
   const canSeeInstitutions = adminRole === 'superadmin' || adminPermissions?.canAccessInstitutionDetails;
@@ -475,13 +482,14 @@ const AdminRegistrations: React.FC = () => {
                               <XCircle size={18} />
                             </button>
                           )}
-                          <a
-                            href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
+                          <Link
+                            to={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
+                            state={activeTab === 'players' ? { data: item, type: 'player' } : { data: item, type: 'institution' }}
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
                             title="View Details"
                           >
                             <Eye size={16} /> View Details
-                          </a>
+                          </Link>
                           {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
                             <button
                               onClick={() => deleteEntry(item._id)}
@@ -538,7 +546,13 @@ const AdminRegistrations: React.FC = () => {
                       </div>
                     </div>
                     <div className="mt-3 flex flex-wrap gap-2">
-                      <a href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`} className="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-black">View</a>
+                      <Link
+                        to={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
+                        state={activeTab === 'players' ? { data: item, type: 'player' } : { data: item, type: 'institution' }}
+                        className="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-black"
+                      >
+                        View
+                      </Link>
                       {(item.status || 'Pending').toLowerCase() !== 'approved' && (
                         <button onClick={() => updateStatus(item._id, 'Approved')} className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black">Approve</button>
                       )}

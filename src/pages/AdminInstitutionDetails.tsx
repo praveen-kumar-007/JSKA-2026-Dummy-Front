@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Building2, Phone, Info, Download, Mail, Trash2 } from "lucide-react";
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
@@ -9,8 +9,10 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const AdminInstitutionDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const initialData = ((location.state as { data?: any } | null) || null)?.data || null;
+  const [data, setData] = useState<any>(initialData);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
   const [adminRole, setAdminRole] = useState<string | null>(null);
 
@@ -36,8 +38,10 @@ const AdminInstitutionDetails = () => {
 
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
     setError(null);
+    if (!initialData || initialData._id !== id) {
+      setLoading(true);
+    }
     // Resolve admin role from localStorage or JWT token
     let storedRole = localStorage.getItem('adminRole');
     if (!storedRole) {
@@ -74,9 +78,9 @@ const AdminInstitutionDetails = () => {
           throw new Error('Not found');
         }
       })
-      .catch(() => setError('Institution registration not found'))
-      .finally(() => setLoading(false));
-  }, [id]);
+        .catch(() => setError('Institution registration not found'))
+        .finally(() => setLoading(false));
+      }, [id, initialData]);
 
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   if (error || !data) return <div className="flex justify-center items-center min-h-screen">{error || 'Not found'}</div>;

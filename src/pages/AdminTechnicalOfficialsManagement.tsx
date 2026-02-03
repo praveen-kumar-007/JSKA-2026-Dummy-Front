@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState, useDeferredValue, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, XCircle, Edit2, Trash2, Save, X, Download } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
@@ -39,6 +39,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   const [editing, setEditing] = useState<TechnicalOfficial | null>(null);
   const [editForm, setEditForm] = useState<Partial<TechnicalOfficial>>({});
   const [searchTerm, setSearchTerm] = useState('');
+  const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const [adminRole, setAdminRole] = useState<string | null>(null);
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
@@ -201,6 +202,23 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
     setEditForm(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleViewDetails = useCallback((official: TechnicalOfficial) => {
+    navigate(`/admin/technical-officials/${official._id}`, { state: { official } });
+  }, [navigate]);
+
+  const filteredOfficials = useMemo(() => {
+    const q = deferredSearchTerm.trim().toLowerCase();
+    if (!q) return officials;
+    return officials.filter((off) => (
+      (off.candidateName || '').toLowerCase().includes(q) ||
+      (off.email || '').toLowerCase().includes(q) ||
+      (off.mobile || '').toLowerCase().includes(q) ||
+      (off.aadharNumber || '').toLowerCase().includes(q) ||
+      (off.transactionId || '').toLowerCase().includes(q) ||
+      getOfficialId(off).toLowerCase().includes(q)
+    ));
+  }, [deferredSearchTerm, officials]);
+
   const saveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editing) return;
@@ -278,19 +296,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
       ) : (
         isMobile ? (
           <div className="space-y-4">
-            {officials
-              .filter((off) => {
-                if (!searchTerm.trim()) return true;
-                const q = searchTerm.toLowerCase();
-                return (
-                  (off.candidateName || '').toLowerCase().includes(q) ||
-                  (off.email || '').toLowerCase().includes(q) ||
-                  (off.mobile || '').toLowerCase().includes(q) ||
-                  (off.aadharNumber || '').toLowerCase().includes(q) ||
-                  (off.transactionId || '').toLowerCase().includes(q) ||
-                  getOfficialId(off).toLowerCase().includes(q)
-                );
-              })
+            {filteredOfficials
               .map((off) => {
               const statusValue = off.status || 'Pending';
               const statusKey = statusValue.toLowerCase();
@@ -336,7 +342,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                 </div>
 
                 <div className="mt-3 flex gap-2 flex-wrap">
-                  <button onClick={() => navigate(`/admin/technical-officials/${off._id}`)} className="flex-1 min-w-0 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold">View Details</button>
+                  <button onClick={() => handleViewDetails(off)} className="flex-1 min-w-0 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold">View Details</button>
                   {isPending && (
                     <>
                       <button onClick={() => handleStatusChange(off._id, 'Approved')} className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-sm">Approve</button>
@@ -370,19 +376,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {officials
-                    .filter((off) => {
-                      if (!searchTerm.trim()) return true;
-                      const q = searchTerm.toLowerCase();
-                      return (
-                        (off.candidateName || '').toLowerCase().includes(q) ||
-                        (off.email || '').toLowerCase().includes(q) ||
-                        (off.mobile || '').toLowerCase().includes(q) ||
-                        (off.aadharNumber || '').toLowerCase().includes(q) ||
-                        (off.transactionId || '').toLowerCase().includes(q) ||
-                        getOfficialId(off).toLowerCase().includes(q)
-                      );
-                    })
+                  {filteredOfficials
                     .map((off) => {
                     const statusValue = off.status || 'Pending';
                     const statusKey = statusValue.toLowerCase();
@@ -473,7 +467,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                             </>
                           )}
                           <button
-                            onClick={() => navigate(`/admin/technical-officials/${off._id}`)}
+                            onClick={() => handleViewDetails(off)}
                             className="inline-flex items-center justify-center px-3 h-8 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold"
                             title="View details"
                           >

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useDeferredValue } from 'react';
 import { Search, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
@@ -15,6 +15,7 @@ interface UnifiedRecord {
   idLabel?: string;
   status?: string;
   createdAt?: string;
+  raw?: any;
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -24,6 +25,7 @@ const AdminUnifiedSearch: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const deferredSearchTerm = useDeferredValue(searchTerm);
   const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected'>('All');
   const [typeFilter, setTypeFilter] = useState<'All' | 'Player' | 'Institution' | 'Official'>('All');
   const [adminRole, setAdminRole] = useState<string | null>(null);
@@ -92,7 +94,8 @@ const AdminUnifiedSearch: React.FC = () => {
           transactionId: p.transactionId,
           idLabel: p.idNo || (p.transactionId ? `DDKA-${String(p.transactionId).slice(-6).toUpperCase()}` : ''),
           status: p.status || 'Pending',
-          createdAt: p.createdAt
+          createdAt: p.createdAt,
+          raw: p
         }));
 
         const institutionRecords: UnifiedRecord[] = institutions.map((i: any) => ({
@@ -105,7 +108,8 @@ const AdminUnifiedSearch: React.FC = () => {
           transactionId: i.transactionId,
           idLabel: i.regNo || (i._id ? `INST-${String(i._id).slice(-4).toUpperCase()}` : ''),
           status: i.status || 'Pending',
-          createdAt: i.createdAt
+          createdAt: i.createdAt,
+          raw: i
         }));
 
         const officialRecords: UnifiedRecord[] = officials.map((o: any) => ({
@@ -118,7 +122,8 @@ const AdminUnifiedSearch: React.FC = () => {
           transactionId: o.transactionId,
           idLabel: o._id ? `DDKA-2026-${String(o._id).slice(-4).toUpperCase()}` : '',
           status: o.status || 'Pending',
-          createdAt: o.createdAt
+          createdAt: o.createdAt,
+          raw: o
         }));
 
         const merged = [...playerRecords, ...institutionRecords, ...officialRecords].sort((a, b) => {
@@ -155,7 +160,7 @@ const AdminUnifiedSearch: React.FC = () => {
   }
 
   const filteredRecords = useMemo(() => {
-    const q = searchTerm.trim().toLowerCase();
+    const q = deferredSearchTerm.trim().toLowerCase();
     return records.filter((r) => {
       if (typeFilter !== 'All' && r.group !== typeFilter) return false;
       if (statusFilter !== 'All' && (r.status || 'Pending') !== statusFilter) return false;
@@ -171,7 +176,7 @@ const AdminUnifiedSearch: React.FC = () => {
         (r.id || '').toLowerCase().includes(q)
       );
     });
-  }, [records, searchTerm, statusFilter, typeFilter]);
+  }, [records, deferredSearchTerm, statusFilter, typeFilter]);
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
@@ -286,6 +291,14 @@ const AdminUnifiedSearch: React.FC = () => {
                         ? `/admin/institution/${r.id}`
                         : `/admin/technical-officials/${r.id}`;
 
+                    const detailState = r.group === 'Player'
+                      ? { data: r.raw, type: 'player' as const }
+                      : r.group === 'Institution'
+                        ? { data: r.raw, type: 'institution' as const }
+                        : r.raw
+                          ? { official: r.raw }
+                          : undefined;
+
                     return (
                       <tr key={`${r.group}-${r.id}`} className="hover:bg-slate-50 transition-colors">
                         <td className="px-4 py-3">
@@ -301,6 +314,7 @@ const AdminUnifiedSearch: React.FC = () => {
                         <td className="px-4 py-3 text-right">
                           <Link
                             to={detailPath}
+                            state={detailState}
                             className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700"
                           >
                             <Eye size={14} /> View Details

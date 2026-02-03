@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Download, User, Phone, Info, Building2, Wallet } from "lucide-react";
 import { formatDateMDY } from '../utils/date';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
@@ -27,15 +27,32 @@ const getAgeGroup = (dob?: string) => {
 
 const AdminRegistrationDetails = () => {
   const { id } = useParams();
-  const [data, setData] = useState<any>(null);
-  const [type, setType] = useState<'player' | 'institution' | null>(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const initialState = (location.state as { data?: any; type?: 'player' | 'institution' } | null) || null;
+  const initialData = initialState?.data || null;
+  const initialType = initialState?.type || null;
+  const [data, setData] = useState<any>(initialData);
+  const [type, setType] = useState<'player' | 'institution' | null>(initialType);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
   const [memberRole, setMemberRole] = useState<string>('Player');
   const [customRole, setCustomRole] = useState<string>('');
   const [customIdInput, setCustomIdInput] = useState<string>('');
   const [showIdOptions, setShowIdOptions] = useState<boolean>(false);
   const [adminRole, setAdminRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialData && initialType === 'player') {
+      const existingRole = initialData?.memberRole;
+      if (existingRole && DEFAULT_ROLES.includes(existingRole)) {
+        setMemberRole(existingRole);
+        setCustomRole('');
+      } else if (existingRole) {
+        setMemberRole('Player');
+        setCustomRole(existingRole);
+      }
+    }
+  }, [initialData, initialType]);
 
   // Generate ID (with optional custom ID and role)
   const generateIdNo = async () => {
@@ -137,8 +154,10 @@ const AdminRegistrationDetails = () => {
 
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
     setError(null);
+    if (!initialData || initialData._id !== id) {
+      setLoading(true);
+    }
     // Resolve admin role from localStorage or JWT token
     let storedRole = localStorage.getItem('adminRole');
     if (!storedRole) {
@@ -161,57 +180,90 @@ const AdminRegistrationDetails = () => {
     }
     const token = localStorage.getItem('token');
 
-    fetch(`${API_URL}/api/players/${id}`, {
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    })
-      .then(async (res) => {
-        if (res.ok) {
-          const result = await res.json();
-          if (result.success) {
-            setData(result.data);
+    const fetchPlayer = async () => {
+      const res = await fetch(`${API_URL}/api/players/${id}`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) return null;
+      const result = await res.json();
+      if (result?.success) return result.data;
+      return null;
+    };
+
+    const fetchInstitution = async () => {
+      const res = await fetch(`${API_URL}/api/institutions/${id}`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) return null;
+      const result = await res.json();
+      if (result?.success) return result.data;
+      return null;
+    };
+
+    const hydrateRole = (payload: any) => {
+      const existingRole = payload?.memberRole;
+      if (existingRole && DEFAULT_ROLES.includes(existingRole)) {
+        setMemberRole(existingRole);
+        setCustomRole('');
+      } else if (existingRole) {
+        setMemberRole('Player');
+        setCustomRole(existingRole);
+      } else {
+        setMemberRole('Player');
+        setCustomRole('');
+      }
+    };
+
+    const run = async () => {
+      try {
+        if (initialType === 'player') {
+          const player = await fetchPlayer();
+          if (player) {
+            setData(player);
             setType('player');
-
-            const existingRole = result.data.memberRole;
-            if (existingRole && DEFAULT_ROLES.includes(existingRole)) {
-              setMemberRole(existingRole);
-              setCustomRole('');
-            } else if (existingRole) {
-              setMemberRole('Player');
-              setCustomRole(existingRole);
-            } else {
-              setMemberRole('Player');
-              setCustomRole('');
-            }
-
-            setLoading(false);
-            return 'found'; // short-circuit
+            hydrateRole(player);
+            return;
           }
         }
-        // Try institution if not found as player
-        return fetch(`${API_URL}/api/institutions/${id}`, {
-          headers: {
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
-      })
-      .then(async (res) => {
-        if (res === 'found') return; // do nothing if already found
-        if (!res || !res.ok) throw new Error('Not found');
-        const result = await res.json();
-        if (result.success) {
-          setData(result.data);
-          setType('institution');
-        } else {
-          throw new Error('Not found');
+
+        if (initialType === 'institution') {
+          const institution = await fetchInstitution();
+          if (institution) {
+            setData(institution);
+            setType('institution');
+            return;
+          }
         }
-      })
-      .catch(() => {
+
+        const player = await fetchPlayer();
+        if (player) {
+          setData(player);
+          setType('player');
+          hydrateRole(player);
+          return;
+        }
+
+        const institution = await fetchInstitution();
+        if (institution) {
+          setData(institution);
+          setType('institution');
+          return;
+        }
+
+        throw new Error('Not found');
+      } catch {
         setError('Registration not found');
-      })
-      .finally(() => setLoading(false));
-  }, [id]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+  }, [id, initialData, initialType]);
 
   const handleViewIdCard = () => {
     if (type === 'player' && data?.idNo) {
