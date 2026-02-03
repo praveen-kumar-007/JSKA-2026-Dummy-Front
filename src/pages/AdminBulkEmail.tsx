@@ -16,7 +16,7 @@ const AdminBulkEmail: React.FC = () => {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected'>('All');
-  const [typeFilter, setTypeFilter] = useState<'All' | 'Player' | 'Institution' | 'Technical Official'>('All');
+  const [typeFilter, setTypeFilter] = useState<'All' | 'Player' | 'Institution' | 'Technical Official' | 'Newsletter' | 'Contact'>('All');
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
@@ -52,7 +52,11 @@ const AdminBulkEmail: React.FC = () => {
     return recipients.filter(r => {
       const status = (r.status || 'Pending') as any;
       if (statusFilter !== 'All' && status !== statusFilter) return false;
-      if (typeFilter !== 'All' && r.type !== typeFilter) return false;
+      if (typeFilter === 'All') {
+        if (r.type === 'Newsletter' || r.type === 'Contact') return false;
+      } else if (r.type !== typeFilter) {
+        return false;
+      }
       const hay = `${r.name} ${r.email} ${r.type}`.toLowerCase();
       return hay.includes(search.toLowerCase());
     });
@@ -125,7 +129,7 @@ const AdminBulkEmail: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <AdminPageHeader
           title="Bulk Email"
-          subtitle="Send a message to selected players, institutions, and technical officials."
+          subtitle="Send a message to selected players, institutions, technical officials, newsletter subscribers, or contacts."
           actions={
             <button
               onClick={loadRecipients}
@@ -160,7 +164,7 @@ const AdminBulkEmail: React.FC = () => {
                   onChange={(e) => setTypeFilter(e.target.value as any)}
                   className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
                 >
-                  {['All', 'Player', 'Institution', 'Technical Official'].map(t => (
+                  {['All', 'Player', 'Institution', 'Technical Official', 'Newsletter', 'Contact'].map(t => (
                     <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
