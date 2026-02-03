@@ -41,6 +41,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
   const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
   const [showDocs, setShowDocs] = useState(false);
   const docsRef = useRef<HTMLDivElement | null>(null);
+  const [showManage, setShowManage] = useState(false);
+  const manageRef = useRef<HTMLDivElement | null>(null);
 
   // Selection & export state for table exports
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -84,16 +86,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         setShowDocs(false);
       }
     }
+    function handleManageClick(e: MouseEvent) {
+      if (!showManage) return;
+      if (manageRef.current && !manageRef.current.contains(e.target as Node)) {
+        setShowManage(false);
+      }
+    }
     function handleEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') setShowDocs(false);
+      if (e.key === 'Escape') {
+        setShowDocs(false);
+        setShowManage(false);
+      }
     }
     document.addEventListener('mousedown', handleDocClick);
+    document.addEventListener('mousedown', handleManageClick);
     document.addEventListener('keydown', handleEsc);
     return () => {
       document.removeEventListener('mousedown', handleDocClick);
+      document.removeEventListener('mousedown', handleManageClick);
       document.removeEventListener('keydown', handleEsc);
     };
-  }, [showDocs]);
+  }, [showDocs, showManage]);
 
   // Mobile detection to render a compact card list on small screens
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -367,6 +380,74 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     );
   };
 
+  // Toggle nodemailer (email sending) - superadmin only
+  const ToggleEmail: React.FC = () => {
+    const [loadingSetting, setLoadingSetting] = useState(false);
+    const [emailEnabled, setEmailEnabled] = useState<boolean | null>(null);
+
+    useEffect(() => {
+      const load = async () => {
+        setLoadingSetting(true);
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch(`${API_URL}/api/settings`, { headers: { Authorization: `Bearer ${token}` } });
+          const json = await res.json();
+          if (json && json.success && typeof json.data?.emailEnabled === 'boolean') {
+            setEmailEnabled(json.data.emailEnabled);
+          } else {
+            setEmailEnabled(true);
+          }
+        } catch (err) {
+          console.error('Failed to load email setting', err);
+          setEmailEnabled(true);
+        } finally {
+          setLoadingSetting(false);
+        }
+      };
+      load();
+    }, []);
+
+    const toggle = async () => {
+      if (emailEnabled === null) return;
+      try {
+        setLoadingSetting(true);
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/api/settings`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ emailEnabled: !emailEnabled })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Failed to update email setting');
+          return;
+        }
+        setEmailEnabled(!emailEnabled);
+        alert('Updated email setting successfully');
+      } catch (err) {
+        console.error(err);
+        alert('Failed to update email setting');
+      } finally {
+        setLoadingSetting(false);
+      }
+    };
+
+    return (
+      <button
+        onClick={toggle}
+        disabled={loadingSetting}
+        title={emailEnabled ? 'Email sending is ON' : 'Email sending is OFF'}
+        aria-pressed={emailEnabled === true}
+        className={`flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-3 rounded-full md:rounded-xl font-bold md:font-black shadow-sm transition-all active:scale-95 ${loadingSetting ? 'opacity-60 cursor-not-allowed' : ''} ${emailEnabled ? 'bg-white text-green-600 md:hover:bg-green-600 md:hover:text-white' : 'bg-white text-slate-700 md:hover:bg-slate-700 md:hover:text-white'}`}
+      >
+        {emailEnabled ? <CheckCircle size={16} /> : <XCircle size={16} />}
+        <span className="font-black text-xs md:text-sm">MAIL</span>
+        <div className={`${emailEnabled ? 'bg-green-600' : 'bg-slate-400'} w-4 h-4 md:w-6 md:h-6 rounded-md border`} aria-hidden="true" />
+        <span className="sr-only">MAIL: {emailEnabled ? 'ON' : 'OFF'}</span>
+      </button>
+    );
+  };
+
   // Generic small toggle for export-related settings
   const ToggleSetting: React.FC<{ label: string; settingKey: 'allowExportAll' | 'allowExportPlayers' | 'allowExportTechnicalOfficials' | 'allowExportInstitutions' }> = ({ label, settingKey }) => {
     const [loadingSetting, setLoadingSetting] = useState(false);
@@ -463,7 +544,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
         const resJson = await response.json();
         fetchData();
         if (resJson.emailSent) {
-          alert('Approval email sent to the player');
+          const type = resJson.emailType === 'rejection' ? 'Rejection' : resJson.emailType === 'approval' ? 'Approval' : 'Notification';
+          alert(`${type} email sent`);
         }
       } else {
         const errData = await response.json();
@@ -553,18 +635,59 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3 flex-wrap">
-            {adminRole === 'superadmin' && <ToggleShowIDs />}
-
+          <div className="flex items-center gap-3 flex-wrap w-full md:w-auto">
             {adminRole === 'superadmin' && (
-              <div className="flex gap-2 items-center flex-wrap">
-                <ToggleExportAll />
+              <div className="relative" ref={manageRef}>
+                <button
+                  type="button"
+                  onClick={() => setShowManage(prev => !prev)}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-slate-700 px-4 md:px-6 py-2 md:py-3 rounded-xl font-black shadow-sm border-2 border-slate-100 hover:bg-slate-700 hover:text-white transition-all active:scale-95"
+                  aria-expanded={showManage}
+                  aria-controls="manage-toggles"
+                  title="Manage settings"
+                >
+                  <UserCog size={18} />
+                  <span className="font-black text-sm">MANAGE</span>
+                </button>
+
+                {showManage && (
+                  <div
+                    id="manage-toggles"
+                    className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 mt-3 w-[90vw] sm:w-80 bg-white border border-slate-200 rounded-xl shadow-lg p-4 z-50"
+                    role="dialog"
+                    aria-label="Manage settings"
+                  >
+                    <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Settings</div>
+                    <table className="w-full text-sm table-auto">
+                      <thead>
+                        <tr className="text-left text-slate-500">
+                          <th className="py-1">Setting</th>
+                          <th className="py-1 text-right">Toggle</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        <tr>
+                          <td className="py-2 font-semibold text-slate-700">ID</td>
+                          <td className="py-2 text-right"><div className="flex justify-end scale-90 origin-right"><ToggleShowIDs /></div></td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 font-semibold text-slate-700">MAIL</td>
+                          <td className="py-2 text-right"><div className="flex justify-end scale-90 origin-right"><ToggleEmail /></div></td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 font-semibold text-slate-700">EXP</td>
+                          <td className="py-2 text-right"><div className="flex justify-end scale-90 origin-right"><ToggleExportAll /></div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
 
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-2 bg-white text-red-600 px-4 md:px-6 py-2 md:py-3 rounded-xl font-black shadow-sm border-2 border-red-50 hover:bg-red-600 hover:text-white transition-all active:scale-95"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-red-600 px-4 md:px-6 py-2 md:py-3 rounded-xl font-black shadow-sm border-2 border-red-50 hover:bg-red-600 hover:text-white transition-all active:scale-95"
               title="Logout"
             >
               <LogOut size={18} />
@@ -1086,7 +1209,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                       : statusKey === 'rejected'
                         ? 'bg-red-100 text-red-700'
                         : 'bg-amber-100 text-amber-700';
-                    const isPending = statusKey === 'pending';
+                    const canApprove = statusKey !== 'approved';
+                    const canReject = statusKey !== 'rejected';
 
                     return (
                     <tr key={item._id} className="hover:bg-slate-50 transition-colors">
@@ -1153,23 +1277,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
 
                       <td className="p-3 md:p-6">
                         <div className="flex justify-end gap-2">
-                          {isPending && (
-                            <>
-                              <button 
-                                onClick={() => updateStatus(item._id, 'Approved')} 
-                                className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all active:scale-90"
-                                title="Approve"
-                              >
-                                <CheckCircle size={18} />
-                              </button>
-                              <button 
-                                onClick={() => updateStatus(item._id, 'Rejected')} 
-                                className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
-                                title="Reject"
-                              >
-                                <XCircle size={18} />
-                              </button>
-                            </>
+                          {canApprove && (
+                            <button 
+                              onClick={() => updateStatus(item._id, 'Approved')} 
+                              className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all active:scale-90"
+                              title="Approve"
+                            >
+                              <CheckCircle size={18} />
+                            </button>
+                          )}
+                          {canReject && (
+                            <button 
+                              onClick={() => updateStatus(item._id, 'Rejected')} 
+                              className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
+                              title="Reject"
+                            >
+                              <XCircle size={18} />
+                            </button>
                           )}
                           <a
                             href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`}
@@ -1235,8 +1359,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
                     </div>
                     <div className="mt-3 flex flex-wrap gap-2">
                       <a href={activeTab === 'players' ? `/admin/registration/${item._id}` : `/admin/institution/${item._id}`} className="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-black">View</a>
-                      <button onClick={() => updateStatus(item._id, 'Approved')} className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black">Approve</button>
-                      <button onClick={() => updateStatus(item._id, 'Rejected')} className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-black">Reject</button>
+                      {(item.status || 'Pending').toLowerCase() !== 'approved' && (
+                        <button onClick={() => updateStatus(item._id, 'Approved')} className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black">Approve</button>
+                      )}
+                      {(item.status || 'Pending').toLowerCase() !== 'rejected' && (
+                        <button onClick={() => updateStatus(item._id, 'Rejected')} className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-black">Reject</button>
+                      )}
                       {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
                         <button onClick={() => deleteEntry(item._id)} className="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-xs font-black">Delete</button>
                       )}
