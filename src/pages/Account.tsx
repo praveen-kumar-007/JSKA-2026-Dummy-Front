@@ -96,12 +96,18 @@ const Account: React.FC = () => {
     const name = profile.candidateName || profile.fullName || profile.instName || '';
     params.set('name', name);
     if (suffix) params.set('sno', suffix);
-    if (suffix) params.set('uid', `DDKA-2026-${suffix}`);
+    if (profile.aadharNumber) {
+      // Show actual Aadhar on ID card
+      params.set('uid', profile.aadharNumber);
+    } else if (suffix) {
+      // Fallback: keep old behavior if no Aadhar stored
+      params.set('uid', `DDKA-2026-${suffix}`);
+    }
     const dobDate = profile.dob ? new Date(profile.dob) : null;
     if (dobDate && !Number.isNaN(dobDate.getTime())) {
       params.set('dob', dobDate.toISOString().slice(0, 10));
     }
-    if (profile.grade) params.set('grade', profile.grade);
+    if (profile.bloodGroup) params.set('bloodGroup', profile.bloodGroup);
     if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
     // Auto-download PDF at a comfortable resolution (no 8K oversize)
     if (autoDownload) { params.set('download', 'pdf'); }
