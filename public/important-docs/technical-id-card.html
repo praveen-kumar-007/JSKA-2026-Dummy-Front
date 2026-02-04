@@ -399,6 +399,29 @@
                 img.crossOrigin = 'anonymous';
                 img.src = toProxy(img.src);
             };
+
+            // Format long names for ID card: if the full name is long and
+            // contains a middle "kumar", shorten that part to "Kr." so the
+            // text fits better on the card (e.g. "Niranjan kumar Manato" → "Niranjan Kr. Manato").
+            function formatNameForIdCard(name) {
+                const trimmed = (name || '').trim();
+                if (!trimmed) return '';
+
+                // Only abbreviate when the overall name is fairly long
+                if (trimmed.length <= 20) return trimmed;
+
+                const parts = trimmed.split(/\s+/);
+                if (parts.length < 3) return trimmed;
+
+                for (let i = 1; i < parts.length - 1; i++) {
+                    if (/^kumar$/i.test(parts[i])) {
+                        parts[i] = 'Kr.';
+                        return parts.join(' ');
+                    }
+                }
+
+                return trimmed;
+            }
             function setFieldText(id, value) {
                 const target = document.getElementById(id);
                 const wrapper = document.getElementById('field-' + id);
@@ -421,16 +444,18 @@
                     const qpPhoto = urlParams.get('photoUrl');
                     const qpDownload = urlParams.get('download');
 
+                    const formattedName = formatNameForIdCard(qpName || '');
+
                     setFieldText('sno', qpSno || '');
-                    setFieldText('name', qpName || '');
+                    setFieldText('name', formattedName);
                     setFieldText('uid', qpUid || '');
                     setFieldText('dob', qpDob || '');
                     setFieldText('grade', qpGrade || '');
 
                     const cert = document.getElementById('certified-name');
                     if (cert) {
-                        cert.textContent = qpName || '';
-                        if (qpName) cert.classList.remove('dotted-line');
+                        cert.textContent = formattedName;
+                        if (formattedName) cert.classList.remove('dotted-line');
                         else cert.classList.add('dotted-line');
                     }
 
