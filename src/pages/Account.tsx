@@ -103,7 +103,8 @@ const Account: React.FC = () => {
     }
     if (profile.grade) params.set('grade', profile.grade);
     if (profile.photoUrl) params.set('photoUrl', profile.photoUrl);
-    if (autoDownload) { params.set('download', 'pdf'); params.set('resolution', '8k'); }
+    // Auto-download PDF at a comfortable resolution (no 8K oversize)
+    if (autoDownload) { params.set('download', 'pdf'); }
     return `/important-docs/technical-id-card.html?${params.toString()}`;
   };
 

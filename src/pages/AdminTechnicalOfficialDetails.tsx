@@ -393,7 +393,8 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     params.set('date', '2026-01-18');
                     if (official.grade) params.set('grade', official.grade);
                     if (official.photoUrl) params.set('photoUrl', official.photoUrl);
-                    if (autoDownload) { params.set('download', 'pdf'); params.set('resolution','8k'); }
+                    // Auto-download PDF at a comfortable resolution (no 8K oversize)
+                    if (autoDownload) { params.set('download', 'pdf'); }
                     return `/important-docs/official-certificate.html?${params.toString()}`;
                   };
 
