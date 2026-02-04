@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const FooterContactForm: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error' | 'exists'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,8 +17,13 @@ const FooterContactForm: React.FC = () => {
       });
       const result = await res.json().catch(() => null);
       if (res.ok && result && result.success) {
-        setStatus('sent');
-        setEmail('');
+        // Backend returns { success: true, message: 'Already subscribed.' } when email exists
+        if (typeof result.message === 'string' && result.message.toLowerCase().includes('already')) {
+          setStatus('exists');
+        } else {
+          setStatus('sent');
+          setEmail('');
+        }
       } else {
         setStatus('error');
       }
@@ -45,7 +50,8 @@ const FooterContactForm: React.FC = () => {
       >
         {status === 'sending' ? 'Sending...' : 'Send'}
       </button>
-      {status === 'sent' && <div className="text-green-400 text-sm font-bold">Thank you! We received your email.</div>}
+      {status === 'sent' && <div className="text-green-400 text-sm font-bold">Thank you! You are subscribed to our newsletter.</div>}
+      {status === 'exists' && <div className="text-yellow-300 text-sm font-bold">This email is already subscribed to our newsletter.</div>}
       {status === 'error' && <div className="text-red-400 text-sm font-bold">Something went wrong. Please try again.</div>}
     </form>
   );
