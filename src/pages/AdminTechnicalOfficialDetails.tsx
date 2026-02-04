@@ -402,7 +402,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                       if (!official?._id) return;
 
                       const trimmed = examScore.trim();
-                      const numericScore = trimmed === '' ? null : Number(trimmed);
+                      const numericScore = trimmed === '' ? NaN : Number(trimmed);
                       if (trimmed !== '' && (Number.isNaN(numericScore) || numericScore < 0)) {
                         alert('Please enter a valid non-negative exam score.');
                         return;
