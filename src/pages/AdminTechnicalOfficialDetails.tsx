@@ -591,10 +591,12 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     const params = new URLSearchParams();
                     params.set('name', official.candidateName);
                     if (suffix) {
+                      // Registration number suffix; full Reg. No. formatting is handled in the ID card template
                       params.set('sno', suffix);
                     }
-                    if (suffix) {
-                      params.set('uid', `DDKA-2026-${suffix}`);
+                    if (official.aadharNumber) {
+                      // Pass the original Aadhar number from MongoDB to show under "Aadhar No"
+                      params.set('uid', official.aadharNumber);
                     }
                     const dobDate = official.dob ? new Date(official.dob) : null;
                     if (dobDate && !Number.isNaN(dobDate.getTime())) {

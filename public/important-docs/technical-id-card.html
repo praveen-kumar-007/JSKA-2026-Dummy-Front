@@ -329,8 +329,8 @@
             </div>
             <div class="info-fields">
                 <div class="field empty" id="field-name"><span class="label">Name:</span> <span class="value" id="name"></span></div>
-                <div class="field empty" id="field-sno"><span class="label">S. No:</span> <span class="value" id="sno"></span></div>
-                <div class="field empty" id="field-uid"><span class="label">UID No:</span> <span class="value" id="uid"></span></div>
+                <div class="field empty" id="field-sno"><span class="label">Reg. No:</span> <span class="value" id="sno"></span></div>
+                <div class="field empty" id="field-uid"><span class="label">Aadhar No:</span> <span class="value" id="uid"></span></div>
                 <div class="field empty" id="field-dob"><span class="label">Date of Birth:</span> <span class="value" id="dob"></span></div>
                 <div class="field empty" id="field-grade"><span class="label">Grade:</span> <span class="value" id="grade"></span></div>
             </div>
@@ -415,6 +415,13 @@
 
                 return trimmed;
             }
+            function formatRegNo(sno) {
+                const trimmed = (sno || '').trim();
+                if (!trimmed) return '';
+                const upper = trimmed.toUpperCase();
+                if (/^DDKA-2026-/i.test(upper)) return trimmed;
+                return `DDKA-2026-${trimmed}`;
+            }
             function setFieldText(id, value) {
                 const target = document.getElementById(id);
                 const wrapper = document.getElementById('field-' + id);
@@ -439,7 +446,7 @@
 
                     const formattedName = formatNameForIdCard(qpName || '');
 
-                    setFieldText('sno', qpSno || '');
+                    setFieldText('sno', formatRegNo(qpSno || ''));
                     setFieldText('name', formattedName);
                     setFieldText('uid', qpUid || '');
                     setFieldText('dob', qpDob || '');
