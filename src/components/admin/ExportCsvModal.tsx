@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type Field = { key: string; label?: string };
 
@@ -11,7 +11,10 @@ interface Props {
 }
 
 const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, filenamePrefix = 'export' }) => {
-  const safeFields = Array.isArray(fields) ? fields.filter((f): f is Field => !!f && typeof f.key === 'string') : [];
+  const safeFields = useMemo(
+    () => (Array.isArray(fields) ? fields.filter((f): f is Field => !!f && typeof f.key === 'string') : []),
+    [fields]
+  );
   const safeRecords = Array.isArray(records) ? records : [];
   const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(() => Object.fromEntries(safeFields.map(f => [f.key, true])));
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);

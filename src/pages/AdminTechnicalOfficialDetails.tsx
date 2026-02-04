@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, UserCheck } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Trash2, UserCheck, XCircle } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
 import { formatDateMDY } from '../utils/date';
@@ -97,6 +97,59 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
 
   const canDelete = adminRole === 'superadmin' || !!adminPermissions?.canDelete;
 
+  const handleStatusChange = async (newStatus: 'Pending' | 'Approved' | 'Rejected') => {
+    if (!official) return;
+    if (newStatus === 'Rejected' && !window.confirm('Are you sure you want to reject this application?')) return;
+
+    try {
+      const response = await fetch(`${API_URL}/api/technical-officials/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        },
+        body: JSON.stringify({ id: official._id, status: newStatus })
+      });
+      const data = await response.json();
+      if (data.success) {
+        setOfficial(prev => (prev ? { ...prev, status: newStatus } : prev));
+        alert('Status updated successfully.');
+      } else {
+        alert(data.message || 'Failed to update status');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('Error updating status');
+    }
+  };
+
+  const handleDeleteOfficial = async () => {
+    if (!official?._id) return;
+    if (!window.confirm('Permanently delete this technical official? This cannot be undone.')) return;
+
+    setDeleting(true);
+    try {
+      const response = await fetch(`${API_URL}/api/technical-officials/${official._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('Technical official deleted successfully.');
+        navigate('/admin/technical-officials');
+      } else {
+        alert(data.message || 'Failed to delete technical official');
+      }
+    } catch (error) {
+      console.error('Error deleting technical official:', error);
+      alert('Error deleting technical official');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 max-w-5xl mx-auto">
@@ -132,10 +185,13 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
           showBack={false}
           actions={(
             <div className="flex items-center gap-2">
-              <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-blue-900"><ArrowLeft className="w-4 h-4" /> Back</button>
-              {canDelete && (
-                <button onClick={() => { if (confirm('Permanently delete this technical official?')) { setDeleting(true); /* deletion logic handled elsewhere if needed */ } }} className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all border border-red-100">Delete</button>
-              )}
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-blue-900"
+              >
+                <ArrowLeft className="w-4 h-4" /> Back
+              </button>
             </div>
           )}
         />
@@ -537,6 +593,43 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Final admin action bar for status & delete */}
+      <div className="mt-6 flex justify-end">
+        <div className="flex flex-wrap gap-2">
+          {official.status !== 'Rejected' && (
+            <button
+              type="button"
+              onClick={() => handleStatusChange('Rejected')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95"
+            >
+              <XCircle className="w-4 h-4" />
+              <span>Reject</span>
+            </button>
+          )}
+          {official.status !== 'Approved' && (
+            <button
+              type="button"
+              onClick={() => handleStatusChange('Approved')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Approve</span>
+            </button>
+          )}
+          {canDelete && (
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={handleDeleteOfficial}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-red-600 border border-red-200 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95 disabled:opacity-60"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>{deleting ? 'Deleting...' : 'Delete'}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

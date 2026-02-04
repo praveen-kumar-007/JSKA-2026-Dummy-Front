@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Building2, Phone, Info, Download, Mail, Trash2 } from "lucide-react";
+import { ArrowLeft, Building2, CheckCircle2, Phone, Info, Download, Mail, Trash2, XCircle } from "lucide-react";
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
 
@@ -28,12 +28,56 @@ const AdminInstitutionDetails = () => {
         },
       });
       if (response.ok) {
-        navigate('/admin-portal-access');
+        if (fromPath) {
+          navigate(fromPath);
+        } else {
+          navigate('/admin/registrations?tab=institutions');
+        }
       } else {
         alert("Delete failed");
       }
     } catch (error) {
       alert("Error deleting institution");
+    }
+  };
+
+  const handleStatusChange = async (newStatus: 'Pending' | 'Approved' | 'Rejected') => {
+    if (!id) return;
+    if (newStatus === 'Rejected' && !window.confirm('Are you sure you want to reject this institution registration?')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/api/institutions/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+
+      if (response.ok) {
+        const resJson = await response.json().catch(() => null);
+        setData((prev: any) => (prev ? { ...prev, status: newStatus } : prev));
+
+        if (resJson?.emailSkipped) {
+          const reason = resJson.emailSkipReason ? ` (${resJson.emailSkipReason})` : '';
+          alert(`Email skipped${reason}`);
+        } else if (resJson?.emailSent) {
+          const type = resJson.emailType === 'rejection'
+            ? 'Rejection'
+            : resJson.emailType === 'approval'
+              ? 'Approval'
+              : 'Notification';
+          alert(`${type} email sent`);
+        }
+      } else {
+        const errData = await response.json().catch(() => null);
+        alert(errData?.message || 'Error updating status');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error updating status');
     }
   };
 
@@ -154,9 +198,6 @@ const AdminInstitutionDetails = () => {
                 >
                   <ArrowLeft size={22} /> Back
                 </button>
-                {adminRole === 'superadmin' && (
-                  <button onClick={handleDelete} className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all border border-red-100"><Trash2 size={16} /> Delete Record</button>
-                )}
               </div>
             )}
           />
@@ -255,6 +296,42 @@ const AdminInstitutionDetails = () => {
                 <span className="font-semibold">Status:</span>
                 <StatusMark status={data.status} />
               </div>
+            </div>
+          </div>
+
+          {/* Final admin action bar for status & delete */}
+          <div className="mt-4 flex justify-end">
+            <div className="flex flex-wrap gap-2">
+              {data.status !== 'Rejected' && (
+                <button
+                  type="button"
+                  onClick={() => handleStatusChange('Rejected')}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95"
+                >
+                  <XCircle size={16} />
+                  <span>Reject</span>
+                </button>
+              )}
+              {data.status !== 'Approved' && (
+                <button
+                  type="button"
+                  onClick={() => handleStatusChange('Approved')}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+                >
+                  <CheckCircle2 size={16} />
+                  <span>Approve</span>
+                </button>
+              )}
+              {adminRole === 'superadmin' && (
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-red-600 border border-red-200 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95"
+                >
+                  <Trash2 size={16} />
+                  <span>Delete</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

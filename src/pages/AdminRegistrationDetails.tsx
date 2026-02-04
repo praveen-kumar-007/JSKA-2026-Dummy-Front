@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Download, User, Phone, Info, Building2, Wallet } from "lucide-react";
+import { ArrowLeft, CheckCircle, Download, Trash2, User, Phone, Info, Building2, Wallet, XCircle } from "lucide-react";
 import { formatDateMDY } from '../utils/date';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
@@ -8,6 +8,10 @@ import StatusMark from '../components/admin/StatusMark';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const DEFAULT_ROLES = ['Player', 'Captain', 'Vice Captain', 'Goalkeeper'];
+
+interface AdminPermissions {
+  canDelete?: boolean;
+}
 
 const getAgeGroup = (dob?: string) => {
   if (!dob) return 'N/A';
@@ -38,6 +42,7 @@ const AdminRegistrationDetails = () => {
   const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
   const [adminRole, setAdminRole] = useState<string | null>(null);
+  const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
   const [showIdOptions, setShowIdOptions] = useState(false);
   const [memberRole, setMemberRole] = useState<string>('Player');
   const [customRole, setCustomRole] = useState<string>('');
@@ -78,7 +83,7 @@ const AdminRegistrationDetails = () => {
     if (!initialData || initialData._id !== id) {
       setLoading(true);
     }
-    // Resolve admin role from localStorage or JWT token
+    // Resolve admin role and permissions from localStorage or JWT token
     let storedRole = localStorage.getItem('adminRole');
     if (!storedRole) {
       const tokenRaw = localStorage.getItem('token');
@@ -97,6 +102,14 @@ const AdminRegistrationDetails = () => {
     }
     if (storedRole) {
       setAdminRole(storedRole);
+    }
+    const permsRaw = localStorage.getItem('adminPermissions');
+    if (permsRaw) {
+      try {
+        setAdminPermissions(JSON.parse(permsRaw));
+      } catch (e) {
+        console.error('Failed to parse adminPermissions', e);
+      }
     }
     const token = localStorage.getItem('token');
 
@@ -226,6 +239,77 @@ const AdminRegistrationDetails = () => {
     } catch (err: any) {
       console.error(err);
       alert(err?.message || 'Failed to save ID settings. Please try again.');
+    }
+  };
+
+  const handleStatusChange = async (newStatus: 'Pending' | 'Approved' | 'Rejected') => {
+    if (!data || !type) return;
+    if (newStatus === 'Rejected' && !window.confirm('Are you sure you want to reject this registration?')) return;
+
+    try {
+      const endpoint = type === 'player' ? '/api/players/status' : '/api/institutions/status';
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ id: data._id, status: newStatus }),
+      });
+
+      if (response.ok) {
+        const resJson = await response.json();
+        setData((prev: any) => (prev ? { ...prev, status: newStatus } : prev));
+
+        if (resJson.emailSkipped) {
+          const reason = resJson.emailSkipReason ? ` (${resJson.emailSkipReason})` : '';
+          alert(`Email skipped${reason}`);
+        } else if (resJson.emailSent) {
+          const typeLabel = resJson.emailType === 'rejection'
+            ? 'Rejection'
+            : resJson.emailType === 'approval'
+              ? 'Approval'
+              : 'Notification';
+          alert(`${typeLabel} email sent`);
+        }
+      } else {
+        const errData = await response.json().catch(() => null);
+        alert(errData?.message || 'Error updating status');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error updating status');
+    }
+  };
+
+  const handleDeleteRegistration = async () => {
+    if (!data || !type) return;
+    if (!window.confirm('Permanently delete this record? This cannot be undone.')) return;
+
+    try {
+      const endpoint = type === 'player' ? `/api/players/${data._id}` : `/api/institutions/${data._id}`;
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      if (response.ok) {
+        alert('Record deleted successfully.');
+        if (fromPath) {
+          navigate(fromPath);
+        } else {
+          navigate(`/admin/registrations?tab=${type === 'institution' ? 'institutions' : 'players'}`);
+        }
+      } else {
+        alert('Delete failed on server');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error deleting entry');
     }
   };
 
@@ -594,6 +678,42 @@ const AdminRegistrationDetails = () => {
                 </div>
               </div>
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* Final action bar for admin controls */}
+      <div className="max-w-6xl mx-auto mt-8 flex justify-end">
+        <div className="flex flex-wrap gap-2">
+          {statusKey !== 'rejected' && (
+            <button
+              type="button"
+              onClick={() => handleStatusChange('Rejected')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95"
+            >
+              <XCircle size={16} />
+              <span>Reject</span>
+            </button>
+          )}
+          {statusKey !== 'approved' && (
+            <button
+              type="button"
+              onClick={() => handleStatusChange('Approved')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+            >
+              <CheckCircle size={16} />
+              <span>Approve</span>
+            </button>
+          )}
+          {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
+            <button
+              type="button"
+              onClick={handleDeleteRegistration}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-red-600 border border-red-200 text-xs font-semibold hover:bg-red-600 hover:text-white transition-all active:scale-95"
+            >
+              <Trash2 size={16} />
+              <span>Delete</span>
+            </button>
           )}
         </div>
       </div>

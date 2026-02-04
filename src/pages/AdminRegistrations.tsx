@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useDeferredValue } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle, Download, Eye, RefreshCcw, Search, Trash2, XCircle } from 'lucide-react';
+import { CheckCircle, Download, Eye, RefreshCcw, Search } from 'lucide-react';
 import ExportCsvModal from '../components/admin/ExportCsvModal';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
@@ -155,26 +155,7 @@ const AdminRegistrations: React.FC = () => {
     }
   };
 
-  const deleteEntry = async (id: string) => {
-    if (!window.confirm('Permanently delete this record? This cannot be undone.')) return;
-    try {
-      const endpoint = activeTab === 'players' ? `/api/players/${id}` : `/api/institutions/${id}`;
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        method: 'DELETE',
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-      if (response.ok) {
-        fetchData();
-      } else {
-        alert('Delete failed on server');
-      }
-    } catch (error) {
-      alert('Error deleting entry');
-    }
-  };
+  // Deletion is now handled only on the detailed page for clarity.
 
   const calculateAge = (dob?: string) => {
     if (!dob) return null;
@@ -398,7 +379,6 @@ const AdminRegistrations: React.FC = () => {
                         ? 'bg-red-100 text-red-700'
                         : 'bg-amber-100 text-amber-700';
                     const canApprove = statusKey !== 'approved';
-                    const canReject = statusKey !== 'rejected';
 
                     return (
                     <tr key={item._id} className="hover:bg-slate-50 transition-colors">
@@ -465,7 +445,6 @@ const AdminRegistrations: React.FC = () => {
 
                       <td className="p-3 md:p-6">
                         <div className="flex justify-end flex-wrap gap-2">
-                          {/* View always first for clarity */}
                           <button
                             type="button"
                             onClick={() => {
@@ -480,39 +459,21 @@ const AdminRegistrations: React.FC = () => {
                                 },
                               });
                             }}
-                            className="px-3 py-2 h-9 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-2"
-                            title="View Details"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95"
+                            title="View details"
                           >
-                            <Eye size={16} /> View
+                            <Eye size={16} />
+                            <span>View</span>
                           </button>
 
                           {canApprove && (
                             <button
                               onClick={() => updateStatus(item._id, 'Approved')}
-                              className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all active:scale-90"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
                               title="Approve"
                             >
-                              <CheckCircle size={18} />
-                            </button>
-                          )}
-
-                          {canReject && (
-                            <button
-                              onClick={() => updateStatus(item._id, 'Rejected')}
-                              className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
-                              title="Reject"
-                            >
-                              <XCircle size={18} />
-                            </button>
-                          )}
-
-                          {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
-                            <button
-                              onClick={() => deleteEntry(item._id)}
-                              className="p-2 bg-slate-100 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all active:scale-90"
-                              title="Delete"
-                            >
-                              <Trash2 size={18} />
+                              <CheckCircle size={16} />
+                              <span>Approve</span>
                             </button>
                           )}
                         </div>
@@ -576,18 +537,20 @@ const AdminRegistrations: React.FC = () => {
                             },
                           });
                         }}
-                        className="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-black"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95"
                       >
-                        View
+                        <Eye size={14} />
+                        <span>View</span>
                       </button>
+
                       {(item.status || 'Pending').toLowerCase() !== 'approved' && (
-                        <button onClick={() => updateStatus(item._id, 'Approved')} className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black">Approve</button>
-                      )}
-                      {(item.status || 'Pending').toLowerCase() !== 'rejected' && (
-                        <button onClick={() => updateStatus(item._id, 'Rejected')} className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-black">Reject</button>
-                      )}
-                      {(adminRole === 'superadmin' || adminPermissions?.canDelete) && (
-                        <button onClick={() => deleteEntry(item._id)} className="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-xs font-black">Delete</button>
+                        <button
+                          onClick={() => updateStatus(item._id, 'Approved')}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+                        >
+                          <CheckCircle size={14} />
+                          <span>Approve</span>
+                        </button>
                       )}
                     </div>
                   </div>

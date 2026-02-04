@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useDeferredValue, useCallback } from 'react';
-import { CheckCircle2, XCircle, Edit2, Trash2, Save, X, Download } from 'lucide-react';
+import { CheckCircle2, Edit2, Save, X, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import ExportCsvModal from '../components/admin/ExportCsvModal';
@@ -29,10 +29,6 @@ interface TechnicalOfficial {
   createdAt: string;
 }
 
-interface AdminPermissions {
-  canDelete?: boolean;
-}
-
 const AdminTechnicalOfficialsManagement: React.FC = () => {
   const [officials, setOfficials] = useState<TechnicalOfficial[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,9 +36,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   const [editForm, setEditForm] = useState<Partial<TechnicalOfficial>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const deferredSearchTerm = useDeferredValue(searchTerm);
-
-  const [adminRole, setAdminRole] = useState<string | null>(null);
-  const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
 
   // Selection/export
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -87,18 +80,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   };
 
   useEffect(() => {
-    // Load admin role & permissions for delete access control
-    const storedRole = localStorage.getItem('adminRole');
-    const permsRaw = localStorage.getItem('adminPermissions');
-    setAdminRole(storedRole);
-    if (permsRaw) {
-      try {
-        setAdminPermissions(JSON.parse(permsRaw));
-      } catch (e) {
-        console.error('Failed to parse adminPermissions', e);
-      }
-    }
-
     fetchOfficials();
 
     // Load public settings to respect export toggles
@@ -139,8 +120,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const canDelete = adminRole === 'superadmin' || !!adminPermissions?.canDelete;
-
   const handleStatusChange = async (id: string, status: 'Pending' | 'Approved' | 'Rejected') => {
     if (status === 'Rejected' && !window.confirm('Are you sure you want to reject this application?')) return;
 
@@ -162,28 +141,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
     } catch (error) {
       console.error('Error updating status:', error);
       alert('Error updating status');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('Permanently delete this technical official? This cannot be undone.')) return;
-
-    try {
-      const response = await fetch(`${API_URL}/api/technical-officials/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        }
-      });
-      const data = await response.json();
-      if (data.success) {
-        setOfficials(prev => prev.filter(o => o._id !== id));
-      } else {
-        alert(data.message || 'Failed to delete official');
-      }
-    } catch (error) {
-      console.error('Error deleting official:', error);
-      alert('Error deleting official');
     }
   };
 
@@ -281,9 +238,9 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
         <div className="relative max-w-md">
           <input
             type="text"
-            placeholder="Search by name, email, mobile, or ID"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search by name, email, or mobile"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white shadow-sm text-sm focus:ring-4 focus:ring-blue-50 outline-none"
           />
         </div>
@@ -308,80 +265,72 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
               const isPending = statusKey === 'pending';
 
               return (
-              <div key={off._id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                <div className="flex items-start gap-4">
-                  {allowExportAll && !showExportModal && (
-                    <div className="flex-shrink-0">
-                      <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(off._id)} onChange={(e) => {
-                        if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
-                        else setSelectedIds(prev => prev.filter(id => id !== off._id));
-                      }} />
-                    </div>
-                  )}
-                  <div className="flex-shrink-0">
-                    {off.photoUrl ? (
-                      <img src={off.photoUrl} alt={off.candidateName} className="w-12 h-12 rounded-full object-cover border border-slate-200" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-slate-200" />
+                <div key={off._id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                  <div className="flex items-start gap-4">
+                    {allowExportAll && !showExportModal && (
+                      <div className="flex-shrink-0">
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4"
+                          checked={selectedIds.includes(off._id)}
+                          onChange={(e) => {
+                            if (e.currentTarget.checked) {
+                              setSelectedIds(prev => Array.from(new Set([...prev, off._id])));
+                            } else {
+                              setSelectedIds(prev => prev.filter(id => id !== off._id));
+                            }
+                          }}
+                        />
+                      </div>
                     )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-bold text-slate-900 truncate">{off.candidateName}</div>
-                    <div className="text-xs text-slate-600 break-words">{off.email} • +91 {off.mobile}</div>
-                    <div className="text-xs text-slate-600 mt-1">{off.playerLevel} • {off.gender}</div>
-                    <div className="mt-2">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
-                        {statusValue}
-                      </span>
+                    <div className="flex-shrink-0">
+                      {off.photoUrl ? (
+                        <img
+                          src={off.photoUrl}
+                          alt={off.candidateName}
+                          className="w-12 h-12 rounded-full object-cover border border-slate-200"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-slate-200" />
+                      )}
                     </div>
-                    <div className="text-sm font-semibold mt-2">₹{off.examFee || 1000}</div>
-                    <div className="text-xs text-slate-500 mt-1 break-words">TXN: {off.transactionId || '-'}</div>
-                    <div className="mt-2">{off.receiptUrl ? <a href={off.receiptUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline break-words">View Receipt</a> : <span className="text-slate-400">No receipt</span>}</div>
-                    <div className="mt-2 text-xs break-words">{off.remarks || '-'}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-slate-900 truncate">{off.candidateName}</div>
+                      <div className="text-xs text-slate-600 break-words">{off.email}  b7 +91 {off.mobile}</div>
+                      <div className="text-xs text-slate-600 mt-1">{off.playerLevel}  b7 {off.gender}</div>
+                      <div className="mt-2">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
+                          {statusValue}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                <div className="mt-3 flex gap-2 flex-wrap">
-                  <button
-                    onClick={() => handleViewDetails(off)}
-                    className="flex-1 min-w-[140px] px-3 py-2 bg-blue-600 text-white rounded-full text-xs font-black tracking-widest uppercase"
-                  >
-                    View Details
-                  </button>
-                  {isPending && (
-                    <>
+                  <div className="mt-3 flex gap-2 flex-wrap">
+                    <button
+                      onClick={() => handleViewDetails(off)}
+                      className="flex-1 min-w-[140px] px-3 py-2 bg-blue-600 text-white rounded-full text-xs font-black tracking-widest uppercase"
+                    >
+                      View Details
+                    </button>
+                    {isPending && (
                       <button
                         onClick={() => handleStatusChange(off._id, 'Approved')}
                         className="flex-1 min-w-[110px] px-3 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold"
                       >
                         Approve
                       </button>
-                      <button
-                        onClick={() => handleStatusChange(off._id, 'Rejected')}
-                        className="flex-1 min-w-[110px] px-3 py-2 bg-red-50 text-red-700 rounded-full text-xs font-semibold"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  )}
-                  <button
-                    onClick={() => openEdit(off)}
-                    className="flex-1 min-w-[110px] px-3 py-2 bg-slate-50 text-slate-700 rounded-full text-xs font-semibold"
-                  >
-                    Edit
-                  </button>
-                  {canDelete && (
+                    )}
                     <button
-                      onClick={() => handleDelete(off._id)}
-                      className="flex-1 min-w-[110px] px-3 py-2 bg-slate-100 text-red-600 rounded-full text-xs font-semibold"
+                      onClick={() => openEdit(off)}
+                      className="flex-1 min-w-[110px] px-3 py-2 bg-slate-50 text-slate-700 rounded-full text-xs font-semibold"
                     >
-                      Delete
+                      Edit
                     </button>
-                  )}
+                  </div>
                 </div>
-              </div>
-            );
-            })} 
+              );
+            })}
           </div>
         ) : (
           <div className="bg-white rounded-2xl shadow border border-slate-200 overflow-hidden">
@@ -452,18 +401,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                       </td>
                       <td className="px-4 py-3 text-xs text-slate-700">
                         <div className="font-semibold">₹{off.examFee || 1000}</div>
-                        <div className="text-[11px] text-slate-500 break-words">
-                          TXN: {off.transactionId || '-'}
-                        </div>
-                        {off.receiptUrl && (
-                          <button
-                            type="button"
-                            onClick={() => window.open(off.receiptUrl, '_blank')}
-                            className="mt-1 inline-flex px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-semibold hover:bg-blue-100"
-                          >
-                            View Receipt
-                          </button>
-                        )}
                       </td>
                       <td className="px-4 py-3 text-sm">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusClass}`}>
@@ -483,22 +420,13 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                             View
                           </button>
                           {isPending && (
-                            <>
-                              <button
-                                onClick={() => handleStatusChange(off._id, 'Approved')}
-                                className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                                title="Approve"
-                              >
-                                <CheckCircle2 className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handleStatusChange(off._id, 'Rejected')}
-                                className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-700 hover:bg-red-100"
-                                title="Reject"
-                              >
-                                <XCircle className="w-4 h-4" />
-                              </button>
-                            </>
+                            <button
+                              onClick={() => handleStatusChange(off._id, 'Approved')}
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                              title="Approve"
+                            >
+                              <CheckCircle2 className="w-4 h-4" />
+                            </button>
                           )}
                           <button
                             onClick={() => openEdit(off)}
@@ -507,15 +435,6 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          {canDelete && (
-                            <button
-                              onClick={() => handleDelete(off._id)}
-                              className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-red-700 hover:bg-red-100"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          )}
                         </div>
                       </td>
                     </tr>
