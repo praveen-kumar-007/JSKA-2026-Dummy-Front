@@ -27,6 +27,7 @@ interface TechnicalOfficial {
   status: 'Pending' | 'Approved' | 'Rejected';
   remarks?: string;
   grade?: 'A' | 'B' | 'C' | '';
+  examScore?: number | null;
   createdAt: string;
 }
 
@@ -43,6 +44,11 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(!initialOfficial);
   const [error, setError] = useState<string | null>(null);
   const [grade, setGrade] = useState<string>(initialOfficial?.grade || '');
+  const [examScore, setExamScore] = useState<string>(
+    initialOfficial && typeof initialOfficial.examScore === 'number'
+      ? String(initialOfficial.examScore)
+      : ''
+  );
   const [savingGrade, setSavingGrade] = useState<boolean>(false);
    const [adminRole, setAdminRole] = useState<string | null>(null);
    const [adminPermissions, setAdminPermissions] = useState<AdminPermissions | null>(null);
@@ -84,6 +90,11 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
 
         setOfficial(data.data);
         setGrade(data.data.grade || '');
+        setExamScore(
+          typeof data.data.examScore === 'number' && !Number.isNaN(data.data.examScore)
+            ? String(data.data.examScore)
+            : ''
+        );
       } catch (err: any) {
         console.error('Error fetching technical official details:', err);
         setError(err.message || 'Failed to fetch technical official details');
@@ -301,6 +312,10 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                 <p className="text-xs font-semibold text-slate-500 uppercase">Transaction ID</p>
                 <p className="text-sm text-slate-900 break-words font-mono text-xs">{official.transactionId || '-'}</p>
               </div>
+              <div>
+                <p className="text-xs font-semibold text-slate-500 uppercase">Referee Exam Score</p>
+                <p className="text-sm text-slate-900">{typeof official.examScore === 'number' ? official.examScore : '-'}</p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -340,11 +355,39 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Grade (Admin)</p>
-                <div className="flex items-center gap-3">
+                <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Referee Exam Score & Grade (Admin)</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <input
+                    type="number"
+                    min={0}
+                    name="examScore"
+                    value={examScore}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setExamScore(val);
+
+                      const trimmed = val.trim();
+                      const numericScore = trimmed === '' ? NaN : Number(trimmed);
+
+                      if (Number.isNaN(numericScore)) {
+                        setGrade('');
+                      } else if (numericScore >= 71 && numericScore <= 100) {
+                        setGrade('A');
+                      } else if (numericScore >= 61 && numericScore <= 70) {
+                        setGrade('B');
+                      } else if (numericScore >= 50 && numericScore <= 60) {
+                        setGrade('C');
+                      } else {
+                        // Outside bands: no grade
+                        setGrade('');
+                      }
+                    }}
+                    placeholder="Score (e.g. 85)"
+                    className="w-28 px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                  />
                   <select
                     value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
+                    disabled
                     className="px-3 py-2 border border-slate-200 rounded-lg text-sm"
                   >
                     <option value="">Select grade</option>
@@ -357,6 +400,14 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     disabled={savingGrade || !official._id}
                     onClick={async () => {
                       if (!official?._id) return;
+
+                      const trimmed = examScore.trim();
+                      const numericScore = trimmed === '' ? null : Number(trimmed);
+                      if (trimmed !== '' && (Number.isNaN(numericScore) || numericScore < 0)) {
+                        alert('Please enter a valid non-negative exam score.');
+                        return;
+                      }
+
                       setSavingGrade(true);
                       try {
                         const response = await fetch(`${API_URL}/api/technical-officials/${official._id}`, {
@@ -365,28 +416,39 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
                           },
-                          body: JSON.stringify({ grade: grade || null })
+                          body: JSON.stringify({
+                            // grade is auto-calculated from score on backend; we still send
+                            // the current grade value for completeness, but server derives it
+                            // from examScore according to configured bands.
+                            grade: grade || null,
+                            examScore: numericScore,
+                          })
                         });
                         const data = await response.json();
                         if (!response.ok || !data.success) {
-                          throw new Error(data.message || 'Failed to update grade');
+                          throw new Error(data.message || 'Failed to update exam score / grade');
                         }
                         setOfficial(data.data);
                         setGrade(data.data.grade || '');
-                        alert('Grade updated successfully.');
+                        setExamScore(
+                          typeof data.data.examScore === 'number' && !Number.isNaN(data.data.examScore)
+                            ? String(data.data.examScore)
+                            : ''
+                        );
+                        alert('Referee exam score and grade updated successfully.');
                       } catch (err: any) {
-                        console.error('Error updating grade:', err);
-                        alert(err.message || 'Failed to update grade');
+                        console.error('Error updating exam score / grade:', err);
+                        alert(err.message || 'Failed to update exam score / grade');
                       } finally {
                         setSavingGrade(false);
                       }
                     }}
                     className="px-3 py-2 rounded-lg bg-blue-900 text-white text-xs font-semibold hover:bg-blue-800 disabled:opacity-60"
                   >
-                    {savingGrade ? 'Saving...' : 'Save Grade'}
+                    {savingGrade ? 'Saving...' : 'Save'}
                   </button>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">Grade will appear on the Technical Official certificate.</p>
+                <p className="text-[11px] text-slate-500 mt-1">Score and grade will appear on the Technical Official certificate and in the candidate account.</p>
               </div>
             </div>
 

@@ -392,6 +392,9 @@ const Account: React.FC = () => {
                         {profile.playerLevel && <div><strong>Level:</strong> {profile.playerLevel}</div>}
                         {profile.work && <div><strong>Work:</strong> {profile.work}</div>}
                         {profile.education && <div><strong>Education:</strong> {profile.education}</div>}
+                        {canViewOfficialAssets && typeof profile.examScore === 'number' && (
+                          <div><strong>Referee Exam Score:</strong> {profile.examScore}</div>
+                        )}
                         {canViewOfficialAssets && profile.grade && <div><strong>Grade:</strong> {profile.grade}</div>}
                         {canViewOfficialAssets && profile.remarks && <div><strong>Remarks:</strong> {profile.remarks}</div>}
                       </div>

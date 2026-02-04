@@ -26,6 +26,7 @@ interface TechnicalOfficial {
   status: 'Pending' | 'Approved' | 'Rejected';
   remarks?: string;
   grade?: 'A' | 'B' | 'C' | '';
+  examScore?: number | null;
   createdAt: string;
 }
 
@@ -41,7 +42,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showExportModal, setShowExportModal] = useState(false);
   const officialFields = [
-    'candidateName','parentName','dob','address','aadharNumber','gender','bloodGroup','playerLevel','work','mobile','education','email','transactionId','examFee','receiptUrl','signatureUrl','photoUrl','status','remarks','grade','createdAt'
+    'candidateName','parentName','dob','address','aadharNumber','gender','bloodGroup','playerLevel','work','mobile','education','email','transactionId','examFee','receiptUrl','signatureUrl','photoUrl','status','remarks','grade','examScore','createdAt'
   ];
 
   const [allowExportAll, setAllowExportAll] = useState<boolean>(true);
