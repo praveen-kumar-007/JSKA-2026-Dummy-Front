@@ -157,7 +157,10 @@ const App: React.FC = () => {
           {/* Admin Route with Auth Check */}
           <Route path="/admin-portal-access" element={
             isAuthenticated ? (
-              <AdminDashboard lang={lang} />
+              <AdminDashboard 
+                lang={lang} 
+                onLogout={() => setIsAuthenticated(false)}
+              />
             ) : (
               <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
             )

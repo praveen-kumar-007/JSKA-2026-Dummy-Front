@@ -10,6 +10,7 @@ import type { Language } from '../translations';
 
 interface AdminDashboardProps {
   lang: Language;
+  onLogout?: () => void;
 }
 
 interface AdminPermissions {
@@ -28,7 +29,7 @@ interface AdminPermissions {
   canDelete?: boolean;
 }
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => { 
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }) => { 
   const navigate = useNavigate();
   const [activeTab] = useState<'players' | 'institutions'>('players');
 
@@ -173,6 +174,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang }) => {
     localStorage.removeItem('adminRole');
     localStorage.removeItem('adminPermissions');
     sessionStorage.removeItem('isAdminAuthenticated');
+
+    // Inform parent so it can update in-memory auth state
+    if (onLogout) {
+      onLogout();
+    }
+
     navigate('/admin-portal-access');
   };
 
