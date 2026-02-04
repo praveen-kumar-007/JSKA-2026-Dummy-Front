@@ -260,7 +260,21 @@ const AdminRegistrationDetails = () => {
 
       if (response.ok) {
         const resJson = await response.json();
-        setData((prev: any) => (prev ? { ...prev, status: newStatus } : prev));
+
+        // Prefer server-returned payload so newly generated IDs (idNo) are visible immediately
+        if (resJson && resJson.data) {
+          setData(resJson.data);
+
+          // Re-hydrate player-specific ID/role state when applicable
+          if (type === 'player') {
+            setMemberRole(resJson.data.memberRole || 'Player');
+            setCustomIdInput(resJson.data.idNo || '');
+            setCustomRole('');
+          }
+        } else {
+          // Fallback: at least update status locally
+          setData((prev: any) => (prev ? { ...prev, status: newStatus } : prev));
+        }
 
         if (resJson.emailSkipped) {
           const reason = resJson.emailSkipReason ? ` (${resJson.emailSkipReason})` : '';
