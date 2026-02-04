@@ -332,7 +332,7 @@
                 <div class="field empty" id="field-sno"><span class="label">Reg. No:</span> <span class="value" id="sno"></span></div>
                 <div class="field empty" id="field-uid"><span class="label">Aadhar No:</span> <span class="value" id="uid"></span></div>
                 <div class="field empty" id="field-dob"><span class="label">Date of Birth:</span> <span class="value" id="dob"></span></div>
-                <div class="field empty" id="field-grade"><span class="label">Grade:</span> <span class="value" id="grade"></span></div>
+                <div class="field empty" id="field-grade"><span class="label">Blood Group:</span> <span class="value" id="grade"></span></div>
             </div>
         </div>
 
@@ -440,7 +440,7 @@
                     const qpName = urlParams.get('name');
                     const qpUid = urlParams.get('uid');
                     const qpDob = urlParams.get('dob');
-                    const qpGrade = urlParams.get('grade');
+                    const qpGrade = urlParams.get('bloodGroup') || urlParams.get('grade');
                     const qpPhoto = urlParams.get('photoUrl');
                     const qpDownload = urlParams.get('download');
 
