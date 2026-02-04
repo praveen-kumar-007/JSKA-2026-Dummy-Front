@@ -19,8 +19,8 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
   const handleAkfiTap = () => {
     const next = akfiTapCount + 1;
     setAkfiTapCount(next);
-    if (next >= 7) {
-      window.open('https://www.indiankabaddi.org', '_blank');
+    if (next >= 11) {
+      navigate('/admin-portal-access');
       setAkfiTapCount(0);
     }
   };
