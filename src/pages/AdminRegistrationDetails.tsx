@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle, Download, Trash2, User, Phone, Info, Building2,
 import { formatDateMDY } from '../utils/date';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
+import LoginActivityCard from '../components/admin/LoginActivityCard';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -1081,6 +1082,12 @@ const AdminRegistrationDetails = () => {
                   </div>
                 </div>
               </div>
+
+              <LoginActivityCard
+                activities={data.loginActivities}
+                title="Player Login History"
+                subtitle="Recent sign-ins and browser info"
+              />
             </div>
           )}
 

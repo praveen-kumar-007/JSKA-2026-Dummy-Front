@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, UserCog, Mail, Trash2, ToggleLeft, ToggleRight, ArrowLeft } from 'lucide-react';
 import AdminPageHeader from '../components/admin/AdminPageHeader';
+import LoginActivityCard from '../components/admin/LoginActivityCard';
+import type { LoginActivityEntry } from '../components/admin/LoginActivityCard';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -38,7 +40,49 @@ const AdminManageAdmins: React.FC = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const role = typeof window !== 'undefined' ? localStorage.getItem('adminRole') : null;
 
+  const [loginHistory, setLoginHistory] = useState<Record<string, LoginActivityEntry[]>>({});
+  const [loginHistoryLoading, setLoginHistoryLoading] = useState<Record<string, boolean>>({});
+  const [loginHistoryError, setLoginHistoryError] = useState<Record<string, string>>({});
+  const [historyOpen, setHistoryOpen] = useState<Record<string, boolean>>({});
+
   const [showModuleModal, setShowModuleModal] = useState(false);
+
+  const fetchAdminLoginHistory = async (adminId: string) => {
+    setLoginHistoryLoading((prev) => ({ ...prev, [adminId]: true }));
+    setLoginHistoryError((prev) => ({ ...prev, [adminId]: '' }));
+    try {
+      const res = await fetch(`${API_URL}/api/admin/${adminId}/login-history`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      const result = await res.json();
+      if (res.ok && Array.isArray(result.activities)) {
+        setLoginHistory((prev) => ({ ...prev, [adminId]: result.activities }));
+      } else {
+        setLoginHistoryError((prev) => ({
+          ...prev,
+          [adminId]: result?.message || 'Failed to load login history',
+        }));
+      }
+    } catch (error) {
+      console.error('Admin login history fetch failed', error);
+      setLoginHistoryError((prev) => ({
+        ...prev,
+        [adminId]: 'Failed to load login history',
+      }));
+    } finally {
+      setLoginHistoryLoading((prev) => ({ ...prev, [adminId]: false }));
+    }
+  };
+
+  const toggleHistory = (adminId: string) => {
+    const currentlyOpen = Boolean(historyOpen[adminId]);
+    setHistoryOpen((prev) => ({ ...prev, [adminId]: !currentlyOpen }));
+    if (currentlyOpen) return;
+    if (loginHistory[adminId] || loginHistoryLoading[adminId]) return;
+    fetchAdminLoginHistory(adminId);
+  };
 
   useEffect(() => {
     if (role !== 'superadmin') {
@@ -321,6 +365,39 @@ const AdminManageAdmins: React.FC = () => {
                     </button>
                   ))}
                 </div>
+
+                <div className="flex flex-wrap gap-2 items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => toggleHistory(admin._id)}
+                    className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700"
+                  >
+                    {historyOpen[admin._id] ? 'Hide login history' : 'Show login history'}
+                  </button>
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
+                    Visible for SUPERADMIN only
+                  </span>
+                </div>
+
+                {historyOpen[admin._id] && (
+                  <div className="pt-4 border-t border-slate-200 space-y-2">
+                      {loginHistoryLoading[admin._id] && (
+                        <p className="text-xs text-slate-500">Loading login activity…</p>
+                      )}
+                      {loginHistoryError[admin._id] && (
+                        <p className="text-xs text-red-600 font-semibold">
+                          {loginHistoryError[admin._id]}
+                        </p>
+                      )}
+                      {!loginHistoryLoading[admin._id] && !loginHistoryError[admin._id] && (
+                        <LoginActivityCard
+                          activities={loginHistory[admin._id] || []}
+                          title="Admin Login History"
+                          subtitle="Last three sign-ins with coordinates"
+                        />
+                      )}
+                    </div>
+                  )}
               </div>
             );
           })}

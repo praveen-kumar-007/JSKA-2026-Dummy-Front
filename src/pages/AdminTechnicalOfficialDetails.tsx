@@ -4,6 +4,8 @@ import { ArrowLeft, CheckCircle2, Trash2, UserCheck, XCircle } from 'lucide-reac
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
 import { formatDateMDY } from '../utils/date';
+import LoginActivityCard from '../components/admin/LoginActivityCard';
+import type { LoginActivityEntry } from '../components/admin/LoginActivityCard';
 
 interface TechnicalOfficial {
   _id: string;
@@ -29,6 +31,7 @@ interface TechnicalOfficial {
   grade?: 'A' | 'B' | 'C' | '';
   examScore?: number | null;
   createdAt: string;
+  loginActivities?: LoginActivityEntry[];
 }
 
 interface AdminPermissions {
@@ -660,7 +663,13 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
         </div>
       </div>
 
-      {/* Final admin action bar for status & delete */}
+          <LoginActivityCard
+            activities={official.loginActivities}
+            title="Official Login History"
+            subtitle="Last 3 recorded sessions"
+          />
+
+          {/* Final admin action bar for status & delete */}
       <div className="mt-6 flex justify-end">
         <div className="flex flex-wrap gap-2">
           {official.status !== 'Rejected' && (

@@ -3,6 +3,7 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Building2, CheckCircle2, Phone, Info, Download, Mail, Trash2, XCircle } from "lucide-react";
 import AdminPageHeader from '../components/admin/AdminPageHeader';
 import StatusMark from '../components/admin/StatusMark';
+import LoginActivityCard from '../components/admin/LoginActivityCard';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -307,6 +308,12 @@ const AdminInstitutionDetails = () => {
               </div>
             </div>
           </div>
+
+          <LoginActivityCard
+            activities={data.loginActivities}
+            title="Institution Login History"
+            subtitle="Latest three sign-ins"
+          />
 
           {/* Final admin action bar for status & delete (bottom: reject & delete only) */}
           <div className="mt-4 flex justify-end">
