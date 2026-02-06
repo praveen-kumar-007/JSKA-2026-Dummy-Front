@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
   return (
     <footer className="bg-slate-950 text-white pt-12 pb-6 mt-16 border-t border-slate-800/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,2fr)_minmax(0,2fr)_minmax(0,2fr)] gap-10 md:gap-12 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 items-start">
           {/* Logo & Affiliation */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3 mb-4">
