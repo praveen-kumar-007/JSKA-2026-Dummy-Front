@@ -14,6 +14,21 @@ const PublicLogin: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const captureLocation = () => new Promise<{ latitude?: number; longitude?: number }>((resolve) => {
+    if (!navigator.geolocation) {
+      resolve({});
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        resolve({ latitude, longitude });
+      },
+      () => resolve({}),
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  });
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -31,8 +46,17 @@ const PublicLogin: React.FC = () => {
 
     try {
       setIsLoading(true);
+      const pendingLocation = captureLocation();
 
-      const body = { type, email: email.trim(), password: password.trim() };
+      const body: Record<string, any> = { type, email: email.trim(), password: password.trim() };
+
+      const coords = await pendingLocation;
+      if (coords.latitude !== undefined && coords.latitude !== null) {
+        body.latitude = coords.latitude;
+      }
+      if (coords.longitude !== undefined && coords.longitude !== null) {
+        body.longitude = coords.longitude;
+      }
 
       const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
