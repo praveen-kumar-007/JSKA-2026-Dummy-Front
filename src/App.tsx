@@ -38,6 +38,7 @@ import DonationReceipt from './pages/DonationReceipt';
 const AdminTechnicalOfficialsManagement = React.lazy(() => import('./pages/AdminTechnicalOfficialsManagement'));
 const AdminTechnicalOfficialDetails = React.lazy(() => import('./pages/AdminTechnicalOfficialDetails'));
 const AdminManageAdmins = React.lazy(() => import('./pages/AdminManageAdmins'));
+const AdminLoginAlerts = React.lazy(() => import('./pages/AdminLoginAlerts'));
 const AdminUnifiedSearch = React.lazy(() => import('./pages/AdminUnifiedSearch'));
 const AdminBulkEmail = React.lazy(() => import('./pages/AdminBulkEmail'));
 const AdminRegistrations = React.lazy(() => import('./pages/AdminRegistrations'));
@@ -152,6 +153,9 @@ const App: React.FC = () => {
           {/* Superadmin: Manage Admins */}
           <Route path="/admin/manage-admins" element={
             isAuthenticated ? <AdminManageAdmins /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
+          } />
+          <Route path="/admin/login-alerts" element={
+            isAuthenticated ? <AdminLoginAlerts /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
           } />
           
           {/* Admin Route with Auth Check */}

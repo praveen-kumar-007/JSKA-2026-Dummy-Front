@@ -216,7 +216,15 @@ const AdminManageAdmins: React.FC = () => {
                 subtitle="Superadmin can control roles and module access for each admin."
                 showManageModules={true}
                 onManageModules={() => setShowModuleModal(true)}
-                actions={null}
+                actions={(
+                  <button
+                    type="button"
+                    onClick={() => navigate('/admin/login-alerts')}
+                    className="px-3 py-2 rounded-full bg-white text-slate-600 text-xs font-semibold uppercase tracking-widest border border-slate-200 hover:border-blue-200 hover:text-blue-700 transition-all"
+                  >
+                    Login Alerts
+                  </button>
+                )}
               />
             </div>
           </div>

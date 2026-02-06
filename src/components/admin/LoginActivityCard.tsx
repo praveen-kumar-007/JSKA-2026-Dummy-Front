@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import { LogIn } from 'lucide-react';
 
 export type LoginActivityEntry = {
@@ -44,7 +45,7 @@ const formatCoordinates = (entry: LoginActivityEntry) => {
   return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
 };
 
-const LoginActivityCard: React.FC<LoginActivityCardProps> = ({
+const LoginActivityCard: FC<LoginActivityCardProps> = ({
   activities = [],
   title = 'Login Activity',
   subtitle,

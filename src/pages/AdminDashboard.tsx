@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   CheckCircle, XCircle,
   Users, Building, Search,
   LogOut, Newspaper, Image as ImageIcon, Mail, UserCheck, Heart,
-  Trophy, Gavel, UserCog, FileText, Award
+  Trophy, Gavel, UserCog, FileText, Award, LogIn
 } from 'lucide-react';
 import type { Language } from '../translations';
+import { getLoginAlertReadState } from '../utils/loginAlertStorage';
 
 interface AdminDashboardProps {
   lang: Language;
@@ -28,6 +29,11 @@ interface AdminPermissions {
   canAccessBulkEmail?: boolean;
   canDelete?: boolean;
 }
+
+type LoginAlertSummary = {
+  totalLogins: number;
+  newLogins: number;
+};
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }) => { 
   const navigate = useNavigate();
@@ -87,8 +93,45 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
   const [pendingInstitutions, setPendingInstitutions] = useState<number>(0);
   const [pendingOfficials, setPendingOfficials] = useState<number>(0);
   const [pendingDonations, setPendingDonations] = useState<number>(0);
+  const [loginAlertSummary, setLoginAlertSummary] = useState<LoginAlertSummary>({ totalLogins: 0, newLogins: 0 });
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const fetchLoginAlertSummary = useCallback(async () => {
+    if (adminRole !== 'superadmin') {
+      setLoginAlertSummary({ totalLogins: 0, newLogins: 0 });
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`${API_URL}/api/admin/login-activity-alerts?limit=40`, { headers });
+      const json = await res.json();
+      if (!res.ok) {
+        console.warn('Unable to fetch login alert summary', json?.message);
+        return;
+      }
+
+        const readState = getLoginAlertReadState();
+        if (!Array.isArray(json.alerts)) return;
+        const alerts = json.alerts;
+        const totalLogins = alerts.length;
+        const viewedAt = localStorage.getItem('loginAlertsViewedAt');
+        const viewedTime = viewedAt ? new Date(viewedAt).getTime() : 0;
+        const newLogins = alerts.reduce((count: number, alert: any) => {
+          const alertTime = alert.latestLoginAt ? new Date(alert.latestLoginAt).getTime() : 0;
+          const readTimestamp = readState[alert.userKey];
+          const readTime = readTimestamp ? new Date(readTimestamp).getTime() : 0;
+          if (readTimestamp && alertTime <= readTime) return count;
+          if (alertTime <= viewedTime) return count;
+          return count + 1;
+        }, 0);
+        setLoginAlertSummary({ totalLogins, newLogins });
+    } catch (error) {
+      console.error('Failed to fetch login alert summary', error);
+    }
+  }, [API_URL, adminRole]);
 
   const fetchPendingCounts = async () => {
     try {
@@ -127,6 +170,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
   useEffect(() => {
     fetchPendingCounts();
   }, [API_URL, adminRole, adminPermissions]);
+
+  useEffect(() => {
+    fetchLoginAlertSummary();
+    const handleUpdated = () => fetchLoginAlertSummary();
+    window.addEventListener('login-alerts-changed', handleUpdated);
+    return () => window.removeEventListener('login-alerts-changed', handleUpdated);
+  }, [fetchLoginAlertSummary]);
 
   // Load public settings (which control module visibility)
   useEffect(() => {
@@ -820,6 +870,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               <span className="font-bold text-xs text-red-900">Manage Admins</span>
             </button>
           )} 
+
+          {adminRole === 'superadmin' && (
+            <button
+              type="button"
+              onClick={() => { navigate('/admin/login-alerts'); }}
+              className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-blue-50 transition-all w-full min-h-[92px]"
+            >
+              <div className="relative w-full flex items-center justify-center">
+                <LogIn size={28} className="text-blue-700 mb-2" />
+                {loginAlertSummary.newLogins > 0 && (
+                  <div className="absolute -top-1 -right-1 inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold">
+                    {loginAlertSummary.newLogins}
+                  </div>
+                )}
+              </div>
+              <span className="text-xs font-semibold mt-1 text-blue-900">Login Alerts</span>
+            </button>
+          )}
 
           {(adminRole === 'superadmin' || (publicSettings.allowImportantDocs && adminPermissions?.canAccessImportantDocs)) && (
             <div className="relative" ref={docsRef}>
