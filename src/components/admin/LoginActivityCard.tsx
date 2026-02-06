@@ -15,6 +15,8 @@ export type LoginActivityEntry = {
   createdAt?: string;
   latitude?: number | null;
   longitude?: number | null;
+  accuracy?: number | null;
+  locationLabel?: string | null;
 };
 
 interface LoginActivityCardProps {
@@ -38,11 +40,24 @@ const getDisplayIp = (entry: LoginActivityEntry) => {
   return entry.ip || 'Unknown IP';
 };
 
-const formatCoordinates = (entry: LoginActivityEntry) => {
+const getNumericCoordinates = (entry: LoginActivityEntry) => {
   const lat = typeof entry.latitude === 'number' ? entry.latitude : Number(entry.latitude);
   const lon = typeof entry.longitude === 'number' ? entry.longitude : Number(entry.longitude);
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
-  return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+  return { lat, lon };
+};
+
+const formatCoordinates = (entry: LoginActivityEntry) => {
+  const coords = getNumericCoordinates(entry);
+  if (!coords) return null;
+  return `${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}`;
+};
+
+const buildMapLink = (entry: LoginActivityEntry) => {
+  const coords = getNumericCoordinates(entry);
+  if (!coords) return null;
+  const query = `${coords.lat},${coords.lon}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 };
 
 const LoginActivityCard: FC<LoginActivityCardProps> = ({
@@ -74,6 +89,7 @@ const LoginActivityCard: FC<LoginActivityCardProps> = ({
       <div className="space-y-4">
         {activities.map((entry, index) => {
           const coordinateLabel = formatCoordinates(entry);
+          const mapLink = buildMapLink(entry);
           return (
             <div key={entry._id || index} className="rounded-xl border border-slate-100 p-3 bg-slate-50">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
@@ -92,6 +108,24 @@ const LoginActivityCard: FC<LoginActivityCardProps> = ({
                   </p>
                   {coordinateLabel && (
                     <p className="text-[10px] text-slate-400">{coordinateLabel}</p>
+                  )}
+                  {entry.locationLabel && (
+                    <p className="text-[11px] text-slate-600 font-semibold">{entry.locationLabel}</p>
+                  )}
+                  {mapLink && (
+                    <p>
+                      <a
+                        href={mapLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[11px] text-blue-600 underline"
+                      >
+                        Open in Google Maps
+                      </a>
+                    </p>
+                  )}
+                  {typeof entry.accuracy === 'number' && (
+                    <p className="text-[11px] text-slate-400">Accuracy ±{entry.accuracy.toFixed(1)} m</p>
                   )}
                   <p>{entry.loginType || 'Login'}</p>
                   {(entry.method || entry.path) && (

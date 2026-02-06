@@ -14,15 +14,15 @@ const PublicLogin: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const captureLocation = () => new Promise<{ latitude?: number; longitude?: number }>((resolve) => {
+  const captureLocation = () => new Promise<{ latitude?: number; longitude?: number; accuracy?: number }>((resolve) => {
     if (!navigator.geolocation) {
       resolve({});
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        resolve({ latitude, longitude });
+        const { latitude, longitude, accuracy } = position.coords;
+        resolve({ latitude, longitude, accuracy });
       },
       () => resolve({}),
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
@@ -56,6 +56,9 @@ const PublicLogin: React.FC = () => {
       }
       if (coords.longitude !== undefined && coords.longitude !== null) {
         body.longitude = coords.longitude;
+      }
+      if (coords.accuracy !== undefined && coords.accuracy !== null) {
+        body.accuracy = coords.accuracy;
       }
 
       const res = await fetch(`${API_URL}/api/auth/login`, {
