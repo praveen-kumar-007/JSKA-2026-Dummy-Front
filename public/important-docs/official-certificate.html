@@ -48,9 +48,9 @@
 
     /* Logo watermark layers: repeating grid + large centered logo (low opacity to deter copying) */
     .logo-watermark{
-      position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png');background-repeat:repeat;background-position:center;background-size:220px;opacity:0.06;transform:rotate(-12deg);pointer-events:none;z-index:6;mix-blend-mode:multiply;filter:grayscale(1) contrast(0.9);
+      position:absolute;inset:0;background-image:url('https://res.cloudinary.com/dcqo5qt7b/image/upload/v1770468602/ddka-logo_ywnhyh__1_-removebg-preview_kfbp1f.png');background-repeat:repeat;background-position:center;background-size:220px;opacity:0.06;transform:rotate(-12deg);pointer-events:none;z-index:6;mix-blend-mode:multiply;filter:grayscale(1) contrast(0.9);
     }
-    .logo-watermark-large{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-10deg);width:60%;height:60%;background-image:url('https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:0.12;pointer-events:none;z-index:7;mix-blend-mode:soft-light;filter:grayscale(1) saturate(0.2)}
+    .logo-watermark-large{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-10deg);width:60%;height:60%;background-image:url('https://res.cloudinary.com/dcqo5qt7b/image/upload/v1770468602/ddka-logo_ywnhyh__1_-removebg-preview_kfbp1f.png');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:0.12;pointer-events:none;z-index:7;mix-blend-mode:soft-light;filter:grayscale(1) saturate(0.2)}
     @media print{.logo-watermark,.logo-watermark-large{opacity:0.1}}
 
     /* Decorative background grid */
@@ -85,17 +85,12 @@
     .header-meta .meta-line .sep{opacity:0.5;margin:0 10px;color:#475569;font-weight:600} 
 
     .photo{width:140px;height:160px;background:#f7faff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:visible;border:2px solid rgba(3,102,214,0.06);box-shadow:inset 0 -6px 24px rgba(0,0,0,0.03);position:relative}
-    /* Photo watermark overlay (small corner logo) — stays in the photo corner to avoid faces */
-    .photo::after{content:'';position:absolute;right:8px;bottom:8px;width:44px;height:44px;background-image:url('https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:0.16;pointer-events:none;z-index:4;mix-blend-mode:soft-light;filter:grayscale(1) saturate(0.2);border-radius:6px;background-color:rgba(255,255,255,0.02)}
-    /* Bridged watermark that intentionally straddles the photo and certificate white area for blending */
-    .photo::before{content:'';position:absolute;left:-36px;bottom:-12px;width:120px;height:120px;background-image:url('https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:0.10;pointer-events:none;z-index:3;mix-blend-mode:multiply;filter:grayscale(1) blur(0.6px) contrast(0.9);transform:rotate(-6deg);border-radius:8px}
-    /* Soft fade to help blend the bridged watermark into the white certificate area */
-    .photo .bridge-fade{position:absolute;left:-10px;bottom:-10px;width:80px;height:120px;background:linear-gradient(90deg,rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.6) 100%);z-index:2;pointer-events:none;border-radius:6px}
-    /* Ensure uploaded <img> stays under the watermark */
-    .photo img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover}
-    @media print{.photo::after{opacity:0.22} .photo::before{opacity:0.14}}
-    /* Smaller watermark on narrow screens */
-    @media (max-width:780px){.photo::after{width:32px;height:32px;right:6px;bottom:6px;opacity:0.14} .photo::before{left:-28px;bottom:-6px;width:88px;height:88px;opacity:0.08}}
+    .photo-inner{position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#475569;font-weight:700}
+    .photo-inner img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .photo-watermark{position:absolute;pointer-events:none;background-image:url('https://res.cloudinary.com/dcqo5qt7b/image/upload/v1770468602/ddka-logo_ywnhyh__1_-removebg-preview_kfbp1f.png');background-repeat:no-repeat;background-position:center;background-size:contain;filter:grayscale(0.4) contrast(1.1)}
+    .photo-watermark-bridge{left:-32px;bottom:-46px;width:120px;height:120px;border-radius:8px;mix-blend-mode:screen;opacity:0.15;filter:grayscale(0.4) contrast(1.1);transform:rotate(-6deg);z-index:3}
+    @media print{.photo-watermark-corner{opacity:0.22} .photo-watermark-bridge{opacity:0.14}}
+    @media (max-width:780px){.photo-watermark-corner{width:32px;height:32px;right:6px;bottom:6px;opacity:0.14} .photo-watermark-bridge{left:-28px;bottom:-6px;width:88px;height:88px;opacity:0.08}}
 
     .center{text-align:center;margin-top:12px}
     .name-row{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -183,7 +178,7 @@
   <div class="app">
     <aside>
       <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
-        <div class="thumb"><img crossorigin="anonymous" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png" alt="DDKA" /></div>
+        <div class="thumb"><img crossorigin="anonymous" src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1770468602/ddka-logo_ywnhyh__1_-removebg-preview_kfbp1f.png" alt="DDKA" /></div>
         <div>
           <div style="font-weight:900">CHAMPIONSHIP</div>
           <div style="font-size:12px;color:var(--muted)">DDKA Certification Engine</div>
@@ -243,7 +238,7 @@
           <div class="content">
           <div class="header">
             <div class="logo">
-              <div class="badge"><img id="logo-img" crossorigin="anonymous" src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png" alt="DDKA" style="width:100%;height:100%;object-fit:contain" /></div>
+              <div class="badge"><img id="logo-img" crossorigin="anonymous" src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1770468602/ddka-logo_ywnhyh__1_-removebg-preview_kfbp1f.png" alt="DDKA" style="width:100%;height:100%;object-fit:contain" /></div>
               <div>
                 <div class="hindi-line">मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल</div>
                 <div class="title">Dhanbad District Kabaddi Association</div>
@@ -257,7 +252,10 @@
                 </div>
               </div>
             </div>
-            <div id="photo-area" class="photo">Referee Photo</div>
+            <div id="photo-area" class="photo">
+              <div id="photo-inner" class="photo-inner">Referee Photo</div>
+              <div class="photo-watermark photo-watermark-bridge" aria-hidden="true"></div>
+            </div>
           </div>
 
           <div class="center">
@@ -318,7 +316,7 @@
       const certDate = document.getElementById('cert-date');
       const photoInput = document.getElementById('photo-input');
       const photoThumb = document.getElementById('photo-thumb');
-      const photoArea = document.getElementById('photo-area');
+      const photoInner = document.getElementById('photo-inner');
       const downloadBtn = document.getElementById('download-btn');
       const downloadPdfBtn = document.getElementById('download-pdf-btn');
       const aiBtn = document.getElementById('ai-btn');
@@ -447,8 +445,8 @@
             imgMain.style.width='100%';
             imgMain.style.height='100%';
             imgMain.style.objectFit='cover';
-            photoArea.innerHTML = '';
-            photoArea.appendChild(imgMain);
+            photoInner.innerHTML = '';
+            photoInner.appendChild(imgMain);
           }
 
           // Grade is applied after grade helpers are wired up
@@ -480,9 +478,9 @@
           photoThumb.innerHTML = '';
           const img = document.createElement('img'); img.crossOrigin = 'anonymous'; img.src = r.result; img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover';
           photoThumb.appendChild(img);
-          photoArea.innerHTML = '';
+          photoInner.innerHTML = '';
           const img2 = document.createElement('img'); img2.crossOrigin = 'anonymous'; img2.src = r.result; img2.style.width='100%'; img2.style.height='100%'; img2.style.objectFit='cover';
-          photoArea.appendChild(img2);
+          photoInner.appendChild(img2);
         };
         r.readAsDataURL(f);
       });
@@ -750,7 +748,7 @@
 
       // Reset
       resetBtn.addEventListener('click', ()=>{
-        if(!confirm('Reset all data?')) return; nameInput.value='John Doe'; fatherInput.value='Parent Name'; regInput.value=''; dateInput.value='2026-01-18'; updateFields(); photoThumb.innerHTML='📷'; photoArea.innerHTML='Referee Photo';
+        if(!confirm('Reset all data?')) return; nameInput.value='John Doe'; fatherInput.value='Parent Name'; regInput.value=''; dateInput.value='2026-01-18'; updateFields(); photoThumb.innerHTML='📷'; photoInner.innerHTML='Referee Photo';
         // restore default signature images
         sigImgs.forEach((el, idx) => {
           el.innerHTML = '';
