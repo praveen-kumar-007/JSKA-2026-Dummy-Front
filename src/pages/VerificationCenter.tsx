@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import type { Language } from '../translations';
 import { translations } from '../translations';
 
@@ -192,16 +193,31 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
   const displayId = resolvedStatus === 'rejected' ? 'Rejected' : displayRecord.idNumber || formState.idNumber || '—';
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <>
+      <Helmet>
+        <title>{lang === 'hi' ? 'सत्यापन केंद्र | DDKA' : 'Verification Center | DDKA'}</title>
+        <meta name="description" content={verification.heroDescription} />
+        <meta name="keywords" content={lang === 'hi' ? 'सत्यापन, ID, खिलाड़ियों की जांच, DDKA' : 'verification, id lookup, player verification, DDKA'} />
+        <link rel="canonical" href="https://dhanbadkabaddiassociation.tech/verification" />
+        <meta property="og:title" content={lang === 'hi' ? 'सत्यापन केंद्र | DDKA' : 'Verification Center | DDKA'} />
+        <meta property="og:description" content={verification.heroDescription} />
+        <meta property="og:url" content="https://dhanbadkabaddiassociation.tech/verification" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+      </Helmet>
+    <div className="bg-slate-50 min-h-screen font-inter">
       <div className="max-w-6xl mx-auto px-4 py-16 space-y-10">
         <section className="bg-white rounded-3xl shadow-xl px-6 py-10 space-y-8">
           <div className="space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.7em] text-orange-600 font-semibold">
-              {verification.navLabel}
-            </p>
-            <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight font-['Oswald']">
-              {verification.heroTitle}
-            </h1>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-orange-50 text-orange-600">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 10.707a1 1 0 01-1.414-1.414L9 6.586l1.707 1.707a1 1 0 01-1.414 1.414L9 9.414 8.707 9.707z" />
+                </svg>
+              </span>
+              <p className="text-sm font-medium text-orange-600">{verification.navLabel}</p>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">{verification.heroTitle}</h1>
             <p className="text-lg font-semibold text-slate-700 tracking-tight">{verification.heroSubtitle}</p>
             <p className="text-sm text-slate-500 leading-relaxed max-w-3xl">{verification.heroDescription}</p>
           </div>
@@ -221,12 +237,15 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
         <section className="grid gap-6 lg:grid-cols-[1.4fr,0.8fr]">
           <div className="space-y-6">
             <div className="space-y-3">
-              <p className="text-[10px] uppercase tracking-[0.5em] text-orange-600 font-semibold">
-                Status Overview
-              </p>
-              <p className="text-sm text-slate-600 leading-relaxed max-w-2xl">
-                {verification.snapshot.message}
-              </p>
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center justify-center h-8 w-8 rounded bg-orange-50 text-orange-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 10a8 8 0 1116 0A8 8 0 012 10zm8-4a1 1 0 100 2 1 1 0 000-2zM7 9a1 1 0 012 0v3a1 1 0 11-2 0V9z" />
+                  </svg>
+                </span>
+                <h2 className="text-2xl font-semibold text-slate-900">Status Overview</h2>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed max-w-2xl">{verification.snapshot.message}</p>
             </div>
             <div className="grid gap-6 lg:grid-cols-3">
               {statusOrder.map((statusKey) => {
@@ -234,17 +253,33 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
                 return (
                   <article
                     key={statusKey}
-                    className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-4"
+                    className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-4 hover:shadow-lg transform hover:-translate-y-1 transition"
                   >
                     <div className="flex items-start justify-between">
-                      <span className="text-[11px] uppercase tracking-[0.4em] text-slate-500">{copy.badge}</span>
-                      <span className="text-[10px] uppercase tracking-[0.4em] text-slate-400">
-                        {verification.statuses[statusKey]}
-                      </span>
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-2xl font-semibold text-slate-900 leading-tight">{copy.title}</h3>
-                      <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{verification.statuses[statusKey]}</p>
+                      <div className="flex items-center gap-4">
+                        <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full ${
+                          statusKey === 'verified' ? 'bg-emerald-100 text-emerald-600' : statusKey === 'pending' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'
+                        }`}>
+                          {statusKey === 'verified' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 003.293 9.293l4 4a1 1 0 001.414 0l8-8z" clipRule="evenodd" />
+                            </svg>
+                          ) : statusKey === 'pending' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 5h2v5H9V5zM9 12h2v2H9v-2z" />
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </span>
+                        <div>
+                          <span className="text-[11px] uppercase tracking-[0.4em] text-slate-500">{copy.badge}</span>
+                          <h3 className="text-2xl font-semibold text-slate-900 leading-tight">{copy.title}</h3>
+                        </div>
+                      </div>
+                      <span className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{verification.statuses[statusKey]}</span>
                     </div>
                     <p className="text-sm text-slate-600 leading-relaxed">{copy.detail}</p>
                   </article>
@@ -252,41 +287,48 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               })}
             </div>
           </div>
-          <div className="space-y-5 bg-white rounded-3xl shadow-lg p-6 lg:p-10">
-            <div className="space-y-2">
-              <p className="text-[10px] uppercase tracking-[0.5em] text-orange-600 font-semibold">
-                {verification.navLabel}
-              </p>
-              <h2 className="text-2xl font-semibold text-slate-900">{verification.form.heading}</h2>
-              <p className="text-sm text-slate-600 leading-relaxed">{verification.form.subheading}</p>
+          <div className="space-y-5 bg-white rounded-3xl shadow-lg p-6 lg:p-8">
+            <div className="space-y-1">
+              <p className="text-[10px] uppercase tracking-[0.5em] text-orange-600 font-semibold">{verification.navLabel}</p>
+              <h2 className="text-xl font-semibold text-slate-900">{verification.form.heading}</h2>
+              <p className="text-sm text-slate-600">{verification.form.subheading}</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <label className="block space-y-2">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
-                  {verification.form.fields.idNumber}
-                </span>
-                <input
-                  type="text"
-                  value={formState.idNumber}
-                  onChange={handleInput}
-                  placeholder="PLR-2026-001 or example@mail.com / 9504904499"
-                  className="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-inner transition focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200"
-                />
-              </label>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="sm:flex sm:items-center sm:gap-3">
+                <label className="flex-1 block">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{verification.form.fields.idNumber}</span>
+                  <div className="mt-2 flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l3.817 3.817a1 1 0 01-1.414 1.414l-3.817-3.817A6 6 0 012 8z" clipRule="evenodd" />
+                    </svg>
+                    <input
+                      type="text"
+                      value={formState.idNumber}
+                      onChange={handleInput}
+                      placeholder="PLR-2026-001 or example@mail.com"
+                      className="ml-3 flex-1 text-sm text-slate-800 bg-transparent focus:outline-none"
+                    />
+                  </div>
+                </label>
+
+                <div className="mt-3 sm:mt-0 sm:w-40">
+                  <button
+                    type="submit"
+                    className={`w-full rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-200 transition focus:outline-none focus:ring-2 focus:ring-orange-300 ${
+                      loading ? 'cursor-wait opacity-70' : 'hover:bg-orange-700'
+                    }`}
+                    disabled={loading}
+                  >
+                    {loading ? verification.form.loading : verification.form.submit}
+                  </button>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-500">
-                {lang === 'hi'
-                  ? 'ID, पंजीकरण, ईमेल, फोन या आधार नंबर दर्ज करें; सिस्टम खिलाड़ी/रेफरी/संस्थान रोल स्वतः दिखाता है।'
-                  : 'Enter an ID, email, phone, or Aadhaar number; the system auto-detects player, referee, and institute roles.'}
+                {lang === 'hi' ? 'ID, पंजीकरण, ईमेल, फोन या आधार नंबर दर्ज करें; सिस्टम खिलाड़ी/रेफरी/संस्थान रोल स्वतः दिखाता है।' : 'Enter an ID, email, phone, or Aadhaar number; the system auto-detects player, referee, and institute roles.'}
               </p>
-              <button
-                type="submit"
-                className={`w-full rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-200 transition focus:outline-none focus:ring-2 focus:ring-orange-300 ${
-                  loading ? 'cursor-wait opacity-70' : 'hover:bg-orange-700'
-                }`}
-                disabled={loading}
-              >
-                {loading ? verification.form.loading : verification.form.submit}
-              </button>
+
               {errorMessage && (
                 <p className="text-xs text-red-600 font-semibold tracking-wide">{errorMessage}</p>
               )}
@@ -432,11 +474,12 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               })}
             </div>
 
-            <p className="text-xs text-slate-500">{verification.guidance.spotlight}</p>
+
           </section>
         )}
       </div>
     </div>
+    </>
   );
 };
 

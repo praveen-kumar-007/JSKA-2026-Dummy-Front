@@ -104,6 +104,13 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
       <Helmet>
         <title>{lang === 'hi' ? 'दान करें | DDKA' : 'Donate | DDKA'}</title>
         <meta name="description" content={lang === 'hi' ? 'DDKA के लिए दान देकर खेल को समर्थन दें।' : 'Support DDKA by making a donation to grow local kabaddi.'} />
+        <meta name="keywords" content={lang === 'hi' ? 'दान, दान दें, DDKA, समर्थन' : 'donate, support DDKA, kabaddi donations'} />
+        <link rel="canonical" href="https://dhanbadkabaddiassociation.tech/donate" />
+        <meta property="og:title" content={lang === 'hi' ? 'दान करें | DDKA' : 'Donate | DDKA'} />
+        <meta property="og:description" content={lang === 'hi' ? 'DDKA के लिए दान देकर खेल को समर्थन दें।' : 'Support DDKA by making a donation to grow local kabaddi.'} />
+        <meta property="og:url" content="https://dhanbadkabaddiassociation.tech/donate" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-8 px-4">

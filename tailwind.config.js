@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         oswald: ['Oswald', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       animation: {
         'marquee': 'marquee 30s linear infinite',

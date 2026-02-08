@@ -15,31 +15,70 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const t = translations[lang];
 
-  const navItems = [
-    { name: t.nav.home, id: 'home' },    { name: lang === 'hi' ? 'लॉगिन' : 'Login', id: 'login' },    { 
-      name: t.nav.about, 
-      id: 'about', 
+  // Desktop navigation items (includes DDKA Portal dropdown)
+  const desktopNavItems = [
+    { name: t.nav.home, id: 'home' },
+    {
+      name: t.nav.about,
+      id: 'about',
       dropdown: [
         { name: lang === 'hi' ? 'हमारे बारे में' : 'About Us', id: 'about' },
         { name: lang === 'hi' ? 'गौरव मंदिर' : 'Hall of Fame', id: 'hall-of-fame' },
         { name: t.nav.affiliatedInstitutions, id: 'affiliated-institutions' },
         { name: lang === 'hi' ? 'कबड्डी नियम' : 'Kabaddi Rules', id: 'kabaddi-rules' },
-      ] 
+      ]
     },
     { name: t.nav.gallery, id: 'gallery' },
     { name: t.nav.news, id: 'news' },
-    { name: t.verification.navLabel, id: 'verification' },
-    { name: t.nav.donate, id: 'donate' },
-    { 
-      name: t.nav.register, 
-      id: 'register', 
+    {
+      name: lang === 'hi' ? 'रजिस्ट्रेशन' : 'Registration',
+      id: 'register',
       dropdown: [
         { name: t.forms.playerTitle, id: 'register' },
         { name: t.forms.instTitle, id: 'institution' },
         { name: lang === 'hi' ? 'टेक्निकल ऑफिशियल रजिस्ट्रेशन' : 'Technical Official Registration', id: 'technical-official-registration' },
-      ] 
+      ]
     },
+    { name: t.nav.donate, id: 'donate' },
     { name: t.footer.contact, id: 'contact' },
+    {
+      name: lang === 'hi' ? 'DDKA पोर्टल' : 'DDKA Portal',
+      id: 'portal',
+      dropdown: [
+        { name: t.verification.navLabel, id: 'verification' },
+        { name: t.nav.login, id: 'login' },
+      ]
+    },
+  ];
+
+  // Mobile navigation items (Login and Verification as separate items)
+  const mobileNavItems = [
+    { name: t.nav.home, id: 'home' },
+    {
+      name: t.nav.about,
+      id: 'about',
+      dropdown: [
+        { name: lang === 'hi' ? 'हमारे बारे में' : 'About Us', id: 'about' },
+        { name: lang === 'hi' ? 'गौरव मंदिर' : 'Hall of Fame', id: 'hall-of-fame' },
+        { name: t.nav.affiliatedInstitutions, id: 'affiliated-institutions' },
+        { name: lang === 'hi' ? 'कबड्डी नियम' : 'Kabaddi Rules', id: 'kabaddi-rules' },
+      ]
+    },
+    { name: t.nav.gallery, id: 'gallery' },
+    { name: t.nav.news, id: 'news' },
+    {
+      name: lang === 'hi' ? 'रजिस्ट्रेशन' : 'Registration',
+      id: 'register',
+      dropdown: [
+        { name: t.forms.playerTitle, id: 'register' },
+        { name: t.forms.instTitle, id: 'institution' },
+        { name: lang === 'hi' ? 'टेक्निकल ऑफिशियल रजिस्ट्रेशन' : 'Technical Official Registration', id: 'technical-official-registration' },
+      ]
+    },
+    { name: t.nav.donate, id: 'donate' },
+    { name: t.footer.contact, id: 'contact' },
+    { name: t.verification.navLabel, id: 'verification' },
+    { name: t.nav.login, id: 'login' },
   ];
 
   // Close mobile menu when page changes
@@ -76,8 +115,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo Section */}
-          <div 
-            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer shrink-0" 
+          <div
+            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer shrink-0 mr-4 lg:mr-6"
             onClick={() => handleNavClick('home')}
           >
             <img 
@@ -101,24 +140,24 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            <div className="flex items-center space-x-4 xl:space-x-6 mr-4 border-r border-gray-100 pr-4">
-              {navItems.map((item) => (
+          <div className="hidden lg:flex items-center space-x-3 xl:space-x-5">
+            <div className="flex items-center space-x-2 xl:space-x-4 mr-3 border-r border-gray-100 pr-3">
+              {desktopNavItems.map((item) => (
                 item.dropdown ? (
                   <div key={item.id} className="relative group">
                     <button
-                      className={`text-xs xl:text-sm font-semibold transition-colors duration-200 uppercase tracking-wider flex items-center gap-1 py-2 ${
-                        item.dropdown.some(sub => sub.id === currentPage) 
-                          ? 'text-orange-600 border-b-2 border-orange-600' 
+                      className={`text-xs xl:text-sm font-semibold transition-colors duration-200 uppercase tracking-wider flex items-center gap-1 py-2 whitespace-nowrap ${
+                        item.dropdown.some(sub => sub.id === currentPage)
+                          ? 'text-orange-600 border-b-2 border-orange-600'
                           : 'text-gray-600 hover:text-blue-800'
                       }`}
                     >
                       {item.name}
-                      <svg 
-                        className="w-3 h-3 ml-1 transition-transform group-hover:rotate-180" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
+                      <svg
+                        className="w-3 h-3 ml-1 transition-transform group-hover:rotate-180"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
                         viewBox="0 0 24 24"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -133,7 +172,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
                             className={`block w-full text-left px-4 py-3 text-xs xl:text-sm font-semibold transition-colors ${
                               currentPage === sub.id 
                                 ? 'bg-orange-50 text-orange-600' 
-                                : 'text-gray-700 hover:bg-gray-50 hover:text-blue-800'
+                                : sub.id === 'verification' ? 'text-orange-600 font-semibold' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-800'
                             }`}
                           >
                             {sub.name}
@@ -146,9 +185,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`text-xs xl:text-sm font-semibold transition-colors duration-200 uppercase tracking-wider py-2 ${
-                      currentPage === item.id 
-                        ? 'text-orange-600 border-b-2 border-orange-600' 
+                    className={`text-xs xl:text-sm font-semibold transition-colors duration-200 uppercase tracking-wider py-2 whitespace-nowrap ${
+                      currentPage === item.id
+                        ? 'text-orange-600 border-b-2 border-orange-600'
                         : 'text-gray-600 hover:text-blue-800'
                     }`}
                   >
@@ -208,7 +247,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 shadow-xl">
           <div className="px-4 pt-2 pb-6 space-y-1 max-h-[calc(100vh-5rem)] overflow-y-auto">
-            {navItems.map((item) => (
+            {mobileNavItems.map((item) => (
               <div key={item.id}>
                 {item.dropdown ? (
                   <>
@@ -242,7 +281,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
                             className={`w-full text-left px-4 py-3 text-sm font-semibold rounded-lg transition-colors ${
                               currentPage === sub.id 
                                 ? 'bg-orange-100 text-orange-600' 
-                                : 'text-gray-600 hover:bg-gray-50'
+                                : sub.id === 'verification' ? 'text-orange-600 font-semibold' : 'text-gray-600 hover:bg-gray-50'
                             }`}
                           >
                             {sub.name}

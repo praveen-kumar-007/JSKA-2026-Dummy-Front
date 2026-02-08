@@ -47,6 +47,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://dhanbadkabaddiassociation.tech/verification</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://dhanbadkabaddiassociation.tech/institution</loc>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
@@ -74,6 +79,6 @@
   <url>
     <loc>https://dhanbadkabaddiassociation.tech/login</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.2</priority>
+    <priority>0.6</priority>
   </url>
 </urlset>
