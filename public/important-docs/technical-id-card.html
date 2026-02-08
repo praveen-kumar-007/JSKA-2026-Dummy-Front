@@ -298,8 +298,31 @@
         }
 
         /* Export mode: lock layout but keep watermark visible */
-        body.exporting { background: #fff; }
-        body.exporting .id-card { box-shadow: none; }
+        body.exporting {
+            background-color: #fff;
+        }
+        body.exporting .toolbar {
+            display: none;
+        }
+        body.exporting .id-card {
+            box-shadow: none;
+        }
+        .id-card-export-shell {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--card-width);
+            height: var(--card-height);
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0;
+            z-index: -1;
+            background: #fff;
+        }
+        .id-card-export-shell .id-card {
+            margin: 0;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -498,6 +521,41 @@
                 }));
             }
 
+            const rootStyle = getComputedStyle(document.documentElement);
+            const CARD_BASE_WIDTH = parseInt(rootStyle.getPropertyValue('--card-width')) || 400;
+            const CARD_BASE_HEIGHT = parseInt(rootStyle.getPropertyValue('--card-height')) || 660;
+
+            async function captureCardCanvas(scale, sourceEl) {
+                const card = sourceEl || document.querySelector('.id-card');
+                if (!card) return null;
+                const host = document.createElement('div');
+                host.className = 'id-card-export-shell';
+                host.style.width = `${CARD_BASE_WIDTH}px`;
+                host.style.height = `${CARD_BASE_HEIGHT}px`;
+                host.style.background = '#ffffff';
+                host.setAttribute('aria-hidden', 'true');
+                const clone = card.cloneNode(true);
+                clone.style.width = `${CARD_BASE_WIDTH}px`;
+                clone.style.height = `${CARD_BASE_HEIGHT}px`;
+                clone.style.margin = '0';
+                clone.style.boxShadow = 'none';
+                host.appendChild(clone);
+                document.body.appendChild(host);
+                try {
+                    await waitForImages();
+                    await new Promise((resolve) => setTimeout(resolve, 60));
+                    return await html2canvas(clone, {
+                        scale,
+                        width: CARD_BASE_WIDTH,
+                        height: CARD_BASE_HEIGHT,
+                        backgroundColor: '#ffffff',
+                        useCORS: true
+                    });
+                } finally {
+                    if (host.parentNode) host.parentNode.removeChild(host);
+                }
+            }
+
             const buildDownloadName = (ext = 'jpg') => {
                 const raw = (document.getElementById('name')?.textContent || '').trim();
                 const safe = raw ? raw.replace(/\s+/g, '_') : 'DDKA-ID';
@@ -507,13 +565,12 @@
             async function exportJpg() {
                 const el = document.querySelector('.id-card');
                 if (!el) return;
+                const JPG_SCALE = 3;
+                const JPG_QUALITY = 0.95;
+                document.body.classList.add('exporting');
                 try {
-                    const JPG_SCALE = 3;
-                    const JPG_QUALITY = 0.95;
-                    document.body.classList.add('exporting');
-                    await waitForImages();
-                    await new Promise(r => setTimeout(r, 80));
-                    const canvas = await html2canvas(el, {scale: JPG_SCALE, backgroundColor: '#ffffff', useCORS: true});
+                    const canvas = await captureCardCanvas(JPG_SCALE, el);
+                    if (!canvas) throw new Error('Rendered card is not available');
                     const data = canvas.toDataURL('image/jpeg', JPG_QUALITY);
                     const a = document.createElement('a');
                     a.href = data;
@@ -541,13 +598,12 @@
             async function exportPdf() {
                 const el = document.querySelector('.id-card');
                 if (!el) return;
+                const PDF_SCALE = 3;
+                const PDF_QUALITY = 0.95;
+                document.body.classList.add('exporting');
                 try {
-                    const PDF_SCALE = 3;
-                    const PDF_QUALITY = 0.95;
-                    document.body.classList.add('exporting');
-                    await waitForImages();
-                    await new Promise(r => setTimeout(r, 80));
-                    const canvas = await html2canvas(el, {scale: PDF_SCALE, backgroundColor: '#ffffff', useCORS: true});
+                    const canvas = await captureCardCanvas(PDF_SCALE, el);
+                    if (!canvas) throw new Error('Rendered card is not available');
                     const imgData = canvas.toDataURL('image/jpeg', PDF_QUALITY);
                     const { jsPDF } = window.jspdf;
                     const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height], compress: true });
