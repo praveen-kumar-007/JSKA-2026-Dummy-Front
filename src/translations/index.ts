@@ -66,6 +66,8 @@ export const translations = {
         fields: {
           idNumber: 'ID / Email / Phone / Aadhaar'
         },
+        placeholder: 'Enter ID, email, phone, or Aadhaar (e.g., PLR-2026-001)',
+        hint: 'Press Enter or click Check Status',
         loading: 'Checking...',
         submit: 'Check Status'
       },
@@ -103,6 +105,7 @@ export const translations = {
         notFound: 'No record matches that ID. Please verify and try again.',
         fetchFailed: 'Unable to reach the verification service. Please try again shortly.'
       },
+      rejectedMessage: 'This ID has been rejected by the admin.',
       tableHeaders: {
         role: 'Role',
         name: 'Name',
@@ -114,7 +117,9 @@ export const translations = {
         player: 'Player',
         official: 'Referee',
         institute: 'Institution'
-      }
+      },
+      approvedSuffix: 'ID is approved.',
+      rejectedByAdminSuffix: 'has been rejected by the admin.'
     }
   },
   hi: {
@@ -182,6 +187,8 @@ export const translations = {
         fields: {
           idNumber: 'ID / ईमेल / फोन / आधार'
         },
+        placeholder: 'ID, ईमेल, फ़ोन या आधार दर्ज करें (उदा., PLR-2026-001)',
+        hint: 'Enter दबाएँ या "स्थिति देखें" पर क्लिक करें',
         loading: 'जाँच कर रहा है...',
         submit: 'स्थिति देखें'
       },
@@ -219,6 +226,7 @@ export const translations = {
         notFound: 'इस ID के लिए कोई रिकॉर्ड नहीं मिला। कृपया जांचें और पुनः प्रयास करें।',
         fetchFailed: 'सत्यापन सेवा से संपर्क नहीं हो पा रहा है। थोड़ी देर में पुनः प्रयास करें।'
       },
+      rejectedMessage: 'इस ID को प्रशासन द्वारा अस्वीकार कर दिया गया है।',
       tableHeaders: {
         role: 'भूमिका',
         name: 'नाम',
@@ -230,7 +238,9 @@ export const translations = {
         player: 'खिलाड़ी',
         official: 'रेफरी',
         institute: 'संस्थान'
-      }
+      },
+      approvedSuffix: 'ID सत्यापित है।',
+      rejectedByAdminSuffix: 'प्रशासन द्वारा अस्वीकार कर दिया गया है।'
     }
   }
 } as const; // Adding "as const" makes TypeScript more strict and reliable

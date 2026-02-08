@@ -189,6 +189,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
     (row) => row.role === 'official' || row.roles.includes('official')
   );
   const showPlayerApprovedMessage = Boolean(playerRow && playerRow.status === 'verified');
+  const showOfficialApprovedMessage = Boolean(officialRow && officialRow.status === 'verified');
   const showRefereeRejectedMessage = Boolean(officialRow && officialRow.status === 'rejected');
   const displayId = resolvedStatus === 'rejected' ? 'Rejected' : displayRecord.idNumber || formState.idNumber || '—';
 
@@ -298,29 +299,36 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               <div className="sm:flex sm:items-center sm:gap-3">
                 <label className="flex-1 block">
                   <span className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{verification.form.fields.idNumber}</span>
-                  <div className="mt-2 flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-inner">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l3.817 3.817a1 1 0 01-1.414 1.414l-3.817-3.817A6 6 0 012 8z" clipRule="evenodd" />
+                  <div className="mt-2 flex items-center rounded-3xl border-2 border-orange-100 bg-white px-4 py-3 shadow-md focus-within:ring-2 focus-within:ring-orange-300 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM10 16a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
                     </svg>
                     <input
                       type="text"
+                      name="lookup"
+                      aria-label={verification.form.fields.idNumber}
+                      aria-describedby="verification-search-hint"
                       value={formState.idNumber}
                       onChange={handleInput}
-                      placeholder="PLR-2026-001 or example@mail.com"
-                      className="ml-3 flex-1 text-sm text-slate-800 bg-transparent focus:outline-none"
+                      placeholder={verification.form.placeholder}
+                      className="ml-3 flex-1 text-sm sm:text-base text-slate-800 bg-transparent focus:outline-none placeholder-slate-400"
                     />
                   </div>
+                  <p id="verification-search-hint" className="mt-2 text-xs text-slate-500">{verification.form.hint}</p>
                 </label>
 
-                <div className="mt-3 sm:mt-0 sm:w-40">
+                <div className="mt-3 sm:mt-0 sm:w-44">
                   <button
                     type="submit"
-                    className={`w-full rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-200 transition focus:outline-none focus:ring-2 focus:ring-orange-300 ${
-                      loading ? 'cursor-wait opacity-70' : 'hover:bg-orange-700'
-                    }`}
+                    className={`w-full rounded-2xl bg-orange-600 px-4 py-3 text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-200 transition transform ${loading ? 'cursor-wait opacity-70' : 'hover:bg-orange-700 hover:-translate-y-0.5'}`}
                     disabled={loading}
                   >
-                    {loading ? verification.form.loading : verification.form.submit}
+                    <span className="inline-flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM10 16a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
+                      </svg>
+                      <span className="sr-only sm:not-sr-only">{loading ? verification.form.loading : verification.form.submit}</span>
+                    </span>
                   </button>
                 </div>
               </div>
@@ -344,7 +352,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
 
         {submitted && lookupRecord && allRecordsRejected && (
           <section className="bg-white rounded-3xl shadow-lg p-6 text-red-600 text-sm font-semibold">
-            This ID has been rejected by the admin.
+            {verification.rejectedMessage}
           </section>
         )}
 
@@ -392,16 +400,21 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               </div>
             </details>
 
-            {(showPlayerApprovedMessage || showRefereeRejectedMessage) && (
+            {(showPlayerApprovedMessage || showRefereeRejectedMessage || showOfficialApprovedMessage) && (
               <div className="space-y-1 text-sm">
                 {showPlayerApprovedMessage && (
                   <p className="text-emerald-600 font-semibold">
-                    Player ID is approved.
+                    {roleNames.player} {verification.approvedSuffix}
+                  </p>
+                )}
+                {showOfficialApprovedMessage && (
+                  <p className="text-emerald-600 font-semibold">
+                    {roleNames.official} {verification.approvedSuffix}
                   </p>
                 )}
                 {showRefereeRejectedMessage && (
                   <p className="text-red-600 font-semibold">
-                    Referee ID has been rejected by the admin.
+                    {roleNames.official} {verification.rejectedByAdminSuffix}
                   </p>
                 )}
               </div>
