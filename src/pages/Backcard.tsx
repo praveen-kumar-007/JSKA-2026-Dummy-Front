@@ -58,7 +58,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
         }}
       >
         <img
-          src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+          src="/logo.png"
           alt="Jharkhand State Kabaddi Association"
           style={{
             width: '26px',
@@ -92,7 +92,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
           </div>
         </div>
         <img
-          src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png"
+          src="/akfi-logo_sydpx7.png"
           alt="AKFI Logo"
           style={{
             width: '26px',

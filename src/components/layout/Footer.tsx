@@ -133,12 +133,12 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
             <div className="flex flex-col md:flex-row items-center gap-6 mb-6 w-full">
               <div className="flex items-center gap-5">
                 <img
-                  src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+                  src="/logo.png"
                   alt="Jharkhand State Kabaddi Association"
                   className="h-20 w-20 opacity-90 rounded-full bg-white p-1 shadow-lg"
                 />
                 <img
-                  src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png"
+                  src="/akfi-logo_sydpx7.png"
                   alt="AKFI"
                   className="h-20 w-20 opacity-90 rounded-full bg-white p-1 cursor-pointer select-none shadow-lg hover:scale-105 transition-transform"
                   onClick={handleAkfiTap}

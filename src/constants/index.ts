@@ -36,6 +36,6 @@ export const COLORS = {
 };
 
 export const LOGOS = {
-  AKFI: "https://via.placeholder.com/80?text=JSKA",
-  JSKA: "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+  AKFI: "/akfi-logo_sydpx7.png",
+  JSKA: "/logo.png"
 };

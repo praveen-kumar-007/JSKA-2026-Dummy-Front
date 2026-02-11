@@ -24,7 +24,7 @@ interface Donation {
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const JSKA_LOGO = 'https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg';
+const JSKA_LOGO = '/logo.png';
 const AKFI_LOGO = 'https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png';
 
 const DonationReceipt: React.FC = () => {

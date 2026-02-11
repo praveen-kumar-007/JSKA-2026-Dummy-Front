@@ -104,7 +104,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
             onClick={() => handleNavClick('home')}
           >
             <img
-              src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+              src="/logo.png"
               alt="JSKA Logo"
               className="h-9 w-9 object-contain rounded-full bg-white p-1 shadow-md border border-gray-200"
             />
@@ -202,7 +202,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
             <div className="flex items-center space-x-2 bg-gray-700/95 rounded-2xl p-2 border border-gray-600 shadow-xl">
               <div className="relative group">
                 <img
-                  src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/akfi-logo_sydpx7.png"
+                  src="/akfi-logo_sydpx7.png"
                   alt="AKFI Logo"
                   className="h-7 w-7 object-contain rounded-xl bg-white p-0.5 shadow-md group-hover:shadow-lg transition-all border border-gray-300"
                 />
