@@ -118,7 +118,7 @@ const LoginActivityCard: FC<LoginActivityCardProps> = ({
                         href={mapLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[11px] text-blue-600 underline"
+                        className="text-[11px] text-teal-600 underline"
                       >
                         Open in Google Maps
                       </a>

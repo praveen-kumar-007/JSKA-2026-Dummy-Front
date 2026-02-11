@@ -87,9 +87,9 @@ const PlayerIDCardPage = () => {
   return (
     <>
       <Helmet>
-        <title>{`${cardData.name} — DDKA Player ID ${cardData.idNo || ''}`}</title>
-        <link rel="canonical" href={`${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/id-card/${cardData.idNo}`} />
-        <meta name="description" content={`DDKA Player ID Card for ${cardData.name}. Download or print the official membership card.`} />
+        <title>{`${cardData.name} — JSKA Player ID ${cardData.idNo || ''}`}</title>
+        <link rel="canonical" href={`${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/id-card/${cardData.idNo}`} />
+        <meta name="description" content={`JSKA Player ID Card for ${cardData.name}. Download or print the official membership card.`} />
         <meta name="robots" content="index,follow" />
 
         {/* Structured Data for the player */}
@@ -99,7 +99,7 @@ const PlayerIDCardPage = () => {
             "@type": "Person",
             "name": cardData.name,
             "jobTitle": cardData.memberRole || 'Player',
-            "image": cardData.photoUrl || `${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/logo.png`,
+            "image": cardData.photoUrl || `${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/logo.png`,
             "address": cardData.address,
             "telephone": cardData.phone,
             "identifier": cardData.idNo
@@ -108,7 +108,7 @@ const PlayerIDCardPage = () => {
       </Helmet>
 
       <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4">
-        <h1 className="text-xl font-bold text-slate-800 mb-4">DDKA Player ID Card{showIdsToUsers ? ` - ${cardData.idNo}` : ''}</h1>
+        <h1 className="text-xl font-bold text-slate-800 mb-4">JSKA Player ID Card{showIdsToUsers ? ` - ${cardData.idNo}` : ''}</h1>
 
       {showIdsToUsers === false ? (
         <div className="bg-yellow-50 rounded-lg p-6 text-yellow-800">ID visibility is currently disabled by the association. You can view profile details but the ID number and ID card are hidden.</div>
@@ -127,7 +127,7 @@ const PlayerIDCardPage = () => {
 
           <button
             onClick={() => window.print()}
-            className="mt-6 px-6 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-bold rounded-full"
+            className="mt-6 px-6 py-2 bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold rounded-full"
           >
             Print / Download ID Card
           </button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, ShieldCheck, AlertCircle, CheckCircle, Eye, EyeOff, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { LOGOS } from '../constants';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -50,7 +51,7 @@ const AdminSignup: React.FC = () => {
 
   const passwordStrength = getPasswordStrength(password);
   const strengthLabels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
-  const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500', 'bg-emerald-600'];
+  const strengthColors = ['bg-red-500', 'bg-purple-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500', 'bg-emerald-600'];
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +122,7 @@ const AdminSignup: React.FC = () => {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
         <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-500">
-          <div className="bg-blue-900 p-8 text-center text-white">
+          <div className="bg-teal-900 p-8 text-center text-white">
             <ShieldCheck size={48} className="mx-auto mb-4 animate-pulse" />
             <h2 className="text-2xl font-bold uppercase tracking-tight">Checking Admin Status</h2>
           </div>
@@ -136,17 +137,17 @@ const AdminSignup: React.FC = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-500">
-        <div className="bg-blue-900 p-8 text-center text-white">
+        <div className="bg-teal-900 p-8 text-center text-white">
           <a href="/" className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg rotate-3">
-            <img src="/logo.svg" alt="DDKA Logo" className="w-12 h-12 object-contain" />
+            <img src={LOGOS.JSKA} alt="JSKA Logo" className="w-12 h-12 object-contain" />
           </a>
           <h2 className="text-3xl font-oswald font-bold uppercase tracking-tight">Create Admin Account</h2>
-          <p className="text-blue-200 text-sm mt-1 uppercase tracking-widest font-bold">Secure Registration</p>
+          <p className="text-teal-200 text-sm mt-1 uppercase tracking-widest font-bold">Secure Registration</p>
         </div>
 
         <form onSubmit={handleSignup} className="p-8 space-y-5">
           {adminExists && (
-            <div className="bg-blue-50 text-blue-700 p-4 rounded-xl text-xs font-bold flex items-center gap-2 border border-blue-100">
+            <div className="bg-teal-50 text-teal-700 p-4 rounded-xl text-xs font-bold flex items-center gap-2 border border-teal-100">
               <CheckCircle size={16} />
               First admin (SUPERADMIN) already exists. New accounts will be NORMAL ADMINS without delete rights. Permissions can be managed by the superadmin.
             </div>
@@ -171,13 +172,13 @@ const AdminSignup: React.FC = () => {
                 type="text"
                 value={adminId}
                 onChange={e => setAdminId(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all font-medium"
+                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
                 placeholder="Enter unique admin ID"
                 minLength={3}
               />
             </div>
             {adminId.length > 0 && adminId.length < 3 && (
-              <p className="text-xs text-orange-600 ml-1">Minimum 3 characters required</p>
+              <p className="text-xs text-purple-600 ml-1">Minimum 3 characters required</p>
             )}
           </div>
 
@@ -190,7 +191,7 @@ const AdminSignup: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all font-medium"
+                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-purple-500 outline-none transition-all font-medium"
                 placeholder="Enter admin email"
               />
             </div>
@@ -205,7 +206,7 @@ const AdminSignup: React.FC = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-purple-500 outline-none transition-all"
                 placeholder="Minimum 6 characters"
                 minLength={6}
               />
@@ -234,7 +235,7 @@ const AdminSignup: React.FC = () => {
                 type={showConfirm ? 'text' : 'password'}
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-purple-500 outline-none transition-all"
                 placeholder="Re-enter password"
               />
               <button
@@ -256,7 +257,7 @@ const AdminSignup: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading || !adminId || !email || !password || !confirm || password !== confirm}
-            className="w-full bg-blue-900 hover:bg-orange-600 disabled:bg-slate-400 text-white font-oswald text-lg uppercase py-4 rounded-2xl shadow-xl transition-all active:scale-95 disabled:cursor-not-allowed"
+            className="w-full bg-teal-900 hover:bg-purple-600 disabled:bg-slate-400 text-white font-oswald text-lg uppercase py-4 rounded-2xl shadow-xl transition-all active:scale-95 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Creating Account...' : 'Create Admin Account'}
           </button>
@@ -266,7 +267,7 @@ const AdminSignup: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/admin-portal-access')}
-              className="text-blue-900 font-bold hover:underline"
+              className="text-teal-900 font-bold hover:underline"
             >
               Go to Login
             </button>

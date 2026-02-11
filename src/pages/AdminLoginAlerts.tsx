@@ -105,7 +105,7 @@ const AdminLoginAlerts: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 p-4 md:p-8 flex items-center justify-center">
         <div className="max-w-4xl w-full bg-white border border-slate-200 rounded-3xl p-6 text-center space-y-3">
-          <AlertTriangle className="mx-auto text-orange-600" size={40} />
+          <AlertTriangle className="mx-auto text-purple-600" size={40} />
           <p className="text-lg font-semibold text-slate-900">Authentication required</p>
           <p className="text-sm text-slate-500">Please log in as an admin to view the login alerts.</p>
         </div>
@@ -117,7 +117,7 @@ const AdminLoginAlerts: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 p-4 md:p-8 flex items-center justify-center">
         <div className="max-w-4xl w-full bg-white border border-slate-200 rounded-3xl p-6 text-center space-y-3">
-          <Shield className="mx-auto text-blue-600" size={40} />
+          <Shield className="mx-auto text-teal-600" size={40} />
           <p className="text-lg font-semibold text-slate-900">Superadmin access only</p>
           <p className="text-sm text-slate-500">Login alerts are exclusive to superadmin accounts.</p>
         </div>
@@ -136,7 +136,7 @@ const AdminLoginAlerts: React.FC = () => {
               type="button"
               onClick={fetchAlerts}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest rounded-full border border-slate-200 bg-white hover:border-blue-300 hover:text-blue-700 transition-all disabled:opacity-60"
+              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest rounded-full border border-slate-200 bg-white hover:border-teal-300 hover:text-teal-700 transition-all disabled:opacity-60"
             >
               <RefreshCcw size={16} />
               Refresh
@@ -157,7 +157,7 @@ const AdminLoginAlerts: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowDetails(prev => !prev)}
-              className="text-xs font-semibold uppercase tracking-widest text-blue-600"
+              className="text-xs font-semibold uppercase tracking-widest text-teal-600"
             >
               {showDetails ? 'Hide details' : 'View login details'}
             </button>
@@ -210,7 +210,7 @@ const AdminLoginAlerts: React.FC = () => {
               <div>
                 <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{alert.userType || alert.userModel}</p>
                 <div className="flex items-center gap-2">
-                  <Shield size={18} className="text-blue-600" />
+                  <Shield size={18} className="text-teal-600" />
                   <h3 className="text-xl font-semibold text-slate-900">{alert.displayName}</h3>
                 </div>
                 {alert.email && <p className="text-xs text-slate-500 mt-1 break-words">{alert.email}</p>}

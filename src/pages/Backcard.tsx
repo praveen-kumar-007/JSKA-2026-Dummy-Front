@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const IDCardBack: React.FC<Props> = ({ data }) => {
-  const qrData = `DDKA:${data.idNo}:${data.name}`;
+  const qrData = `JSKA:${data.idNo}:${data.name}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=65x65&data=${encodeURIComponent(
     qrData,
   )}`;
@@ -28,8 +28,8 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
     >
       {/* Watermark (larger, still subtle) */}
       <img
-        src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png"
-        alt="DDKA Watermark"
+        src="/logo.png"
+        alt="JSKA Watermark"
         style={{
           position: 'absolute',
           left: '50%',
@@ -78,7 +78,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
               letterSpacing: '0.3px',
             }}
           >
-            Dhanbad District
+            Jharkhand State
           </div>
           <div
             style={{
@@ -127,7 +127,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
             textAlign: 'center',
           }}
         >
-          About DDKA
+          About JSKA
         </h4>
         <p
           style={{
@@ -200,8 +200,8 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
           <p title={'+91 9123163206'} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
             <strong style={{ color: '#003366' }}>Phone:</strong> +91 9123163206
           </p>
-          <p title={'dhanbaddistrictkabaddi@gmail.com'} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
-            <strong style={{ color: '#003366' }}>Email:</strong> dhanbaddistrictkabaddi@gmail.com
+          <p title={'jharkhandstatekabaddi@gmail.com'} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
+            <strong style={{ color: '#003366' }}>Email:</strong> jharkhandstatekabaddi@gmail.com
           </p>
         </div>
 
@@ -214,8 +214,8 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
             lineHeight: 1.05,
           }}
         >
-          <p title={'Retired Rly Colony, Gomoh, Dhanbad, Jharkhand 828401'} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
-              <strong style={{ color: '#003366' }}>Address:</strong> Retired Rly Colony, Gomoh, Dhanbad, Jharkhand 828401
+          <p title={'Retired Rly Colony, Gomoh, Jharkhand 828401'} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
+              <strong style={{ color: '#003366' }}>Address:</strong> Retired Rly Colony, Gomoh, Jharkhand 828401
             </p>
         </div>
 
@@ -263,7 +263,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
             <div style={{ color: '#003366', fontWeight: 700, fontSize: '8px', letterSpacing: '0.6px' }}>{data.idNo}</div>
           </div>
-          <p style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>If found, please return to DDKA office.</p>
+          <p style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>If found, please return to JSKA office.</p>
         </div>
       </div>
 

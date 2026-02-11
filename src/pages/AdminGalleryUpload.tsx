@@ -112,7 +112,7 @@ const AdminGalleryUpload = () => {
         <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-10 flex flex-col md:flex-row gap-10 mb-16 items-stretch">
           <div className="flex-1 flex flex-col items-center gap-4 justify-center border-l border-slate-100 pl-6">
             <label className="flex flex-col items-center gap-2 cursor-pointer w-full">
-              <ImageIcon size={40} className="text-blue-400" />
+              <ImageIcon size={40} className="text-teal-400" />
               <input type="file" accept="image/*" multiple onChange={e => setImages(Array.from(e.target.files || []))} className="hidden" />
               <span className="text-sm text-slate-400">Choose images (multiple allowed)</span>
             </label>
@@ -128,12 +128,12 @@ const AdminGalleryUpload = () => {
             )}
           </div>
           <div className="flex-1 flex flex-col gap-5 justify-center">
-            <button type="submit" disabled={uploading} className="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all w-fit mt-2">{uploading ? 'Uploading...' : 'Upload Images'}</button>
+            <button type="submit" disabled={uploading} className="bg-teal-900 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-teal-700 transition-all w-fit mt-2">{uploading ? 'Uploading...' : 'Upload Images'}</button>
             {success && <div className="text-green-600 font-bold mt-2">Images uploaded successfully!</div>}
             {error && <div className="text-red-600 font-bold mt-2">{error}</div>}
           </div>
         </form>
-        <div className="w-full h-0.5 bg-gradient-to-r from-blue-200 via-slate-100 to-orange-100 mb-12 rounded-full" />
+        <div className="w-full h-0.5 bg-gradient-to-r from-teal-200 via-slate-100 to-royal-100 mb-12 rounded-full" />
         <h2 className="text-2xl font-bold mb-4">Gallery Images</h2>
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

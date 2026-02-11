@@ -79,8 +79,8 @@ const AdminPlayersManagement: React.FC = () => {
         }
       }
     };
-    window.addEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
-    return () => window.removeEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
+    window.addEventListener('jska-settings-updated', onSettingsUpdated as EventListener);
+    return () => window.removeEventListener('jska-settings-updated', onSettingsUpdated as EventListener);
   }, []);
 
   // Mobile detection for responsive admin views
@@ -194,8 +194,8 @@ const AdminPlayersManagement: React.FC = () => {
   };
 
   const getCategoryColor = (category: string) => {
-    if (category === 'National Player') return 'bg-blue-100 text-blue-800';
-    if (category === 'Federation Cup') return 'bg-orange-100 text-orange-800';
+    if (category === 'National Player') return 'bg-teal-100 text-teal-800';
+    if (category === 'Federation Cup') return 'bg-purple-100 text-purple-800';
     return 'bg-green-100 text-green-800';
   };
 
@@ -204,16 +204,16 @@ const AdminPlayersManagement: React.FC = () => {
       {/* Header */}
       <AdminPageHeader
         title="Players Management"
-        subtitle="Manage DDKA's champion players"
+        subtitle="Manage JSKA's champion players"
         actions={(
           <div className="flex flex-col sm:flex-row items-stretch gap-2">
-            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
+            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-teal-900 text-white rounded-xl hover:bg-teal-800 transition-colors flex items-center gap-2 font-bold justify-center">
               {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
               {showForm ? 'Cancel' : 'Add Player'}
             </button>
 
               {allowExportAll && (
-                <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+                <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-teal-900 hover:bg-teal-50 flex items-center gap-2 font-semibold">
                   <Download className="w-4 h-4" /> Export
                 </button>
               )}
@@ -224,7 +224,7 @@ const AdminPlayersManagement: React.FC = () => {
       {/* Add/Edit Form */}
       {showForm && (
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-6">
+          <h2 className="text-2xl font-bold text-teal-900 mb-6">
             {editingId ? 'Edit Player' : 'Add New Player'}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -238,7 +238,7 @@ const AdminPlayersManagement: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                   placeholder="Enter player name"
                 />
               </div>
@@ -251,7 +251,7 @@ const AdminPlayersManagement: React.FC = () => {
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                 >
                   <option value="National Player">National Player</option>
                   <option value="Federation Cup">Federation Cup</option>
@@ -267,7 +267,7 @@ const AdminPlayersManagement: React.FC = () => {
                   required
                   value={formData.gender}
                   onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -282,7 +282,7 @@ const AdminPlayersManagement: React.FC = () => {
                   type="text"
                   value={formData.achievements}
                   onChange={(e) => setFormData({ ...formData, achievements: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                   placeholder="Optional achievements"
                 />
               </div>
@@ -291,7 +291,7 @@ const AdminPlayersManagement: React.FC = () => {
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold"
+                className="px-6 py-3 bg-teal-900 text-white rounded-xl hover:bg-teal-800 transition-colors flex items-center gap-2 font-bold"
               >
                 <Save className="w-5 h-5" />
                 {editingId ? 'Update Player' : 'Add Player'}
@@ -311,7 +311,7 @@ const AdminPlayersManagement: React.FC = () => {
       {/* Players List */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-900"></div>
         </div>
       ) : (
         isMobile ? (
@@ -331,7 +331,7 @@ const AdminPlayersManagement: React.FC = () => {
                     <div className="text-sm text-slate-500">#{index + 1}</div>
                     <div className="font-bold text-slate-900 truncate">{player.name}</div>
                     <div className="mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono">ID: {player.idNo ? player.idNo : (player.transactionId ? `DDKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</span>
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono">ID: {player.idNo ? player.idNo : (player.transactionId ? `JSKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</span>
                     </div>
                     <div className="mt-1">
                       <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${getCategoryColor(player.category)} break-words`}> 
@@ -340,7 +340,7 @@ const AdminPlayersManagement: React.FC = () => {
                       </span>
                     </div>
                     <div className="mt-2">
-                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'}`}>{player.gender}</span>
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-teal-100 text-teal-700'}`}>{player.gender}</span>
                     </div>
                     {player.achievements && <div className="mt-2 text-xs text-slate-700 break-words">{player.achievements}</div>}
                   </div>
@@ -357,7 +357,7 @@ const AdminPlayersManagement: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-900 text-white">
+                <thead className="bg-teal-900 text-white">
                   <tr>
                     {allowExportAll && !showExportModal && (
                       <th className="px-4 py-3">
@@ -387,7 +387,7 @@ const AdminPlayersManagement: React.FC = () => {
                         </td>
                       )}
                       <td className="px-6 py-4 text-slate-700 font-bold">{index + 1}</td>
-                      <td className="px-6 py-4 text-slate-700 font-mono">{player.idNo ? player.idNo : (player.transactionId ? `DDKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</td>
+                      <td className="px-6 py-4 text-slate-700 font-mono">{player.idNo ? player.idNo : (player.transactionId ? `JSKA-${String(player.transactionId).slice(-6).toUpperCase()}` : 'N/A')}</td>
                       <td className="px-6 py-4 text-slate-900 font-bold">{player.name}</td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${getCategoryColor(player.category)}`}>
@@ -396,7 +396,7 @@ const AdminPlayersManagement: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'}`}>
+                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-teal-100 text-teal-700'}`}>
                           {player.gender}
                         </span>
                       </td>
@@ -404,7 +404,7 @@ const AdminPlayersManagement: React.FC = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleEdit(player)}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
                             title="Edit"
                           >
                             <Edit2 className="w-5 h-5" />

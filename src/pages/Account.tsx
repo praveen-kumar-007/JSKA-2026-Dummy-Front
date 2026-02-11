@@ -72,7 +72,7 @@ const Account: React.FC = () => {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="bg-white p-8 rounded-xl shadow max-w-md text-center">
           <h3 className="text-lg font-bold mb-2">{error}</h3>
-          <a href="/login" className="text-orange-600 font-bold">Go to Login</a>
+          <a href="/login" className="text-purple-600 font-bold">Go to Login</a>
         </div>
       </div>
     );
@@ -101,7 +101,7 @@ const Account: React.FC = () => {
       params.set('uid', profile.aadharNumber);
     } else if (suffix) {
       // Fallback: keep old behavior if no Aadhar stored
-      params.set('uid', `DDKA-2026-${suffix}`);
+      params.set('uid', `JSKA-2026-${suffix}`);
     }
     const dobDate = profile.dob ? new Date(profile.dob) : null;
     if (dobDate && !Number.isNaN(dobDate.getTime())) {
@@ -142,7 +142,7 @@ const Account: React.FC = () => {
     const handler = (e: MessageEvent) => {
       if (e.origin !== window.location.origin) return;
       const data = e.data || {};
-      if (data.type !== 'ddka:certificate') return;
+      if (data.type !== 'jska:certificate') return;
 
       try {
         if (data.format === 'png') {
@@ -150,7 +150,7 @@ const Account: React.FC = () => {
             const url = URL.createObjectURL(data.blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+            a.download = `${(filenameBase || 'JSKA-Certificate')}.png`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -158,7 +158,7 @@ const Account: React.FC = () => {
           } else if (data.dataUrl) {
             const a = document.createElement('a');
             a.href = data.dataUrl;
-            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+            a.download = `${(filenameBase || 'JSKA-Certificate')}.png`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -168,7 +168,7 @@ const Account: React.FC = () => {
             const url = URL.createObjectURL(data.blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+            a.download = `${(filenameBase || 'JSKA-Certificate')}.pdf`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -176,7 +176,7 @@ const Account: React.FC = () => {
           } else if (data.dataUrl) {
             const a = document.createElement('a');
             a.href = data.dataUrl;
-            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+            a.download = `${(filenameBase || 'JSKA-Certificate')}.pdf`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -208,7 +208,7 @@ const Account: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded text-sm"
             >
               GO TO HOME
             </button>
@@ -257,7 +257,7 @@ const Account: React.FC = () => {
                               </a>
                             </div>
                             <div className="mt-3 text-center">
-                              <a href={profile.aadharFrontUrl} download className="inline-flex items-center gap-2 text-sm bg-blue-50 text-blue-700 px-3 py-2 rounded">Download Front</a>
+                              <a href={profile.aadharFrontUrl} download className="inline-flex items-center gap-2 text-sm bg-teal-50 text-teal-700 px-3 py-2 rounded">Download Front</a>
                             </div>
                           </div>
                         )}
@@ -322,20 +322,20 @@ const Account: React.FC = () => {
                     <div className="text-sm text-slate-500">All your account information and documents.</div>
                     <div className="mt-3 text-xs text-slate-500">
                       By using this account you agree to our{' '}
-                      <Link to="/terms-conditions" className="text-blue-600 underline">Terms &amp; Conditions</Link>{' '}
+                      <Link to="/terms-conditions" className="text-teal-600 underline">Terms &amp; Conditions</Link>{' '}
                       and{' '}
-                      <Link to="/privacy-policy" className="text-blue-600 underline">Privacy Policy</Link>.
+                      <Link to="/privacy-policy" className="text-teal-600 underline">Privacy Policy</Link>.
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">{role}</div>
+                    <div className="text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full font-semibold">{role}</div>
                   </div>
                 </div> 
 
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="text-lg font-semibold mb-2 flex items-center gap-2 text-orange-600">
-                      <span className="inline-block w-2 h-2 bg-orange-500 rounded-full"></span>
+                    <h4 className="text-lg font-semibold mb-2 flex items-center gap-2 text-purple-600">
+                      <span className="inline-block w-2 h-2 bg-purple-500 rounded-full"></span>
                       PERSONAL INFORMATION
                     </h4>
                     <div className="space-y-2 text-sm text-slate-700">
@@ -358,8 +358,8 @@ const Account: React.FC = () => {
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-semibold mb-2 flex items-center gap-2 text-blue-600">
-                      <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+                    <h4 className="text-lg font-semibold mb-2 flex items-center gap-2 text-teal-600">
+                      <span className="inline-block w-2 h-2 bg-teal-500 rounded-full"></span>
                       CONTACT & IDENTITY
                     </h4>
                     <div className="space-y-2 text-sm text-slate-700">

@@ -42,7 +42,7 @@ const NewsArticle = () => {
   return (
     <>
       <Helmet>
-        <title>{news.title} | DDKA Kabaddi News Dhanbad</title>
+        <title>{news.title} | JSKA Kabaddi News Jharkhand</title>
         {/* Canonical so Google attributes the article URL correctly */}
         {articleUrl && <link rel="canonical" href={articleUrl} />}
         <meta
@@ -54,7 +54,7 @@ const NewsArticle = () => {
           }
         />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={`${news.title} | DDKA Kabaddi News Dhanbad`} />
+        <meta property="og:title" content={`${news.title} | JSKA Kabaddi News Jharkhand`} />
         <meta
           property="og:description"
           content={
@@ -68,7 +68,7 @@ const NewsArticle = () => {
           <meta property="og:image" content={news.images[0]} />
         )}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${news.title} | DDKA Kabaddi News Dhanbad`} />
+        <meta name="twitter:title" content={`${news.title} | JSKA Kabaddi News Jharkhand`} />
         <meta
           name="twitter:description"
           content={
@@ -92,7 +92,7 @@ const NewsArticle = () => {
               "datePublished": news.createdAt,
               "dateModified": news.updatedAt || news.createdAt,
               "author": { "@type": "Organization", "name": "Dhanbad District Kabaddi Association" },
-              "publisher": { "@type": "Organization", "name": "DDKA", "logo": { "@type": "ImageObject", "url": `${window.location.origin}/logo.png` } },
+              "publisher": { "@type": "Organization", "name": "JSKA", "logo": { "@type": "ImageObject", "url": `${window.location.origin}/logo.png` } },
               "description": news.content && news.content.slice(0, 200)
             })}
           </script>
@@ -101,9 +101,9 @@ const NewsArticle = () => {
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-2">
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
         {/* Accent Bar */}
-        <div className={`h-2 w-full ${news.isHighlight ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-400 to-blue-600'}`} />
+        <div className={`h-2 w-full ${news.isHighlight ? 'bg-gradient-to-r from-royal-500 to-red-500' : 'bg-gradient-to-r from-teal-400 to-teal-600'}`} />
         <div className="p-8 pb-0">
-          <Link to="/news" className="flex items-center gap-2 text-blue-700 font-bold mb-6 hover:underline"><ArrowLeft size={18}/> Back to News</Link>
+          <Link to="/news" className="flex items-center gap-2 text-teal-700 font-bold mb-6 hover:underline"><ArrowLeft size={18}/> Back to News</Link>
         </div>
         {/* Main Image - full view with click-to-zoom */}
         {news.images && news.images.length > 0 && (
@@ -122,12 +122,12 @@ const NewsArticle = () => {
           {/* Meta Data Row */}
           <div className="flex gap-3 mb-2 items-center flex-wrap">
             <span className="flex items-center gap-1 text-xs text-slate-500"><Calendar size={14}/>{new Date(news.createdAt).toLocaleDateString()}</span>
-            {news.category && <span className="flex items-center gap-1 text-xs text-blue-700 font-bold uppercase"><Tag size={12}/>{news.category}</span>}
-            {news.isHighlight && <span className="text-xs px-2 py-1 rounded bg-orange-100 text-orange-700 font-bold ml-2">Highlight</span>}
+            {news.category && <span className="flex items-center gap-1 text-xs text-teal-700 font-bold uppercase"><Tag size={12}/>{news.category}</span>}
+            {news.isHighlight && <span className="text-xs px-2 py-1 rounded bg-purple-100 text-purple-700 font-bold ml-2">Highlight</span>}
           </div>
           <div className="mb-6 p-4 rounded-2xl bg-slate-50 border border-slate-100">
             <div className="flex items-center gap-2 mb-3">
-              <Share2 size={16} className="text-blue-700" />
+              <Share2 size={16} className="text-teal-700" />
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 Share this news
               </span>
@@ -146,7 +146,7 @@ const NewsArticle = () => {
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(sharePreviewUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-600/10 text-blue-700 hover:bg-blue-600/20 font-medium transition-colors"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-teal-600/10 text-teal-700 hover:bg-teal-600/20 font-medium transition-colors"
               >
                 <Facebook size={14} />
                 Facebook
@@ -179,7 +179,7 @@ const NewsArticle = () => {
               </button>
             </div>
           </div>
-          <h1 className="text-3xl font-extrabold mb-4 text-blue-900 leading-tight">{news.title}</h1>
+          <h1 className="text-3xl font-extrabold mb-4 text-teal-900 leading-tight">{news.title}</h1>
           <div className="text-slate-700 text-lg whitespace-pre-line mb-4">{news.content}</div>
         </div>
       </div>

@@ -18,10 +18,10 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   return (
     <Link
       to={`/news/${article._id}`}
-      className="block bg-white/10 backdrop-blur-lg rounded-2xl border border-white/10 hover:bg-white/20 transition-all cursor-pointer group h-full overflow-hidden"
+      className="block bg-slate-900 rounded-2xl border border-slate-800 hover:shadow-2xl transition-all cursor-pointer group h-full overflow-hidden text-white"
     >
       {article.imageUrl && (
-        <div className="w-full h-40 bg-blue-950/40 overflow-hidden">
+        <div className="w-full h-40 bg-teal-950/40 overflow-hidden">
           <img
             src={article.imageUrl}
             alt={article.title}
@@ -30,16 +30,16 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         </div>
       )}
       <div className="p-5">
-      <span className="text-[10px] font-bold bg-orange-600/90 px-3 py-1 rounded mb-3 inline-block uppercase tracking-widest">
+      <span className="text-[10px] font-bold bg-purple-600/90 px-3 py-1 rounded mb-3 inline-block uppercase tracking-widest">
         {article.category || 'News'}
       </span>
-      <h3 className="text-lg font-semibold mb-2 line-clamp-2 group-hover:text-orange-300 transition-colors">
+      <h3 className="text-lg font-semibold mb-2 line-clamp-2 group-hover:text-purple-300 transition-colors">
         {article.title}
       </h3>
-      <p className="text-sm text-blue-100 line-clamp-3 mb-3 font-light">
+      <p className="text-sm text-teal-100 line-clamp-3 mb-3 font-light">
         {article.content}
       </p>
-      <span className="text-[11px] text-blue-200 font-mono">
+      <span className="text-[11px] text-teal-200 font-mono">
         {new Date(article.createdAt).toLocaleDateString()}
       </span>
       </div>

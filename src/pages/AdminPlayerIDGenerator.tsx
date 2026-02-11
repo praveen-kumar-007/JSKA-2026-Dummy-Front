@@ -81,7 +81,7 @@ const AdminPlayerIDGenerator = () => {
 
   const convertToIDCardData = (player: PlayerData): IDCardData => {
     return {
-      idNo: player.idNo || `DDKA-${player.transactionId.slice(-6).toUpperCase()}`,
+      idNo: player.idNo || `JSKA-${player.transactionId.slice(-6).toUpperCase()}`,
       name: player.fullName,
       fathersName: player.fathersName,
       dob: player.dob,
@@ -178,7 +178,7 @@ const AdminPlayerIDGenerator = () => {
       const pdf = new jsPDF({ unit: 'px', format: [canvas.width, canvas.height] });
       pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
 
-      const filename = `${player.fullName.replace(/\s+/g, '_')}_ID_${(player.idNo || ('DDKA-' + player.transactionId.slice(-6).toUpperCase()))}.pdf`;
+      const filename = `${player.fullName.replace(/\s+/g, '_')}_ID_${(player.idNo || ('JSKA-' + player.transactionId.slice(-6).toUpperCase()))}.pdf`; 
       pdf.save(filename);
 
       document.body.removeChild(container);
@@ -237,7 +237,7 @@ const AdminPlayerIDGenerator = () => {
 
       const a = document.createElement('a');
       a.href = dataUrl;
-      const filename = `${player.fullName.replace(/\s+/g, '_')}_ID_${(player.idNo || ('DDKA-' + player.transactionId.slice(-6).toUpperCase()))}.png`;
+      const filename = `${player.fullName.replace(/\s+/g, '_')}_ID_${(player.idNo || ('JSKA-' + player.transactionId.slice(-6).toUpperCase()))}.png`; 
       a.download = filename;
       document.body.appendChild(a);
       a.click();
@@ -270,7 +270,7 @@ const AdminPlayerIDGenerator = () => {
             placeholder="Search by name, transaction ID, or phone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
         
@@ -278,13 +278,13 @@ const AdminPlayerIDGenerator = () => {
         <div className="flex gap-2 bg-white border border-slate-300 rounded-lg p-1">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`p-2 rounded ${viewMode === 'grid' ? 'bg-teal-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
           >
             <LayoutGrid size={20} />
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+            className={`p-2 rounded ${viewMode === 'list' ? 'bg-teal-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
           >
             <List size={20} />
           </button>
@@ -305,7 +305,7 @@ const AdminPlayerIDGenerator = () => {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <Loader className="animate-spin text-blue-600 mr-3" />
+          <Loader className="animate-spin text-teal-600 mr-3" />
           <span className="text-slate-600">Loading approved players...</span>
         </div>
       )}
@@ -321,7 +321,7 @@ const AdminPlayerIDGenerator = () => {
               <div className="p-4 flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-slate-900">{player.fullName}</h3>
-                  <p className="text-sm text-slate-600">ID: DDKA-{player.transactionId.slice(-6).toUpperCase()}</p>
+                  <p className="text-sm text-slate-600">ID: JSKA-{player.transactionId.slice(-6).toUpperCase()}</p>
                   <p className="text-sm text-slate-500 mt-1">{player.phone}</p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ const AdminPlayerIDGenerator = () => {
                     setSelectedPlayer(player);
                     setShowPreview(true);
                   }}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition text-sm"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded transition text-sm"
                 >
                   <Eye size={16} /> Preview
                 </button>
@@ -424,7 +424,7 @@ const AdminPlayerIDGenerator = () => {
                   await downloadIDCardPDF(selectedPlayer);
                   setShowPreview(false);
                 }}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition flex items-center gap-2"
+                className="px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded transition flex items-center gap-2"
               >
                 <Download size={18} /> Download PDF (Front & Back)
               </button>

@@ -8,8 +8,8 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const FAQS = [
 	{
 		question: {
-			en: 'How can I join DDKA or participate in events?',
-			hi: 'मैं DDKA में कैसे शामिल हो सकता हूँ या कार्यक्रमों में भाग ले सकता हूँ?',
+			en: 'How can I join JSKA or participate in events?',
+			hi: 'मैं JSKA में कैसे शामिल हो सकता हूँ या कार्यक्रमों में भाग ले सकता हूँ?',
 		},
 		answer: {
 			en: 'You can register as a player or institution using the registration page. For event participation, keep an eye on our News section for announcements.',
@@ -18,11 +18,11 @@ const FAQS = [
 	},
 	{
 		question: {
-			en: 'Where is DDKA located?',
-			hi: 'DDKA कहाँ स्थित है?',
+			en: 'Where is JSKA located?',
+			hi: 'JSKA कहाँ स्थित है?',
 		},
 		answer: {
-			en: 'Retired Rly Colony, Gomoh, Dhanbad, Jharkhand 828401',
+			en: 'Retired Rly Colony, Gomoh, Jharkhand 828401',
 			hi: 'रिटायर्ड रेलवे कॉलोनी, गोमो, धनबाद, झारखंड 828401',
 		},
 	},
@@ -32,8 +32,8 @@ const FAQS = [
 			hi: 'सहायता या प्रश्नों के लिए मैं कैसे संपर्क करूँ?',
 		},
 		answer: {
-			en: 'You can use the contact form or email us at dhanbaddistrictkabaddi@gmail.com. For urgent queries, call +91 9123163206.',
-			hi: 'आप संपर्क फ़ॉर्म का उपयोग कर सकते हैं या हमें dhanbaddistrictkabaddi@gmail.com पर ईमेल कर सकते हैं। त्वरित सहायता के लिए, +91 9123163206 पर कॉल करें।',
+			en: 'You can use the contact form or email us at jharkhandstatekabaddi@gmail.com. For urgent queries, call +91 9123163206.',
+			hi: 'आप संपर्क फ़ॉर्म का उपयोग कर सकते हैं या हमें jharkhandstatekabaddi@gmail.com पर ईमेल कर सकते हैं। त्वरित सहायता के लिए, +91 9123163206 पर कॉल करें।',
 		},
 	},
 ];
@@ -85,84 +85,84 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 			<Helmet>
 				<title>
 					{lang === 'hi'
-						? 'संपर्क करें | धनबाद जिला कबड्डी संघ (DDKA)'
-						: 'Contact DDKA | Dhanbad District Kabaddi Association, Jharkhand'}
+						? 'संपर्क करें | झारखंड राज्य कबड्डी संघ (JSKA)'
+						: 'Contact JSKA | Jharkhand State Kabaddi Association, Jharkhand'}
 				</title>
 				<meta
 					name="description"
 					content={
 						lang === 'hi'
-							? 'धनबाद जिला कबड्डी संघ (DDKA) से संपर्क करें – पता, फोन, ईमेल और ऑनलाइन संपर्क फ़ॉर्म के माध्यम से धनबाद, झारखंड में कबड्डी से जुड़ी सभी जानकारी प्राप्त करें।'
-							: 'Contact Dhanbad District Kabaddi Association (DDKA) – address, phone, email and contact form for Kabaddi-related queries in Dhanbad, Jharkhand.'
+							? 'झारखंड राज्य कबड्डी संघ (JSKA) से संपर्क करें – पता, फोन, ईमेल और ऑनलाइन संपर्क फ़ॉर्म के माध्यम से झारखंड में कबड्डी से जुड़ी सभी जानकारी प्राप्त करें।'
+							: 'Contact Jharkhand State Kabaddi Association (JSKA) – address, phone, email and contact form for Kabaddi-related queries in Jharkhand.'
 					}
 				/>
 					<meta
 						name="keywords"
-						content="Contact DDKA, contact Dhanbad Kabaddi Association, Kabaddi enquiries Dhanbad, Kabaddi Jharkhand contact, jaan kabaddi contact, dhanbad kabaddi office, kabaddi association of jharkhand dhanbad"
+						content="Contact JSKA, contact Jharkhand Kabaddi Association, Kabaddi enquiries Jharkhand, Kabaddi Jharkhand contact, jaan kabaddi contact, jharkhand kabaddi office, kabaddi association of jharkhand"
 					/>
 			</Helmet>
 			<div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-0 px-0">
-			<div className="w-full bg-gradient-to-b from-orange-50 to-white py-16 px-2 text-center">
-				<h1 className="text-5xl font-extrabold mb-2 text-blue-900 drop-shadow">
-					Contact <span className="text-orange-500">DDKA</span>
+			<div className="w-full bg-gradient-to-b from-primary to-primary-light py-16 px-2 text-center">
+				<h1 className="text-4xl font-extrabold mb-2 text-gold drop-shadow">
+					{lang === 'hi' ? 'रजिस्ट्रेशन एवं पूछताछ' : 'Official Inquiries — JSKA'}
 				</h1>
-				<p className="text-lg text-slate-700 mb-6">
+				<p className="text-lg text-slate-200 mb-6 max-w-2xl mx-auto">
 					{lang === 'hi'
-						? 'हमसे संपर्क करें - हम आपकी सहायता के लिए यहाँ हैं'
-						: "Get in touch with us - we're here to help you succeed"}
+						? 'कृपया अपने प्रश्न या औपचारिक अनुरोध नीचे प्रेषित करें। हमारी टीम शीघ्र उत्तर देगी।'
+						: 'Please submit your formal inquiry below. Our office will respond promptly.'}
 				</p>
 			</div>
 			<div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 px-4 md:px-8 -mt-10">
 				{/* Association Details */}
-				<div className="bg-white rounded-2xl p-8 text-slate-800 shadow-xl flex flex-col gap-6 border border-slate-100">
-					<h2 className="text-2xl font-bold mb-2 text-blue-900">
-						{lang === 'hi' ? 'हमसे संपर्क करें' : 'Get in Touch'}
-					</h2>
-					<p className="text-slate-600 mb-4 text-sm">
-						{lang === 'hi'
-							? 'क्या आप कबड्डी में अपना करियर शुरू करना चाहते हैं? हमारे कार्यक्रमों के बारे में प्रश्न हैं? हम आपकी सहायता के लिए यहाँ हैं!'
-							: "Ready to start your kabaddi journey? Have questions about our association or events? We'd love to hear from you!"}
+			<div className="bg-white rounded-2xl p-8 text-slate-800 shadow-xl flex flex-col gap-6 border border-slate-100 border-l-4 border-accent">
+			<h2 className="text-2xl font-semibold mb-2 text-primary">
+					{lang === 'hi' ? 'अधिकारिक संपर्क विवरण' : 'Official Contact Details'}
+				</h2>
+				<p className="text-slate-600 mb-4 text-sm">
+					{lang === 'hi'
+						? 'अधिकृत पूछताछ और कार्यालय संचार के लिए नीचे दिए गए विवरण का उपयोग करें।'
+						: 'Use the details below for official enquiries and correspondence.'}
 					</p>
-					<div className="flex items-start gap-4 bg-orange-50 rounded-xl p-4 border border-orange-100">
-						<MapPin className="text-orange-500 w-8 h-8" />
-						<div>
-							<div className="font-bold text-blue-900">
-								{lang === 'hi' ? 'पता' : 'Address'}
+				<div className="flex items-start gap-4 bg-muted rounded-xl p-4 border border-[#eee6dc]">
+					<MapPin className="text-accent w-8 h-8" />
+					<div>
+						<div className="font-bold text-primary">
+								{lang === 'hi' ? 'पंजीकृत कार्यालय' : 'Registered Office'}
 							</div>
 							<div className="text-sm">{CONTACT_INFO.address}</div>
 						</div>
 					</div>
-					<div className="flex items-start gap-4 bg-orange-50 rounded-xl p-4 border border-orange-100">
-						<Phone className="text-orange-500 w-8 h-8" />
-						<div>
-							<div className="font-bold text-blue-900">
-								{lang === 'hi' ? 'फ़ोन' : 'Phone'}
+				<div className="flex items-start gap-4 bg-muted rounded-xl p-4 border border-[#eee6dc]">
+					<Phone className="text-accent w-8 h-8" />
+					<div>
+						<div className="font-bold text-primary">
+								{lang === 'hi' ? 'दूरभाष' : 'Telephone'}
 							</div>
 							<div className="text-sm">{CONTACT_INFO.phone}</div>
 						</div>
 					</div>
-					<div className="flex items-start gap-4 bg-orange-50 rounded-xl p-4 border border-orange-100">
-						<Mail className="text-orange-500 w-8 h-8" />
+					<div className="flex items-start gap-4 bg-purple-50 rounded-xl p-4 border border-purple-100">
+						<Mail className="text-purple-500 w-8 h-8" />
 						<div>
-							<div className="font-bold text-blue-900">
-								{lang === 'hi' ? 'ईमेल' : 'Email'}
+							<div className="font-bold text-teal-900">
+								{lang === 'hi' ? 'औपचारिक ईमेल' : 'Official Email'}
 							</div>
 							<a
 								href={`mailto:${CONTACT_INFO.email}`}
-								className="underline text-blue-900 hover:text-orange-500 text-sm"
+								className="underline text-teal-900 hover:text-teal-700 text-sm"
 							>
 								{CONTACT_INFO.email}
 							</a>
 						</div>
 					</div>
-					<div className="flex items-start gap-4 bg-orange-50 rounded-xl p-4 border border-orange-100">
-						<Info className="text-orange-500 w-8 h-8" />
-						<div>
-							<div className="font-bold text-blue-900">
-								{lang === 'hi' ? 'संघ का नाम' : 'Association Name'}
+				<div className="flex items-start gap-4 bg-muted rounded-xl p-4 border border-[#eee6dc]">
+					<Info className="text-accent w-8 h-8" />
+					<div>
+						<div className="font-bold text-primary">
+								{lang === 'hi' ? 'पंजीकृत संस्था' : 'Registered Body'}
 							</div>
 							<div className="text-sm">
-								Dhanbad District Kabaddi Association (DDKA)
+								Jharkhand State Kabaddi Association (JSKA)
 							</div>
 							<div className="text-xs text-slate-600 mt-1">
 								{lang === 'hi'
@@ -172,19 +172,19 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 						</div>
 					</div>
 					{/* Social Media Links */}
-					<div className="mt-2 bg-slate-50 rounded-xl p-4 border border-slate-200">
-						<div className="text-sm font-bold text-blue-900 mb-3">
-							{lang === 'hi' ? 'सोशल मीडिया पर DDKA से जुड़ें' : 'Connect with DDKA on Social Media'}
+					<div className="mt-2 bg-muted rounded-xl p-4 border border-[#eee6dc]">
+					<div className="text-sm font-semibold text-primary mb-3">
+						{lang === 'hi' ? 'औपचारिक चैनल' : 'Official Channels'}
 						</div>
 						<div className="flex flex-wrap items-center gap-3 justify-between sm:justify-start">
 							<a
 								href={SOCIAL_LINKS.youtube}
 								target="_blank"
 								rel="noreferrer"
-								aria-label="DDKA YouTube Channel"
-								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-red-500/80 hover:bg-red-50 active:bg-red-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								aria-label="JSKA YouTube Channel"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-accent/80 hover:bg-accent/10 active:bg-accent/20 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-red-400 group-hover:bg-black group-hover:text-red-300 transition-all">
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-primary text-gold group-hover:bg-primary-light group-hover:text-gold transition-all">
 									<Youtube className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">YouTube</span>
@@ -193,10 +193,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								href={SOCIAL_LINKS.instagram}
 								target="_blank"
 								rel="noreferrer"
-								aria-label="DDKA Instagram"
-								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-pink-500/80 hover:bg-pink-50 active:bg-pink-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								aria-label="JSKA Instagram"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-accent/80 hover:bg-accent/10 active:bg-accent/20 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-pink-400 group-hover:bg-black group-hover:text-pink-300 transition-all">
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-primary text-gold group-hover:bg-primary-light group-hover:text-gold transition-all">
 									<Instagram className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">Instagram</span>
@@ -205,10 +205,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 								href={SOCIAL_LINKS.x}
 								target="_blank"
 								rel="noreferrer"
-								aria-label="DDKA X (Twitter)"
-								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-500/80 hover:bg-blue-50 active:bg-blue-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+								aria-label="JSKA X (Twitter)"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-accent/80 hover:bg-accent/10 active:bg-accent/20 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 							>
-								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-sky-400 group-hover:bg-black group-hover:text-sky-300 transition-all">
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-primary text-gold group-hover:bg-primary-light group-hover:text-gold transition-all">
 									<Twitter className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">X</span>
@@ -217,10 +217,10 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 									href={SOCIAL_LINKS.facebook}
 									target="_blank"
 									rel="noreferrer"
-									aria-label="DDKA Facebook Page"
-								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-blue-700/80 hover:bg-blue-50 active:bg-blue-100 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
+									aria-label="JSKA Facebook Page"
+								className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 hover:border-accent/80 hover:bg-accent/10 active:bg-accent/20 text-[10px] font-semibold transition-all shadow-sm hover:shadow-md active:shadow-inner w-[48%] sm:w-auto justify-center"
 								>
-								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-blue-400 group-hover:bg-black group-hover:text-blue-300 transition-all">
+								<span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-primary text-gold group-hover:bg-primary-light group-hover:text-gold transition-all">
 									<Facebook className="w-3 h-3" />
 								</span>
 								<span className="tracking-wide">Facebook</span>
@@ -229,15 +229,33 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 					</div>
 				</div>
 				{/* Contact Form */}
-				<div className="bg-white rounded-2xl p-8 text-slate-800 shadow-xl border border-slate-100">
-					<h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-blue-900">
-						<Mail className="text-orange-500" />{' '}
-						{lang === 'hi' ? 'संदेश भेजें' : 'Send us a Message'}
+				<div className="bg-white rounded-2xl p-8 text-slate-800 shadow-xl border border-slate-100 border-l-4 border-teal-700">
+				<h2 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-teal-900">
+					<Mail className="text-teal-700" />{' '}
+					{lang === 'hi' ? 'औपचारिक अनुरोध प्रस्तुत करें' : 'Submit an Inquiry'}
 					</h2>
 					<form onSubmit={handleSubmit} className="space-y-4">
+						{/* Subject (optional) */}
+						<div>
+							<label className="block text-sm font-semibold mb-1 text-teal-900">
+								{lang === 'hi' ? 'विषय' : 'Subject'}
+							</label>
+							<input
+								type="text"
+								name="subject"
+								value={form.subject}
+								onChange={handleChange}
+								className="w-full px-4 py-3 rounded bg-slate-50 text-teal-900 border border-slate-200 focus:border-teal-600 outline-none"
+								placeholder={
+									lang === 'hi'
+										? 'कृपया विषय संक्षेप में लिखें'
+										: 'Briefly state the subject of your inquiry'
+								}
+							/>
+						</div>
 						<div className="flex flex-col md:flex-row gap-4">
 							<div className="flex-1">
-								<label className="block text-sm font-bold mb-1 text-blue-900">
+								<label className="block text-sm font-semibold mb-1 text-teal-900">
 									{lang === 'hi' ? 'पूरा नाम' : 'Full Name'} *
 								</label>
 								<input
@@ -246,17 +264,15 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 									value={form.name}
 									onChange={handleChange}
 									required
-									className="w-full px-4 py-2 rounded bg-slate-50 text-blue-900 border border-slate-200 focus:border-orange-400 outline-none"
+									className="w-full px-4 py-3 rounded bg-slate-50 text-teal-900 border border-slate-200 focus:border-teal-600 outline-none"
 									placeholder={
-										lang === 'hi'
-											? 'अपना नाम दर्ज करें'
-											: 'Enter your full name'
+										lang === 'hi' ? 'आपका पूरा नाम' : 'Your full name'
 									}
 								/>
 							</div>
 							<div className="flex-1">
-								<label className="block text-sm font-bold mb-1 text-blue-900">
-									{lang === 'hi' ? 'ईमेल' : 'Email Address'} *
+								<label className="block text-sm font-semibold mb-1 text-teal-900">
+									{lang === 'hi' ? 'ईमेल पता' : 'Email Address'} *
 								</label>
 								<input
 									type="email"
@@ -264,91 +280,69 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 									value={form.email}
 									onChange={handleChange}
 									required
-									className="w-full px-4 py-2 rounded bg-slate-50 text-blue-900 border border-slate-200 focus:border-orange-400 outline-none"
+									className="w-full px-4 py-3 rounded bg-slate-50 text-teal-900 border border-slate-200 focus:border-teal-600 outline-none"
 									placeholder={
-										lang === 'hi' ? 'आपका ईमेल' : 'your.email@example.com'
-									}
-								/>
-							</div>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<div className="flex-1">
-								<label className="block text-sm font-bold mb-1 text-blue-900">
-									{lang === 'hi' ? 'फ़ोन नंबर' : 'Phone Number'} *
-								</label>
-								<input
-									type="text"
-									name="phone"
-									value={form.phone}
-									onChange={handleChange}
-									required
-									className="w-full px-4 py-2 rounded bg-slate-50 text-blue-900 border border-slate-200 focus:border-orange-400 outline-none"
-									placeholder={
-										lang === 'hi' ? 'अपना फ़ोन नंबर' : 'Enter your phone number'
-									}
-								/>
-							</div>
-							<div className="flex-1">
-								<label className="block text-sm font-bold mb-1 text-blue-900">
-									{lang === 'hi' ? 'विषय' : 'Subject'}
-								</label>
-								<input
-									type="text"
-									name="subject"
-									value={form.subject}
-									onChange={handleChange}
-									className="w-full px-4 py-2 rounded bg-slate-50 text-blue-900 border border-slate-200 focus:border-orange-400 outline-none"
-									placeholder={
-										lang === 'hi'
-											? 'आपका संदेश किस बारे में है?'
-											: 'What is your message about?'
+										lang === 'hi' ? 'आपका ईमेल पता' : 'your.email@example.com'
 									}
 								/>
 							</div>
 						</div>
 						<div>
-							<label className="block text-sm font-bold mb-1 text-blue-900">
-								{lang === 'hi' ? 'संदेश' : 'Message'} *
+							<label className="block text-sm font-semibold mb-1 text-teal-900">
+								{lang === 'hi' ? 'फ़ोन (वैकल्पिक)' : 'Phone (optional)'}
+							</label>
+							<input
+								type="text"
+								name="phone"
+								value={form.phone}
+								onChange={handleChange}
+className="w-full px-4 py-3 rounded bg-slate-50 text-primary border border-slate-200 focus:border-accent outline-none"
+								placeholder={lang === 'hi' ? 'फोन नंबर' : 'Phone number'}
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-semibold mb-1 text-teal-900">
+								{lang === 'hi' ? 'विवरण' : 'Details'} *
 							</label>
 							<textarea
 								name="message"
 								value={form.message}
 								onChange={handleChange}
 								required
-								rows={4}
-								className="w-full px-4 py-2 rounded bg-slate-50 text-blue-900 border border-slate-200 focus:border-orange-400 outline-none"
+								rows={5}
+								className="w-full px-4 py-3 rounded bg-slate-50 text-teal-900 border border-slate-200 focus:border-teal-600 outline-none"
 								placeholder={
 									lang === 'hi'
-										? 'अपना संदेश लिखें...'
-										: 'Tell us more about your inquiry...'
+										? 'कृपया अपना अनुरोध या प्रश्न स्पष्ट रूप से लिखें...'
+										: 'Please describe your request or inquiry in detail...'
 								}
 							/>
 						</div>
 						<button
 							type="submit"
-							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded transition-all"
+							className="w-full bg-accent hover:bg-[#e66900] text-white font-semibold py-3 rounded transition-all"
 							disabled={status === 'sending'}
 						>
 							{status === 'sending'
 								? lang === 'hi'
-									? 'भेजा जा रहा है...'
-									: 'Sending...'
+									? 'प्रेषित कर रहे हैं...'
+									: 'Submitting...'
 								: lang === 'hi'
-								? 'भेजें'
-								: 'Send Message'}
+								? 'अनुरोध भेजें'
+								: 'Submit Inquiry'}
 						</button>
 						{status === 'sent' && (
-							<div className="text-green-600 text-sm font-bold mt-2">
+							<div className="text-green-700 text-sm font-semibold mt-2">
 								{lang === 'hi'
-									? 'धन्यवाद! आपका संदेश भेज दिया गया है।'
-									: 'Thank you! Your message has been sent.'}
+									? 'आपका अनुरोध सफलतापूर्वक प्राप्त किया गया है। हम शीघ्र संपर्क करेंगे।'
+									: 'Your inquiry has been received. We will reply shortly.'}
 							</div>
 						)}
 						{status === 'error' && (
-							<div className="text-red-600 text-sm font-bold mt-2">
+							<div className="text-red-700 text-sm font-semibold mt-2">
 								{lang === 'hi'
-									? 'कुछ गलत हो गया। कृपया पुनः प्रयास करें।'
-									: 'Something went wrong. Please try again.'}
+									? 'सर्वर त्रुटि। कृपया कुछ समय बाद पुनः प्रयास करें।'
+									: 'An error occurred. Please try again later.'}
 							</div>
 						)}
 					</form>
@@ -356,16 +350,14 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 			</div>
 			{/* FAQ Section */}
 			<div className="max-w-4xl mx-auto mt-16 mb-24 px-4">
-				<h2 className="text-3xl font-bold text-center text-blue-900 mb-8">
-					{lang === 'hi'
-						? 'अक्सर पूछे जाने वाले प्रश्न'
-						: 'Frequently Asked Questions'}
+				<h2 className="text-3xl font-semibold text-center text-primary mb-8">
+					{lang === 'hi' ? 'प्रमुख प्रश्न' : 'Common Queries'}
 				</h2>
 				<div className="space-y-4">
 					{FAQS.map((faq, idx) => (
 						<div
 							key={idx}
-							className="bg-orange-50 rounded-xl p-5 text-blue-900 shadow flex flex-col border border-orange-100"
+							className="bg-purple-50 rounded-xl p-5 text-teal-900 shadow flex flex-col border border-purple-100"
 						>
 							<button
 								onClick={() =>
@@ -375,9 +367,9 @@ const Contact: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
 							>
 								<span>{faq.question[lang]}</span>
 								{faqOpen === idx ? (
-									<ChevronUp className="text-orange-500" />
+									<ChevronUp className="text-purple-500" />
 								) : (
-									<ChevronDown className="text-orange-500" />
+									<ChevronDown className="text-purple-500" />
 								)}
 							</button>
 							{faqOpen === idx && (

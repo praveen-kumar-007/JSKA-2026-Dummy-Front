@@ -2,11 +2,11 @@ export type Language = 'en' | 'hi';
 
 export const translations = {
   en: {
-    nav: { home: 'Home', about: 'About', gallery: 'Gallery', news: 'News', register: 'Registration', institution: 'Institution', donate: 'Donate', login: 'Member Login', affiliated: 'Affiliated', affiliatedInstitutions: 'Affiliated Institutions' },
-    donate: { title: 'Support DDKA', subtitle: 'Help us build grassroots kabaddi', upiId: '9504904499@upi', bankDetails: 'Account: DDKA | A/C No: 9504904499 | IFSC: ABCD0123456' },
+    nav: { home: 'Home', about: 'About', gallery: 'Gallery', news: 'News', register: 'Player Registration', login: 'Member Login', players: 'Players', referees: 'Referees', champions: 'Champions', technicalOfficials: 'Technical Officials', affiliated: 'Affiliated', affiliatedInstitutions: 'Affiliated Districts' },
+    donate: { title: 'Support JSKA', subtitle: 'Help us build grassroots kabaddi', upiId: '9504904499@upi', bankDetails: 'Account: JSKA | A/C No: 9504904499 | IFSC: ABCD0123456' },
     hero: { 
-      badge: 'District League 2026', slogan: 'Sport of the Soil, Sport of the Nation, Kabaddi Our Sport', title: 'Le Panga,', subtitle: 'Dhanbad District!', 
-      description: 'Promoting excellence in Kabaddi across Dhanbad district.',
+      badge: 'State League 2026', slogan: '', title: 'Le Panga,', subtitle: 'Jharkhand State!', 
+      description: 'Promoting excellence in Kabaddi across Jharkhand.',
       ctaPrimary: 'Register Now', ctaSecondary: 'View Schedule',
       stats: { clubs: 'Active Clubs', players: 'Registered Players', titles: 'Championships', support: 'Support' }
     },
@@ -21,22 +21,18 @@ export const translations = {
     },
     news: { latest: 'Latest News', curated: 'Handpicked updates', title: 'News Feed', subtitle: 'Stay Updated', refresh: 'Refresh', readMore: 'Read Full Story' },
     forms: {
-      playerTitle: 'Player Registration', playerSubtitle: 'Join the DDKA family',
-      instTitle: 'Institution Affiliation', instSubtitle: 'Register your school or club',
-      submit: 'Submit Registration', instSubmit: 'Proceed to Payment',
+      playerTitle: 'Player Registration', playerSubtitle: 'Join the JSKA family',
+      submit: 'Submit Registration',
       labels: {
         fullName: 'Full Name', fathersName: "Father's Name", gender: 'Gender', dob: 'Date of Birth',
         bloodGroup: 'Blood Group', aadhar: 'Aadhar Number', email: 'Email', phone: 'Phone Number',
         parentsPhone: 'Parents Phone', address: 'Full Address', registerAs: 'Register As',
         experience: 'Experience', reason: 'Reason for Joining', uploads: 'Required Documents',
-        photo: 'Passport Photo', aadharFront: 'Aadhar Front', aadharBack: 'Aadhar Back',
-        instType: 'Type', instName: 'Institution Name', regNo: 'Registration No', year: 'Est. Year',
-        headName: 'Principal/Head Name', secretaryName: 'Secretary Name', surfaceType: 'Surface',
-        area: 'Field Area (sqft)', totalPlayers: 'Total Players', officePhone: 'Office Phone'
+        photo: 'Passport Photo', aadharFront: 'Aadhar Front', aadharBack: 'Aadhar Back'
       },
       placeholders: {
         fullName: 'John Doe', fathersName: 'Richard Doe', bloodGroup: 'O+', 
-        instName: 'Modern Public School', address: 'Enter Address', experience: 'Years of play', reason: 'Why Kabaddi?'
+        address: 'Enter Address', experience: 'Years of play', reason: 'Why Kabaddi?'
       }
     },
     payment: {
@@ -44,10 +40,10 @@ export const translations = {
       upi: 'Pay via any UPI App', upiId: '9504904499@upi', txId: 'Enter Transaction ID',
       verify: 'Verify Payment', processing: 'Verifying...', note: 'Valid for current season.'
     },
-    footer: { desc: 'The official governing body for Kabaddi in Dhanbad.', quickLinks: 'Quick Links', contact: 'Contact Us' },
+    footer: { desc: 'The official governing body for Kabaddi in Jharkhand.', quickLinks: 'Quick Links', contact: 'Contact Us' },
     affiliation: {
-      line1: 'Affiliated To - JHARKHAND STATE KABADDI ASSOCIATION',
-      line2: 'Registered with 1860 Govt. of Jharkhand',
+      line1: 'Kabaddi — Strength, Skill & Unity',
+      line2: 'Celebrating the spirit of kabaddi across Jharkhand.',
       line3: 'Affiliated for - A.K.F.I. & Jharkhand Olympic Association'
     },
     verification: {
@@ -56,7 +52,7 @@ export const translations = {
       heroSubtitle: 'Single lookup for players, referees, and institutions',
       heroDescription: 'Enter any registered ID, email, phone, or Aadhaar to instantly view the authenticated status, snapshot, and role history.',
       checklist: [
-        'Use the ID, registration number, email, phone, or Aadhaar you received from DDKA',
+        'Use the ID, registration number, email, phone, or Aadhaar you received from JSKA',
         'See photo, DOB, and father name alongside the badge',
         'Auto-detect player, referee, and institution roles without extra input'
       ],
@@ -80,7 +76,7 @@ export const translations = {
         verified: {
           badge: 'LIVE',
           title: 'Verified',
-          detail: 'Your documents and records match DDKA files.'
+          detail: 'Your documents and records match JSKA files.'
         },
         pending: {
           badge: 'IN REVIEW',
@@ -90,7 +86,7 @@ export const translations = {
         rejected: {
           badge: 'REJECTED',
           title: 'Rejected',
-          detail: 'Please contact the DDKA office to correct the highlighted information.'
+          detail: 'Please contact the JSKA office to correct the highlighted information.'
         }
       },
       snapshot: {
@@ -99,7 +95,7 @@ export const translations = {
         message: 'We will notify you on the registered email or phone once the verification is finalized.'
       },
       guidance: {
-        spotlight: 'Records sync nightly at 02:00 AM; reach out to DDKA if you notice a discrepancy.'
+        spotlight: 'Records sync nightly at 02:00 AM; reach out to JSKA if you notice a discrepancy.'
       },
       errors: {
         notFound: 'No record matches that ID. Please verify and try again.',
@@ -115,19 +111,18 @@ export const translations = {
       },
       roleNames: {
         player: 'Player',
-        official: 'Referee',
-        institute: 'Institution'
+        official: 'Referee'
       },
       approvedSuffix: 'ID is approved.',
       rejectedByAdminSuffix: 'has been rejected by the admin.'
     }
   },
   hi: {
-    nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'पंजीकरण', institution: 'संस्थान', donate: 'दान करें', login: 'सदस्य लॉगिन', affiliated: 'संबद्ध', affiliatedInstitutions: 'संबद्ध संस्थान' },
-    donate: { title: 'DDKA का समर्थन करें', subtitle: 'स्थानीय कबड्डी के विकास में मदद करें', upiId: '9504904499@upi', bankDetails: 'खाता: DDKA | A/C No: 1234567890 | IFSC: ABCD0123456' },
+    nav: { home: 'होम', about: 'हमारे बारे में', gallery: 'गैलरी', news: 'खबरें', register: 'खिलाड़ी पंजीकरण', login: 'सदस्य लॉगिन', players: 'खिलाड़ी', referees: 'रेफरी', champions: 'चैंपियन', technicalOfficials: 'तकनीकी अधिकारी', affiliated: 'संबद्ध', affiliatedInstitutions: 'संबद्ध जिले' },
+    donate: { title: 'JSKA का समर्थन करें', subtitle: 'स्थानीय कबड्डी के विकास में मदद करें', upiId: '9504904499@upi', bankDetails: 'खाता: JSKA | A/C No: 1234567890 | IFSC: ABCD0123456' },
     hero: { 
-      badge: 'जिला लीग 2026', slogan: 'मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल', title: 'ले पंगा,', subtitle: 'धनबाद जिला!', 
-      description: 'धनबाद जिले में कबड्डी में उत्कृष्टता को बढ़ावा देना।',
+      badge: 'स्टेट लीग 2026', slogan: 'मिट्टी का खेल, देश का खेल, कबड्डी अपना खेल', title: 'ले पंगा,', subtitle: 'झारखंड राज्य!', 
+      description: 'झारखंड में कबड्डी में उत्कृष्टता को बढ़ावा देना।',
       ctaPrimary: 'अभी पंजीकरण करें', ctaSecondary: 'शेड्यूल देखें',
       stats: { clubs: 'सक्रिय क्लब', players: 'पंजीकृत खिलाड़ी', titles: 'चैंपियनशिप', support: 'सहायता' }
     },
@@ -142,22 +137,18 @@ export const translations = {
     },
     news: { latest: 'ताजा खबरें', curated: 'चुनिंदा अपडेट', title: 'समाचार फीड', subtitle: 'अपडेट रहें', refresh: 'ताज़ा करें', readMore: 'पूरी कहानी पढ़ें' },
     forms: {
-      playerTitle: 'खिलाड़ी पंजीकरण', playerSubtitle: 'DDKA परिवार में शामिल हों',
-      instTitle: 'संस्थान संबद्धता', instSubtitle: 'अपने स्कूल या क्लब को पंजीकृत करें',
-      submit: 'पंजीकरण जमा करें', instSubmit: 'भुगतान पर आगे बढ़ें',
+      playerTitle: 'खिलाड़ी पंजीकरण', playerSubtitle: 'JSKA परिवार में शामिल हों',
+      submit: 'पंजीकरण जमा करें',
       labels: {
         fullName: 'पूरा नाम', fathersName: 'पिता का नाम', gender: 'लिंग', dob: 'जन्म तिथि',
         bloodGroup: 'ब्लड ग्रुप', aadhar: 'आधार नंबर', email: 'ईमेल', phone: 'फ़ोन नंबर',
         parentsPhone: 'माता-पिता का फ़ोन', address: 'पूरा पता', registerAs: 'पंजीकरण की श्रेणी',
         experience: 'अनुभव', reason: 'शामिल होने का कारण', uploads: 'आवश्यक दस्तावेज',
-        photo: 'पासपोर्ट फोटो', aadharFront: 'आधार फ्रंट', aadharBack: 'आधार बैक',
-        instType: 'प्रकार', instName: 'संस्थान का नाम', regNo: 'पंजीकरण संख्या', year: 'स्थापना वर्ष',
-        headName: 'प्रिंसिपल का नाम', secretaryName: 'सचिव का नाम', surfaceType: 'मैदान का प्रकार',
-        area: 'मैदान का क्षेत्रफल', totalPlayers: 'कुल खिलाड़ी', officePhone: 'कार्यालय फोन'
+        photo: 'पासपोर्ट फोटो', aadharFront: 'आधार फ्रंट', aadharBack: 'आधार बैक'
       },
       placeholders: {
         fullName: 'जॉन डो', fathersName: 'रिचर्ड डो', bloodGroup: 'ओ+', 
-        instName: 'मॉडर्न पब्लिक स्कूल', address: 'गली, शहर, पिन', experience: 'खेल के वर्ष', reason: 'कबड्डी क्यों?'
+        address: 'गली, शहर, पिन', experience: 'खेल के वर्ष', reason: 'कबड्डी क्यों?'
       }
     },
     payment: {
@@ -177,7 +168,7 @@ export const translations = {
       heroSubtitle: 'खिलाड़ी, रेफरी और संस्थानों के लिए एक ही खोज',
       heroDescription: 'किसी भी पंजीकृत ID, ईमेल, फोन या आधार नंबर को दर्ज करें और स्थिति, फोटो तथा रोल की जानकारी तुरंत देखें।',
       checklist: [
-        'DDKA की ID, पंजीकरण, ईमेल, फोन या आधार नंबर का उपयोग करें',
+        'JSKA की ID, पंजीकरण, ईमेल, फोन या आधार नंबर का उपयोग करें',
         'फोटो, जन्मतिथि और पिता का नाम एक ही कार्ड में देखें',
         'प्लेयर्स, रेफरी और संस्थान रोल स्वतः दिखते हैं'
       ],
@@ -201,7 +192,7 @@ export const translations = {
         verified: {
           badge: 'सक्रिय',
           title: 'सत्यापित',
-          detail: 'आपकी दस्तावेज़ और रिकॉर्ड DDKA फाइलों से मेल खाते हैं।'
+          detail: 'आपकी दस्तावेज़ और रिकॉर्ड JSKA फाइलों से मेल खाते हैं।'
         },
         pending: {
           badge: 'समीक्षा में',
@@ -211,7 +202,7 @@ export const translations = {
         rejected: {
           badge: 'नकारा गया',
           title: 'अस्वीकृत',
-          detail: 'कृपया DDKA कार्यालय से संपर्क करके जानकारी को ठीक करें।'
+          detail: 'कृपया JSKA कार्यालय से संपर्क करके जानकारी को ठीक करें।'
         }
       },
       snapshot: {
@@ -220,7 +211,7 @@ export const translations = {
         message: 'सत्यापन की पुष्टि होने पर पंजीकृत ईमेल या फोन पर सूचना मिल जाएगी।'
       },
       guidance: {
-        spotlight: 'रिकॉर्ड प्रतिदिन 02:00 बजे रात को सिंक होते हैं; कोई गलती दिखे तो DDKA को सूचित करें।'
+        spotlight: 'रिकॉर्ड प्रतिदिन 02:00 बजे रात को सिंक होते हैं; कोई गलती दिखे तो JSKA को सूचित करें।'
       },
       errors: {
         notFound: 'इस ID के लिए कोई रिकॉर्ड नहीं मिला। कृपया जांचें और पुनः प्रयास करें।',
@@ -236,8 +227,7 @@ export const translations = {
       },
       roleNames: {
         player: 'खिलाड़ी',
-        official: 'रेफरी',
-        institute: 'संस्थान'
+        official: 'रेफरी'
       },
       approvedSuffix: 'ID सत्यापित है।',
       rejectedByAdminSuffix: 'प्रशासन द्वारा अस्वीकार कर दिया गया है।'

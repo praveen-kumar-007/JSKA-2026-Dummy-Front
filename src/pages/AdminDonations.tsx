@@ -107,7 +107,7 @@ const AdminDonations: React.FC = () => {
       jsPDFmod = (await import(/* @vite-ignore */ moduleName)).jsPDF || (await import(/* @vite-ignore */ moduleName)).default;
     } catch (err) {
       console.warn('jsPDF not available:', err);
-      alert('The package "jspdf" is not installed. Run `cd DDKA-Front && npm install jspdf` and restart the dev server to enable PDF generation.');
+      alert('The package "jspdf" is not installed. Run `cd JSKA-Front && npm install jspdf` and restart the dev server to enable PDF generation.');
       setGeneratingId(null);
       return;
     }
@@ -117,7 +117,7 @@ const AdminDonations: React.FC = () => {
 
       // Header
       doc.setFontSize(18);
-      doc.text('Dhanbad District Kabaddi Association (DDKA)', 40, 60);
+      doc.text('Jharkhand State Kabaddi Association (JSKA)', 40, 60);
       doc.setFontSize(14);
       doc.text('Donation Receipt / Tax Exemption Certificate', 40, 90);
 
@@ -132,14 +132,14 @@ const AdminDonations: React.FC = () => {
       doc.text(`Date: ${d.createdAt ? new Date(d.createdAt).toLocaleString() : ''}`, 40, y); y += 30;
 
       // Body
-      const note = 'This is to certify that the above donation has been received by Dhanbad District Kabaddi Association (DDKA). This receipt may be used by the donor for claiming tax exemption under applicable laws. Please retain this receipt for your records.';
+      const note = 'This is to certify that the above donation has been received by Jharkhand State Kabaddi Association (JSKA). This receipt may be used by the donor for claiming tax exemption under applicable laws. Please retain this receipt for your records.';
       doc.setFontSize(11);
       const split = doc.splitTextToSize(note, 520);
       doc.text(split, 40, y);
       y += split.length * 14 + 20;
 
       // Signature placeholder
-      doc.text('For Dhanbad District Kabaddi Association', 40, y + 40);
+      doc.text('For Jharkhand State Kabaddi Association', 40, y + 40);
       doc.text('Authorized Signatory', 40, y + 60);
 
 
@@ -312,7 +312,7 @@ const AdminDonations: React.FC = () => {
         actions={(
           <div className="flex items-center gap-3">
             <button onClick={exportCSV} className="px-4 py-2 rounded-full bg-green-700 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-600 transition-all flex items-center justify-center gap-2"><Download className="w-4 h-4"/> Export CSV</button>
-            <button onClick={fetchDonations} className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all">Refresh</button>
+            <button onClick={fetchDonations} className="px-4 py-2 rounded-full bg-teal-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-teal-700 transition-all">Refresh</button>
           </div>
         )}
       />
@@ -334,7 +334,7 @@ const AdminDonations: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-900"></div>
         </div>
       ) : (
         isMobile ? (
@@ -363,7 +363,7 @@ const AdminDonations: React.FC = () => {
 
                     <div className="mt-3 text-sm">
                       {d.receiptUrl ? (
-                        <a href={d.receiptUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline">View Receipt</a>
+                        <a href={d.receiptUrl} target="_blank" rel="noreferrer" className="text-teal-700 underline">View Receipt</a>
                       ) : (
                         <span className="text-slate-400">No receipt</span>
                       )}
@@ -381,7 +381,7 @@ const AdminDonations: React.FC = () => {
                       <input type="file" accept="image/*" onChange={(e) => setEditReceiptFile(e.target.files ? e.target.files[0] : null)} />
                     </div>
                     <div className="flex gap-2 flex-wrap">
-                      <button onClick={() => saveEdit(d._id)} disabled={editLoading} className="flex-1 px-3 py-2 bg-blue-900 text-white rounded-md text-sm">{editLoading ? 'Saving...' : 'Save'}</button>
+                      <button onClick={() => saveEdit(d._id)} disabled={editLoading} className="flex-1 px-3 py-2 bg-teal-900 text-white rounded-md text-sm">{editLoading ? 'Saving...' : 'Save'}</button>
                       <button onClick={cancelEdit} className="flex-1 px-3 py-2 bg-slate-200 rounded-md text-sm">Cancel</button>
                     </div>
                   </div>
@@ -413,7 +413,7 @@ const AdminDonations: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-900 text-white">
+                <thead className="bg-teal-900 text-white">
                   <tr>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">#</th>
                     <th className="px-6 py-4 text-left font-bold uppercase text-sm">Name</th>
@@ -438,7 +438,7 @@ const AdminDonations: React.FC = () => {
                         <td className="px-6 py-4 text-slate-700">{d.createdAt ? new Date(d.createdAt).toLocaleString() : '-'}</td>
                         <td className="px-6 py-4">
                           {d.receiptUrl ? (
-                            <a href={d.receiptUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline">View</a>
+                            <a href={d.receiptUrl} target="_blank" rel="noreferrer" className="text-teal-700 underline">View</a>
                           ) : (
                             <span className="text-slate-400">No receipt</span>
                           )}
@@ -499,7 +499,7 @@ const AdminDonations: React.FC = () => {
                                 <input type="file" accept="image/*" onChange={(e) => setEditReceiptFile(e.target.files ? e.target.files[0] : null)} />
                               </div>
                               <div className="flex gap-2">
-                                <button onClick={() => saveEdit(d._id)} disabled={editLoading} className="px-4 py-2 bg-blue-900 text-white rounded-md">{editLoading ? 'Saving...' : 'Save'}</button>
+                                <button onClick={() => saveEdit(d._id)} disabled={editLoading} className="px-4 py-2 bg-teal-900 text-white rounded-md">{editLoading ? 'Saving...' : 'Save'}</button>
                                 <button onClick={cancelEdit} className="px-4 py-2 bg-slate-200 rounded-md">Cancel</button>
                               </div>
                             </div>
@@ -523,12 +523,12 @@ const AdminDonations: React.FC = () => {
             <div className="flex items-center justify-between p-3 border-b">
               <div className="font-bold">Receipt Preview</div>
               <div className="flex items-center gap-2">
-                <button onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Open in new tab</button>
+                <button onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')} className="px-3 py-1 bg-teal-600 text-white rounded text-sm">Open in new tab</button>
                 <button onClick={() => {
                   try {
                     const a = document.createElement('a');
                     a.href = previewUrl;
-                    a.download = `DDKA_Receipt.pdf`;
+                    a.download = `JSKA_Receipt.pdf`; 
                     document.body.appendChild(a);
                     a.click();
                     a.remove();

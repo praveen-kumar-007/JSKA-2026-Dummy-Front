@@ -105,7 +105,7 @@ const ExportCsvModal: React.FC<Props> = ({ visible, onClose, records, fields, fi
           <button
             onClick={() => { onClose(); doExport(safeRecords, keysSelected); }}
             disabled={safeRecords.length === 0 || keysSelected.length === 0}
-            className="w-full sm:w-auto px-4 py-2 bg-blue-900 text-white rounded-lg disabled:opacity-50"
+            className="w-full sm:w-auto px-4 py-2 bg-teal-900 text-white rounded-lg disabled:opacity-50"
           >
             Export
           </button>

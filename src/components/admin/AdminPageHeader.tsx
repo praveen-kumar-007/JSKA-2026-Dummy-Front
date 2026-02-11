@@ -20,7 +20,7 @@ const AdminPageHeader: React.FC<Props> = ({ title, subtitle, showManageModules, 
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="min-w-0">
-        <h1 className="text-3xl font-oswald font-bold text-blue-900 uppercase truncate">{title}</h1>
+        <h1 className="text-3xl font-oswald font-bold text-teal-900 uppercase truncate">{title}</h1>
         {subtitle && <p className="text-slate-600 mt-2">{subtitle}</p>}
       </div>
 
@@ -28,7 +28,7 @@ const AdminPageHeader: React.FC<Props> = ({ title, subtitle, showManageModules, 
         {showManageModules && (
           <button
             onClick={onManageModules}
-            className="w-full sm:w-auto px-3 py-2 rounded-full bg-white text-blue-700 text-xs font-bold border border-blue-200 hover:shadow-sm transition-all"
+            className="w-full sm:w-auto px-3 py-2 rounded-full bg-white text-teal-700 text-xs font-bold border border-teal-200 hover:shadow-sm transition-all"
           >
             Manage Modules
           </button>
@@ -37,7 +37,7 @@ const AdminPageHeader: React.FC<Props> = ({ title, subtitle, showManageModules, 
         {showBack && (
           <button
             onClick={() => { navigate('/admin-portal-access'); }}
-            className="w-full sm:w-auto px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-4 py-2 rounded-full bg-teal-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-teal-700 transition-all flex items-center justify-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </button>

@@ -168,7 +168,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
     return (
       <div className="p-6 max-w-5xl mx-auto">
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900" />
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-900" />
         </div>
       </div>
     );
@@ -179,7 +179,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
       <div className="p-6 max-w-5xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-blue-900 mb-4"
+          className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-teal-900 mb-4"
         >
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
@@ -202,7 +202,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-blue-900"
+                className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-teal-900"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
@@ -211,12 +211,12 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
         />
       </div>
       <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-        <div className="bg-blue-900 text-white px-6 py-4 flex items-center justify-between">
+        <div className="bg-teal-900 text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <UserCheck className="w-6 h-6" />
             <div>
               <h1 className="text-xl font-oswald font-bold uppercase">Technical Official Details</h1>
-              <p className="text-xs text-blue-100">Review complete profile and application info</p>
+              <p className="text-xs text-teal-100">Review complete profile and application info</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -224,9 +224,9 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
               <StatusMark status={official.status} title={official.status} className="w-8 h-8" />
               <span className="sr-only">{official.status}</span>
             </div>
-            <div className="text-sm text-blue-100">
+            <div className="text-sm text-teal-100">
               <div className="text-xs font-semibold">Reg No:</div>
-              <div className="font-mono text-[13px]">{official._id ? `DDKA-2026-${official._id.slice(-4).toUpperCase()}` : 'N/A'}</div>
+              <div className="font-mono text-[13px]">{official._id ? `JSKA-2026-${official._id.slice(-4).toUpperCase()}` : 'N/A'}</div>
             </div>
           </div>
         </div>
@@ -353,8 +353,8 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                 <p className="text-xs font-semibold text-slate-500 uppercase">Registration Number</p>
                 <p className="text-sm text-slate-900 font-mono">
                   {official._id && official.grade
-                    ? `DDKA-2026-${official._id.slice(-4).toUpperCase()}`
-                    : 'DDKA-2026-____'}
+                    ? `JSKA-2026-${official._id.slice(-4).toUpperCase()}`
+                    : 'JSKA-2026-____'}
                 </p>
               </div>
               <div>
@@ -446,7 +446,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                         setSavingGrade(false);
                       }
                     }}
-                    className="px-3 py-2 rounded-lg bg-blue-900 text-white text-xs font-semibold hover:bg-blue-800 disabled:opacity-60"
+                    className="px-3 py-2 rounded-lg bg-teal-900 text-white text-xs font-semibold hover:bg-teal-800 disabled:opacity-60"
                   >
                     {savingGrade ? 'Saving...' : 'Save'}
                   </button>
@@ -554,7 +554,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                     const handler = (e: MessageEvent) => {
                       if (e.origin !== window.location.origin) return;
                       const data = e.data || {};
-                      if (data.type !== 'ddka:certificate') return;
+                      if (data.type !== 'jska:certificate') return;
 
                       try {
                         if (data.format === 'png') {
@@ -562,7 +562,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                             const url = URL.createObjectURL(data.blob);
                             const a = document.createElement('a');
                             a.href = url;
-                            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+                            a.download = `${(filenameBase || 'JSKA-Certificate')}.png`;
                             document.body.appendChild(a);
                             a.click();
                             a.remove();
@@ -570,7 +570,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                           } else if (data.dataUrl) {
                             const a = document.createElement('a');
                             a.href = data.dataUrl;
-                            a.download = `${(filenameBase || 'DDKA-Certificate')}.png`;
+                            a.download = `${(filenameBase || 'JSKA-Certificate')}.png`;
                             document.body.appendChild(a);
                             a.click();
                             a.remove();
@@ -581,7 +581,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                             const url = URL.createObjectURL(data.blob);
                             const a = document.createElement('a');
                             a.href = url;
-                            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+                            a.download = `${(filenameBase || 'JSKA-Certificate')}.pdf`;
                             document.body.appendChild(a);
                             a.click();
                             a.remove();
@@ -589,7 +589,7 @@ const AdminTechnicalOfficialDetails: React.FC = () => {
                           } else if (data.dataUrl) {
                             const a = document.createElement('a');
                             a.href = data.dataUrl;
-                            a.download = `${(filenameBase || 'DDKA-Certificate')}.pdf`;
+                            a.download = `${(filenameBase || 'JSKA-Certificate')}.pdf`;
                             document.body.appendChild(a);
                             a.click();
                             a.remove();

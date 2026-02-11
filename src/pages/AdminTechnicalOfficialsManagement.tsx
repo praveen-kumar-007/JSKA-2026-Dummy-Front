@@ -56,7 +56,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
 
   const getOfficialId = (off: TechnicalOfficial) => {
     if (!off?._id) return '';
-    return `DDKA-2026-${off._id.slice(-4).toUpperCase()}`;
+    return `JSKA-2026-${off._id.slice(-4).toUpperCase()}`;
   };
 
   const fetchOfficials = async () => {
@@ -109,8 +109,8 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
         if (e.detail.allowExportTechnicalOfficials === false) setSelectedIds([]);
       }
     };
-    window.addEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
-    return () => window.removeEventListener('ddka-settings-updated', onSettingsUpdated as EventListener);
+    window.addEventListener('jska-settings-updated', onSettingsUpdated as EventListener);
+    return () => window.removeEventListener('jska-settings-updated', onSettingsUpdated as EventListener);
   }, []);
 
   // Mobile detection for responsive admin views
@@ -233,11 +233,11 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
       {/* Header */}
       <AdminPageHeader
         title="Technical Officials"
-        subtitle="Manage DDKA Technical Officials applications"
+        subtitle="Manage JSKA Technical Officials applications"
         actions={(
           <div className="flex items-center gap-2">
             {allowExportAll && (
-              <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+              <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-teal-900 hover:bg-teal-50 flex items-center gap-2 font-semibold">
                 <Download className="w-4 h-4" /> Export
               </button>
             )}
@@ -252,14 +252,14 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name, email, or mobile"
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white shadow-sm text-sm focus:ring-4 focus:ring-blue-50 outline-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white shadow-sm text-sm focus:ring-4 focus:ring-teal-50 outline-none"
           />
         </div>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900" />
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-900" />
         </div>
       ) : (
         isMobile ? (
@@ -320,7 +320,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                   <div className="mt-3 flex gap-2 flex-wrap">
                     <button
                       onClick={() => handleViewDetails(off)}
-                      className="flex-1 min-w-[140px] px-3 py-2 bg-blue-600 text-white rounded-full text-xs font-black tracking-widest uppercase"
+                      className="flex-1 min-w-[140px] px-3 py-2 bg-teal-600 text-white rounded-full text-xs font-black tracking-widest uppercase"
                     >
                       View Details
                     </button>
@@ -425,7 +425,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                         <div className="flex justify-end gap-2 flex-wrap">
                           <button
                             onClick={() => handleViewDetails(off)}
-                            className="inline-flex items-center justify-center px-3 h-8 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold"
+                            className="inline-flex items-center justify-center px-3 h-8 rounded-lg bg-teal-600 text-white hover:bg-teal-700 text-xs font-semibold"
                             title="View details"
                           >
                             View
@@ -472,7 +472,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
   
 
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-oswald font-bold text-blue-900 uppercase flex items-center gap-2">
+              <h2 className="text-xl font-oswald font-bold text-teal-900 uppercase flex items-center gap-2">
                 <Edit2 className="w-5 h-5" /> Edit Technical Official
               </h2>
               <button onClick={closeEdit} className="p-1 rounded-full hover:bg-slate-100">
@@ -705,7 +705,7 @@ const AdminTechnicalOfficialsManagement: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-lg bg-blue-900 text-white text-sm font-semibold flex items-center gap-1"
+                  className="px-5 py-2 rounded-lg bg-teal-900 text-white text-sm font-semibold flex items-center gap-1"
                 >
                   <Save className="w-4 h-4" /> Save Changes
                 </button>

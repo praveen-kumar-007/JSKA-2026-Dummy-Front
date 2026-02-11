@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import type { Language } from '../translations';
 import { translations } from '../translations';
 
-type RoleKey = 'player' | 'official' | 'institute';
+type RoleKey = 'player' | 'official';
 type VerificationStatus = 'verified' | 'pending' | 'rejected';
 
 type VerificationForm = {
@@ -49,12 +49,11 @@ const defaultRecord: VerificationRecord = {
   name: 'Record not found',
   fatherName: '—',
   dob: '—',
-  photoUrl: 'https://res.cloudinary.com/ddka/image/upload/v1766700000/verification/placeholder.jpg',
+  photoUrl: '/logo.png',
+
   roles: ['player'],
   status: 'pending',
 };
-
-const localeForLang = (lang: Language) => (lang === 'hi' ? 'hi-IN' : 'en-IN');
 
 const mapVerificationStatus = (value?: string): VerificationStatus => {
   if (!value) return 'pending';
@@ -69,7 +68,6 @@ const deriveRolesFromMemberRole = (memberRole?: string): RoleKey[] => {
   const roles: RoleKey[] = [];
   if (!normalized || normalized.includes('player')) roles.push('player');
   if (normalized.includes('official') || normalized.includes('referee')) roles.push('official');
-  if (normalized.includes('inst') || normalized.includes('institution')) roles.push('institute');
   return roles.length ? Array.from(new Set(roles)) : ['player'];
 };
 
@@ -78,6 +76,16 @@ const formatDateForLocale = (value: string | Date | undefined, locale: string) =
   const date = typeof value === 'string' ? new Date(value) : value;
   if (Number.isNaN(date.getTime())) return '—';
   return new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+};
+
+const localeForLang = (lang: Language) => {
+  switch (lang) {
+    case 'hi':
+      return 'hi-IN';
+    case 'en':
+    default:
+      return 'en-IN';
+  }
 };
 
 const normalizeRecordEntry = (entry: ApiLookupRecord, lang: Language): VerificationRecord => ({
@@ -196,13 +204,13 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
   return (
     <>
       <Helmet>
-        <title>{lang === 'hi' ? 'सत्यापन केंद्र | DDKA' : 'Verification Center | DDKA'}</title>
+        <title>{lang === 'hi' ? 'सत्यापन केंद्र | JSKA' : 'Verification Center | JSKA'}</title>
         <meta name="description" content={verification.heroDescription} />
-        <meta name="keywords" content={lang === 'hi' ? 'सत्यापन, ID, खिलाड़ियों की जांच, DDKA' : 'verification, id lookup, player verification, DDKA'} />
-        <link rel="canonical" href="https://dhanbadkabaddiassociation.tech/verification" />
-        <meta property="og:title" content={lang === 'hi' ? 'सत्यापन केंद्र | DDKA' : 'Verification Center | DDKA'} />
+        <meta name="keywords" content={lang === 'hi' ? 'सत्यापन, ID, खिलाड़ियों की जांच, JSKA' : 'verification, id lookup, player verification, JSKA'} />
+        <link rel="canonical" href="https://jharkhandkabaddiassociation.org/verification" />
+        <meta property="og:title" content={lang === 'hi' ? 'सत्यापन केंद्र | JSKA' : 'Verification Center | JSKA'} />
         <meta property="og:description" content={verification.heroDescription} />
-        <meta property="og:url" content="https://dhanbadkabaddiassociation.tech/verification" />
+        <meta property="og:url" content="https://jharkhandkabaddiassociation.org/verification" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
       </Helmet>
@@ -211,12 +219,12 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
         <section className="bg-white rounded-3xl shadow-xl px-6 py-10 space-y-8">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-orange-50 text-orange-600">
+              <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-50 text-purple-600">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 10.707a1 1 0 01-1.414-1.414L9 6.586l1.707 1.707a1 1 0 01-1.414 1.414L9 9.414 8.707 9.707z" />
                 </svg>
               </span>
-              <p className="text-sm font-medium text-orange-600">{verification.navLabel}</p>
+              <p className="text-sm font-medium text-purple-600">{verification.navLabel}</p>
             </div>
             <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">{verification.heroTitle}</h1>
             <p className="text-lg font-semibold text-slate-700 tracking-tight">{verification.heroSubtitle}</p>
@@ -239,7 +247,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
           <div className="space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <span className="inline-flex items-center justify-center h-8 w-8 rounded bg-orange-50 text-orange-600">
+                <span className="inline-flex items-center justify-center h-8 w-8 rounded bg-purple-50 text-purple-600">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2 10a8 8 0 1116 0A8 8 0 012 10zm8-4a1 1 0 100 2 1 1 0 000-2zM7 9a1 1 0 012 0v3a1 1 0 11-2 0V9z" />
                   </svg>
@@ -290,7 +298,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
           </div>
           <div className="space-y-5 bg-white rounded-3xl shadow-lg p-6 lg:p-8">
             <div className="space-y-1">
-              <p className="text-[10px] uppercase tracking-[0.5em] text-orange-600 font-semibold">{verification.navLabel}</p>
+              <p className="text-[10px] uppercase tracking-[0.5em] text-purple-600 font-semibold">{verification.navLabel}</p>
               <h2 className="text-xl font-semibold text-slate-900">{verification.form.heading}</h2>
               <p className="text-sm text-slate-600">{verification.form.subheading}</p>
             </div>
@@ -299,8 +307,8 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               <div className="sm:flex sm:items-center sm:gap-3">
                 <label className="flex-1 block">
                   <span className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{verification.form.fields.idNumber}</span>
-                  <div className="mt-2 flex items-center rounded-3xl border-2 border-orange-100 bg-white px-4 py-3 shadow-md focus-within:ring-2 focus-within:ring-orange-300 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                  <div className="mt-2 flex items-center rounded-3xl border-2 border-purple-100 bg-white px-4 py-3 shadow-md focus-within:ring-2 focus-within:ring-purple-300 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM10 16a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
                     </svg>
                     <input
@@ -320,7 +328,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
                 <div className="mt-3 sm:mt-0 sm:w-44">
                   <button
                     type="submit"
-                    className={`w-full rounded-2xl bg-orange-600 px-4 py-3 text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-200 transition transform ${loading ? 'cursor-wait opacity-70' : 'hover:bg-orange-700 hover:-translate-y-0.5'}`}
+                    className={`w-full rounded-2xl bg-purple-600 px-4 py-3 text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-black-effect transition transform ${loading ? 'cursor-wait opacity-70' : 'hover:bg-purple-700 hover:-translate-y-0.5'}`}
                     disabled={loading}
                   >
                     <span className="inline-flex items-center justify-center gap-2">
@@ -334,7 +342,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               </div>
 
               <p className="text-xs text-slate-500">
-                {lang === 'hi' ? 'ID, पंजीकरण, ईमेल, फोन या आधार नंबर दर्ज करें; सिस्टम खिलाड़ी/रेफरी/संस्थान रोल स्वतः दिखाता है।' : 'Enter an ID, email, phone, or Aadhaar number; the system auto-detects player, referee, and institute roles.'}
+                {lang === 'hi' ? 'ID, पंजीकरण, ईमेल, फोन या आधार नंबर दर्ज करें; सिस्टम खिलाड़ी/रेफरी रोल स्वतः दिखाता है।' : 'Enter an ID, email, phone, or Aadhaar number; the system auto-detects player and referee roles.'}
               </p>
 
               {errorMessage && (
@@ -461,7 +469,7 @@ const VerificationCenter: React.FC<{ lang: Language }> = ({ lang }) => {
               {tableRows.map((row) => {
                 const rowRole = row.role ?? (row.roles.length ? row.roles[0] : 'player');
                 return (
-                  <div key={`${row.idNumber}-${rowRole}-mobile`} className="border border-slate-100 rounded-2xl bg-white/90 px-4 py-3 shadow-sm">
+                  <div key={`${row.idNumber}-${rowRole}-mobile`} className="border border-slate-100 rounded-2xl bg-white px-4 py-3 shadow-sm">
                     <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-500 mb-3">
                       <span>{roleNames[rowRole]}</span>
                       <span>{row.status === 'rejected' ? 'Rejected' : verification.statuses[row.status ?? 'pending']}</span>

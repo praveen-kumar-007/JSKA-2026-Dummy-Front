@@ -196,7 +196,7 @@ const AdminManageAdmins: React.FC = () => {
         <p className="text-red-600 font-bold mb-4">{error}</p>
         <button
           onClick={() => navigate('/admin-portal-access')}
-          className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center gap-2"
+          className="px-4 py-2 rounded-full bg-teal-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-teal-700 transition-all flex items-center gap-2"
         >
           <ArrowLeft size={16} /> Back to Dashboard
         </button>
@@ -209,7 +209,7 @@ const AdminManageAdmins: React.FC = () => {
       <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 md:p-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Shield className="text-blue-900" size={32} />
+            <Shield className="text-teal-900" size={32} />
             <div>
               <AdminPageHeader
                 title="Admin Management"
@@ -220,7 +220,7 @@ const AdminManageAdmins: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => navigate('/admin/login-alerts')}
-                    className="px-3 py-2 rounded-full bg-white text-slate-600 text-xs font-semibold uppercase tracking-widest border border-slate-200 hover:border-blue-200 hover:text-blue-700 transition-all"
+                    className="px-3 py-2 rounded-full bg-white text-slate-600 text-xs font-semibold uppercase tracking-widest border border-slate-200 hover:border-teal-200 hover:text-teal-700 transition-all"
                   >
                     Login Alerts
                   </button>
@@ -235,7 +235,7 @@ const AdminManageAdmins: React.FC = () => {
         <div className="md:hidden mb-4 space-y-2">
           <button
             onClick={() => setShowModuleModal(true)}
-            className="w-full px-3 py-2 rounded-full bg-white text-blue-700 text-sm font-semibold border border-slate-200"
+            className="w-full px-3 py-2 rounded-full bg-white text-teal-700 text-sm font-semibold border border-slate-200"
           >
             Manage Modules
           </button>
@@ -285,7 +285,7 @@ const AdminManageAdmins: React.FC = () => {
               { key: 'canAccessTechnicalOfficials', label: 'Technical Officials' },
               { key: 'canAccessUnifiedSearch', label: 'Unified Search' },
               { key: 'canAccessPlayerDetails', label: 'Player Details' },
-              { key: 'canAccessInstitutionDetails', label: 'Institution Details' },
+              { key: 'canAccessInstitutionDetails', label: 'District Details' },
               { key: 'canAccessDonations', label: 'Donations' },
               { key: 'canAccessImportantDocs', label: 'Important Docs' },
               { key: 'canAccessBulkEmail', label: 'Bulk Email' },
@@ -301,7 +301,7 @@ const AdminManageAdmins: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <div className="shrink-0 mt-1">
-                      <div className="w-9 h-9 rounded-full bg-blue-900 text-white flex items-center justify-center text-xs font-bold">
+                      <div className="w-9 h-9 rounded-full bg-teal-900 text-white flex items-center justify-center text-xs font-bold">
                         <UserCog size={16} />
                       </div>
                     </div>
@@ -342,7 +342,7 @@ const AdminManageAdmins: React.FC = () => {
                     onClick={() => setAllAccess(admin, !allOn)}
                     className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all ${
                       allOn
-                        ? 'bg-blue-50 text-blue-700 border-blue-200'
+                        ? 'bg-teal-50 text-teal-700 border-teal-200'
                         : 'bg-slate-50 text-slate-400 border-slate-200'
                     }`}
                   >
@@ -416,7 +416,7 @@ const AdminManageAdmins: React.FC = () => {
             <Trash2 size={12} /> Only admins with <span className="font-semibold">Delete</span> permission can see delete buttons in the portal; backend enforces delete permission (superadmin always allowed).
           </p>
           <p>
-            <span className="font-semibold">Players &amp; Officials</span> controls access to Player Details, Institution Details, Our Champions, Referee Board, and Technical Officials tabs on the dashboard.
+            <span className="font-semibold">Players &amp; Officials</span> controls access to Player Details, District Details, Our Champions, Referee Board, and Technical Officials tabs on the dashboard.
           </p>
           <p>
             <span className="font-semibold">Contact Forms</span> controls the Contact Forms tab; <span className="font-semibold">News</span>, <span className="font-semibold">Gallery</span>, <span className="font-semibold">Donations</span> and <span className="font-semibold">Important Docs</span> match those respective admin sections.

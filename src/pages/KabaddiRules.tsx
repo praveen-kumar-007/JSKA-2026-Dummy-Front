@@ -16,44 +16,44 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
       <Helmet>
         <title>
           {isHi
-            ? 'कबड्डी नियम | धनबाद जिला कबड्डी संघ (DDKA)'
-            : 'Kabaddi Rules | Dhanbad District Kabaddi Association (DDKA), Jharkhand'}
+            ? 'कबड्डी नियम | झारखंड राज्य कबड्डी संघ (JSKA)'
+            : 'Kabaddi Rules | Jharkhand State Kabaddi Association (JSKA), Jharkhand'}
         </title>
         <meta
           name="description"
           content={
             isHi
-              ? 'DDKA द्वारा अपनाए गए कबड्डी के विस्तृत नियम, कोर्ट के माप, टीम संरचना, रेड और डिफेंस के नियम, फाउल और स्कोरिंग सिस्टम – AKFI मानकों के अनुरूप।'
-              : 'Detailed Kabaddi rules followed by Dhanbad District Kabaddi Association (DDKA) – court dimensions, team composition, raid and defense rules, fouls and scoring system as per AKFI standards.'
+              ? 'JSKA द्वारा अपनाए गए कबड्डी के विस्तृत नियम, कोर्ट के माप, टीम संरचना, रेड और डिफेंस के नियम, फाउल और स्कोरिंग सिस्टम – AKFI मानकों के अनुरूप।'
+              : 'Detailed Kabaddi rules followed by Jharkhand State Kabaddi Association (JSKA) – court dimensions, team composition, raid and defense rules, fouls and scoring system as per AKFI standards.'
           }
         />
         <meta
           name="keywords"
-          content="Kabaddi rules Dhanbad, Kabaddi rules Jharkhand, AKFI kabaddi rules, DDKA kabaddi rules, kabaddi dhanbad jharkhand, jaan kabaddi rules, jan kabaddi rules"
+          content="Kabaddi rules Jharkhand, Kabaddi rules Jharkhand, AKFI kabaddi rules, JSKA kabaddi rules, kabaddi jharkhand, jaan kabaddi rules"
         />
       </Helmet>
       <div className="min-h-screen bg-slate-50">
         {/* Hero Section */}
-        <div className="bg-blue-900 pt-32 pb-20 px-4 relative overflow-hidden">
+        <div className="bg-teal-900 pt-32 pb-20 px-4 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-orange-500 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-400 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
           </div>
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-orange-500/20 rounded-2xl mb-6 border border-orange-500/30">
-              <Trophy className="w-10 h-10 text-orange-500" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-purple-500/20 rounded-2xl mb-6 border border-purple-500/30">
+              <Trophy className="w-10 h-10 text-purple-500" />
             </div>
             <h1 className="text-4xl md:text-6xl font-oswald font-bold text-white mb-6 uppercase tracking-tight">
-              {isHi ? 'DDKA कबड्डी नियमावली' : 'DDKA Kabaddi Rules'}
+              {isHi ? 'JSKA कबड्डी नियमावली' : 'JSKA Kabaddi Rules'}
             </h1>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-teal-100 max-w-2xl mx-auto leading-relaxed">
               {isHi
-                ? 'धनबाद जिला कबड्डी संघ (DDKA) द्वारा अपनाए गए कबड्डी के आधिकारिक नियम और विनियम, जो अमेचर कबड्डी फेडरेशन ऑफ इंडिया (AKFI) के मानकों के अनुरूप हैं।'
-                : 'Official Kabaddi rules and regulations followed by Dhanbad District Kabaddi Association (DDKA), aligned with Amateur Kabaddi Federation of India (AKFI) standards.'}
+                ? 'झारखंड स्टेट कबड्डी एसोसिएशन (JSKA) द्वारा अपनाए गए कबड्डी के आधिकारिक नियम और विनियम, जो अमेचर कबड्डी फेडरेशन ऑफ इंडिया (AKFI) के मानकों के अनुरूप हैं।'
+                : 'Official Kabaddi rules and regulations followed by Jharkhand State Kabaddi Association (JSKA), aligned with Amateur Kabaddi Federation of India (AKFI) standards.'}
             </p>
             <div className="mt-8 flex justify-center">
-              <span className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm font-medium text-white">
+              <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-sm font-medium text-white">
                 {isHi ? 'AKFI विनियमों के आधार पर' : 'Based on AKFI Regulations'}
               </span>
             </div>
@@ -62,13 +62,13 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
         <div className="max-w-5xl mx-auto px-4 -mt-10 pb-20 relative z-20">
           {/* Introduction Card */}
-          <div className="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-200 p-8 md:p-10 mb-12">
+          <div className="bg-white rounded-2xl shadow-xl shadow-teal-900/5 border border-slate-200 p-8 md:p-10 mb-12">
             <div className="flex flex-col md:flex-row gap-8 items-start">
-              <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
-                <Shield className="w-8 h-8 text-blue-900" />
+              <div className="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-teal-100">
+                <Shield className="w-8 h-8 text-teal-900" />
               </div>
               <div>
-                <h3 className="text-2xl font-oswald font-bold text-blue-900 mb-4 uppercase">
+                <h3 className="text-2xl font-oswald font-bold text-teal-900 mb-4 uppercase">
                   {isHi ? 'कबड्डी के बारे में' : 'About Kabaddi'}
                 </h3>
                 <div className="space-y-4 text-slate-700 leading-relaxed">
@@ -79,8 +79,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                   </p>
                   <p>
                     {isHi
-                      ? 'DDKA, AKFI द्वारा निर्धारित सभी नियमों और झारखंड राज्य कबड्डी संघ के दिशा-निर्देशों का पालन करते हुए निष्पक्ष खेल, खेल भावना और मानकीकृत प्रतियोगिता सुनिश्चित करता है।'
-                      : 'DDKA follows all rules and regulations established by the Amateur Kabaddi Federation of India (AKFI) and Jharkhand State Kabaddi Association to ensure fair play and standardized competition.'}
+                      ? 'JSKA, AKFI द्वारा निर्धारित सभी नियमों का पालन करते हुए निष्पक्ष खेल, खेल भावना और मानकीकृत प्रतियोगिता सुनिश्चित करता है।' 
+                      : 'JSKA follows all rules and regulations established by the Amateur Kabaddi Federation of India (AKFI) to ensure fair play and standardized competition.'}
                   </p>
                 </div>
               </div>
@@ -89,8 +89,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 1: Court Specifications */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -101,35 +101,35 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             <div className="p-8 md:p-10">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? '1.1 मैदान के आयाम (श्रेणी वार)' : '1.1 Court Dimensions (Category Wise)'}
                   </h3>
                   <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
                     <div className="space-y-4">
                       <div className="border-b border-slate-200 pb-3">
-                        <h4 className="font-bold text-blue-900 mb-1 text-sm uppercase">{isHi ? 'सीनियर और जूनियर (पुरुष/लड़के)' : 'Senior & Junior (Men/Boys)'}</h4>
+                        <h4 className="font-bold text-teal-900 mb-1 text-sm uppercase">{isHi ? 'सीनियर और जूनियर (पुरुष/लड़के)' : 'Senior & Junior (Men/Boys)'}</h4>
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-600">{isHi ? 'आकार:' : 'Size:'} 13m x 10m</span>
                           <span className="text-slate-600">{isHi ? 'लॉबी:' : 'Lobby:'} 1m</span>
                         </div>
                       </div>
                       <div className="border-b border-slate-200 pb-3">
-                        <h4 className="font-bold text-blue-900 mb-1 text-sm uppercase">{isHi ? 'सीनियर और जूनियर (महिला/लड़कियां)' : 'Senior & Junior (Women/Girls)'}</h4>
+                        <h4 className="font-bold text-teal-900 mb-1 text-sm uppercase">{isHi ? 'सीनियर और जूनियर (महिला/लड़कियां)' : 'Senior & Junior (Women/Girls)'}</h4>
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-600">{isHi ? 'आकार:' : 'Size:'} 12m x 8m</span>
                           <span className="text-slate-600">{isHi ? 'लॉबी:' : 'Lobby:'} 1m</span>
                         </div>
                       </div>
                       <div className="border-b border-slate-200 pb-3">
-                        <h4 className="font-bold text-blue-900 mb-1 text-sm uppercase">{isHi ? 'सब-जूनियर (लड़के)' : 'Sub-Junior (Boys)'}</h4>
+                        <h4 className="font-bold text-teal-900 mb-1 text-sm uppercase">{isHi ? 'सब-जूनियर (लड़के)' : 'Sub-Junior (Boys)'}</h4>
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-600">{isHi ? 'आकार:' : 'Size:'} 11m x 8m</span>
                           <span className="text-slate-600">{isHi ? 'लॉबी:' : 'Lobby:'} 1m</span>
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-bold text-blue-900 mb-1 text-sm uppercase">{isHi ? 'सब-जूनियर (लड़कियां)' : 'Sub-Junior (Girls)'}</h4>
+                        <h4 className="font-bold text-teal-900 mb-1 text-sm uppercase">{isHi ? 'सब-जूनियर (लड़कियां)' : 'Sub-Junior (Girls)'}</h4>
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-600">{isHi ? 'आकार:' : 'Size:'} 11m x 8m</span>
                           <span className="text-slate-600">{isHi ? 'लॉबी:' : 'Lobby:'} 1m</span>
@@ -140,8 +140,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                 </div>
 
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? '1.2 मैदान की रेखाएँ' : '1.2 Court Markings'}
                   </h3>
                   <ul className="space-y-3">
@@ -152,7 +152,7 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                       isHi ? 'सतह समतल और सुरक्षित होनी चाहिए।' : 'Surface must be flat and safe.'
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-slate-700">
-                        <CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -164,8 +164,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 2: Team Composition */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -180,9 +180,9 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                   { label: isHi ? 'सब्सटीट्यूट' : 'Substitutes', value: '05', icon: Users },
                   { label: isHi ? 'कुल खिलाड़ी' : 'Total Squad', value: '12', icon: Users },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-blue-50 rounded-xl p-6 border border-blue-100 text-center">
-                    <stat.icon className="w-8 h-8 text-blue-900 mx-auto mb-3" />
-                    <div className="text-3xl font-oswald font-bold text-blue-900 mb-1">{stat.value}</div>
+                  <div key={i} className="bg-teal-50 rounded-xl p-6 border border-teal-100 text-center">
+                    <stat.icon className="w-8 h-8 text-teal-900 mx-auto mb-3" />
+                    <div className="text-3xl font-oswald font-bold text-teal-900 mb-1">{stat.value}</div>
                     <div className="text-sm font-medium text-slate-600 uppercase tracking-wider">{stat.label}</div>
                   </div>
                 ))}
@@ -190,8 +190,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
               <div className="grid md:grid-cols-2 gap-10">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? 'खिलाड़ी की भूमिकाएँ' : 'Player Positions'}
                   </h3>
                   <div className="space-y-4">
@@ -201,14 +201,14 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                       { role: isHi ? 'ऑल-राउंडर' : 'All-Rounders', desc: isHi ? 'दोनों में सक्षम' : 'Proficient in both' },
                     ].map((pos, i) => (
                       <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
-                        <span className="font-bold text-blue-900">{pos.role}</span>
+                        <span className="font-bold text-teal-900">{pos.role}</span>
                         <span className="text-slate-600 text-sm">{pos.desc}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-6 p-4 bg-orange-50 rounded-xl border border-orange-100">
-                    <h4 className="font-bold text-blue-900 mb-2 text-sm flex items-center gap-2">
-                      <Users className="w-4 h-4 text-orange-500" />
+                  <div className="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-100">
+                    <h4 className="font-bold text-teal-900 mb-2 text-sm flex items-center gap-2">
+                      <Users className="w-4 h-4 text-purple-500" />
                       {isHi ? 'आउट और पुनर्जीवन (Revival)' : 'Out & Revival Rule'}
                     </h4>
                     <p className="text-xs text-slate-700 leading-relaxed">
@@ -220,8 +220,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? 'वेशभूषा नियम' : 'Uniform Rules'}
                   </h3>
                   <ul className="space-y-3">
@@ -232,7 +232,7 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                       isHi ? 'पूरी टीम की ड्रेस एक जैसी होनी चाहिए।' : 'Uniforms must be identical.'
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-slate-700">
-                        <CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -244,8 +244,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 3: Game Duration */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Clock className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -256,35 +256,35 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             <div className="p-8 md:p-10">
               <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-8">
-                  <div className="relative pl-8 border-l-2 border-orange-500">
-                    <div className="absolute -left-2 top-0 w-4 h-4 bg-orange-500 rounded-full"></div>
-                    <h4 className="text-lg font-bold text-blue-900 mb-2">{isHi ? 'कुल समय' : 'Total Time'}</h4>
+                  <div className="relative pl-8 border-l-2 border-purple-500">
+                    <div className="absolute -left-2 top-0 w-4 h-4 bg-purple-500 rounded-full"></div>
+                    <h4 className="text-lg font-bold text-teal-900 mb-2">{isHi ? 'कुल समय' : 'Total Time'}</h4>
                     <p className="text-slate-700">{isHi ? '40 मिनट (20-5-20)' : '40 minutes (20-5-20 format)'}</p>
                   </div>
-                  <div className="relative pl-8 border-l-2 border-blue-900">
-                    <div className="absolute -left-2 top-0 w-4 h-4 bg-blue-900 rounded-full"></div>
-                    <h4 className="text-lg font-bold text-blue-900 mb-2">{isHi ? 'टाइम-आउट' : 'Time-Outs'}</h4>
+                  <div className="relative pl-8 border-l-2 border-teal-900">
+                    <div className="absolute -left-2 top-0 w-4 h-4 bg-teal-900 rounded-full"></div>
+                    <h4 className="text-lg font-bold text-teal-900 mb-2">{isHi ? 'टाइम-आउट' : 'Time-Outs'}</h4>
                     <p className="text-slate-700">{isHi ? 'प्रति हाफ 1 टाइम-आउट (30 सेकंड)' : '1 time-out per half (30 seconds)'}</p>
                   </div>
-                  <div className="relative pl-8 border-l-2 border-orange-500">
-                    <div className="absolute -left-2 top-0 w-4 h-4 bg-orange-500 rounded-full"></div>
-                    <h4 className="text-lg font-bold text-blue-900 mb-2">{isHi ? 'रेड समय' : 'Raid Time'}</h4>
+                  <div className="relative pl-8 border-l-2 border-purple-500">
+                    <div className="absolute -left-2 top-0 w-4 h-4 bg-purple-500 rounded-full"></div>
+                    <h4 className="text-lg font-bold text-teal-900 mb-2">{isHi ? 'रेड समय' : 'Raid Time'}</h4>
                     <p className="text-slate-700">{isHi ? 'अधिकतम 30 सेकंड प्रति रेड' : 'Maximum 30 seconds per raid'}</p>
                   </div>
                 </div>
 
-                <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
-                  <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
-                    <AlertCircle className="w-6 h-6 text-orange-500" />
+                <div className="bg-teal-50 rounded-2xl p-8 border border-teal-100">
+                  <h3 className="text-xl font-bold text-teal-900 mb-4 flex items-center gap-2">
+                    <AlertCircle className="w-6 h-6 text-purple-500" />
                     {isHi ? 'विशेष नियम' : 'Special Rules'}
                   </h3>
                   <div className="space-y-4">
-                    <div className="p-4 bg-white rounded-xl border border-blue-100">
-                      <p className="font-bold text-blue-900 mb-1">{isHi ? 'गोल्डन रेड' : 'Golden Raid'}</p>
+                    <div className="p-4 bg-white rounded-xl border border-teal-100">
+                      <p className="font-bold text-teal-900 mb-1">{isHi ? 'गोल्डन रेड' : 'Golden Raid'}</p>
                       <p className="text-sm text-slate-700">{isHi ? 'टाई होने पर विजेता तय करने के लिए।' : 'To determine winner in case of a tie.'}</p>
                     </div>
-                    <div className="p-4 bg-white rounded-xl border border-blue-100">
-                      <p className="font-bold text-blue-900 mb-1">{isHi ? 'खाली रेड' : 'Empty Raid'}</p>
+                    <div className="p-4 bg-white rounded-xl border border-teal-100">
+                      <p className="font-bold text-teal-900 mb-1">{isHi ? 'खाली रेड' : 'Empty Raid'}</p>
                       <p className="text-sm text-slate-700">{isHi ? 'यदि रेडर बिना अंक लिए लौटता है।' : 'If raider returns without scoring.'}</p>
                     </div>
                   </div>
@@ -295,8 +295,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 4: Scoring System */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -313,16 +313,16 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                   { title: isHi ? 'लोना (Lona)' : 'Lona (All Out)', pts: '02', desc: isHi ? 'पूरी टीम आउट' : 'Team All Out' },
                   { title: isHi ? 'तकनीकी अंक' : 'Technical', pts: '01', desc: isHi ? 'नियम उल्लंघन' : 'Rule violation' },
                 ].map((item, i) => (
-                  <div key={i} className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center hover:border-orange-500 transition-colors group">
+                  <div key={i} className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center hover:border-purple-500 transition-colors group">
                     <div className="text-[10px] font-bold text-slate-700 mb-2 uppercase tracking-wider">{item.title}</div>
-                    <div className="text-3xl font-oswald font-bold text-blue-900 mb-1 group-hover:text-orange-500 transition-colors">{item.pts}</div>
+                    <div className="text-3xl font-oswald font-bold text-teal-900 mb-1 group-hover:text-purple-500 transition-colors">{item.pts}</div>
                     <div className="text-[10px] font-medium text-slate-600">{item.desc}</div>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-100">
-                <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                  <Info className="w-5 h-5 text-orange-500" />
+              <div className="mt-8 p-6 bg-teal-50 rounded-xl border border-teal-100">
+                <h4 className="font-bold text-teal-900 mb-3 flex items-center gap-2">
+                  <Info className="w-5 h-5 text-purple-500" />
                   {isHi ? 'स्कोरिंग विवरण' : 'Scoring Details'}
                 </h4>
                 <div className="grid md:grid-cols-2 gap-6 text-sm text-slate-700">
@@ -343,8 +343,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 5: Raid Rules */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -355,8 +355,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             <div className="p-8 md:p-10">
               <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? '5.1 रेड प्रक्रिया' : '5.1 Raid Procedure'}
                   </h3>
                   <ul className="space-y-3">
@@ -368,16 +368,16 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                       isHi ? 'वापसी के समय मध्य रेखा को शरीर के किसी भी हिस्से से छूना आवश्यक है।' : 'Must touch mid-line with any part of the body to return safely.'
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-slate-700">
-                        <CheckCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-orange-50 rounded-2xl p-8 border border-orange-100">
-                  <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
-                    <AlertCircle className="w-6 h-6 text-orange-500" />
+                <div className="bg-purple-50 rounded-2xl p-8 border border-purple-100">
+                  <h3 className="text-xl font-bold text-teal-900 mb-4 flex items-center gap-2">
+                    <AlertCircle className="w-6 h-6 text-purple-500" />
                     {isHi ? 'डू-ऑर-डाई रेड' : 'Do-or-Die Raid'}
                   </h3>
                   <p className="text-slate-700 text-sm leading-relaxed">
@@ -392,8 +392,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 6: Defending Rules */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -404,8 +404,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             <div className="p-8 md:p-10">
               <div className="grid md:grid-cols-2 gap-12">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? 'वैध तकनीकें' : 'Legal Techniques'}
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
@@ -417,7 +417,7 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                       isHi ? 'डैश' : 'Dash',
                       isHi ? 'ब्लॉक' : 'Block'
                     ].map((tech, i) => (
-                      <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-center text-sm font-bold text-blue-900">
+                      <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-center text-sm font-bold text-teal-900">
                         {tech}
                       </div>
                     ))}
@@ -425,8 +425,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     {isHi ? 'डिफेंडर की गलतियाँ' : 'Defender Violations'}
                   </h3>
                   <ul className="space-y-3">
@@ -449,8 +449,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 7: Substitutions */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -459,30 +459,30 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             </div>
             
             <div className="p-8 md:p-10">
-              <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-teal-50 rounded-2xl p-8 border border-teal-100">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <h4 className="font-bold text-blue-900 uppercase tracking-wider text-sm">{isHi ? 'प्रक्रिया' : 'Procedure'}</h4>
+                    <h4 className="font-bold text-teal-900 uppercase tracking-wider text-sm">{isHi ? 'प्रक्रिया' : 'Procedure'}</h4>
                     <ul className="space-y-2">
                       <li className="text-slate-700 text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-900 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-teal-900 rounded-full"></div>
                         {isHi ? 'केवल खेल रुके होने के दौरान संभव।' : 'Only during a break in play.'}
                       </li>
                       <li className="text-slate-700 text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-900 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-teal-900 rounded-full"></div>
                         {isHi ? 'रेफरी की अनुमति अनिवार्य।' : 'Referee permission required.'}
                       </li>
                     </ul>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-bold text-blue-900 uppercase tracking-wider text-sm">{isHi ? 'प्रतिबंध' : 'Restrictions'}</h4>
+                    <h4 className="font-bold text-teal-900 uppercase tracking-wider text-sm">{isHi ? 'प्रतिबंध' : 'Restrictions'}</h4>
                     <ul className="space-y-2">
                       <li className="text-slate-700 text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
                         {isHi ? 'सक्रिय रेड के दौरान मना।' : 'No substitution during active raid.'}
                       </li>
                       <li className="text-slate-700 text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
                         {isHi ? 'ड्रेस कोड का पालन आवश्यक।' : 'Must follow dress code.'}
                       </li>
                     </ul>
@@ -494,8 +494,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 8: Fouls & Cards */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <AlertCircle className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -512,7 +512,7 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                 ].map((card, i) => (
                   <div key={i} className="p-6 rounded-xl border border-slate-200 text-center">
                     <div className={`w-12 h-16 ${card.color} mx-auto mb-4 rounded-md shadow-md`}></div>
-                    <div className="font-bold text-blue-900 mb-1">{card.title}</div>
+                    <div className="font-bold text-teal-900 mb-1">{card.title}</div>
                     <div className="text-xs text-slate-700 font-medium uppercase">{card.desc}</div>
                   </div>
                 ))}
@@ -522,8 +522,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 9: Officials */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -540,7 +540,7 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
                   { role: isHi ? 'कमिश्नर' : 'Commissioner', count: '01' },
                 ].map((off, i) => (
                   <div key={i} className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
-                    <div className="text-2xl font-oswald font-bold text-blue-900">{off.count}</div>
+                    <div className="text-2xl font-oswald font-bold text-teal-900">{off.count}</div>
                     <div className="text-xs font-bold text-slate-700 uppercase">{off.role}</div>
                   </div>
                 ))}
@@ -550,8 +550,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
 
           {/* Section 10: Tie-Breaker */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-12">
-            <div className="bg-blue-900 px-8 py-6 flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="bg-teal-900 px-8 py-6 flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -561,40 +561,40 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
             
             <div className="p-8 md:p-10">
               <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1 p-6 bg-blue-50 rounded-xl border border-blue-100">
-                  <h4 className="font-bold text-blue-900 mb-3">{isHi ? 'अतिरिक्त समय' : 'Extra Time'}</h4>
+                <div className="flex-1 p-6 bg-teal-50 rounded-xl border border-teal-100">
+                  <h4 className="font-bold text-teal-900 mb-3">{isHi ? 'अतिरिक्त समय' : 'Extra Time'}</h4>
                   <p className="text-sm text-slate-700">{isHi ? '5-5 मिनट के दो हाफ खेले जाएंगे।' : 'Two halves of 5 minutes each will be played.'}</p>
                 </div>
-                <div className="flex-1 p-6 bg-orange-50 rounded-xl border border-orange-100">
-                  <h4 className="font-bold text-blue-900 mb-3">{isHi ? 'गोल्डन रेड' : 'Golden Raid'}</h4>
+                <div className="flex-1 p-6 bg-purple-50 rounded-xl border border-purple-100">
+                  <h4 className="font-bold text-teal-900 mb-3">{isHi ? 'गोल्डन रेड' : 'Golden Raid'}</h4>
                   <p className="text-sm text-slate-700">{isHi ? 'यदि फिर भी टाई रहे, तो गोल्डन रेड से विजेता तय होगा।' : 'If still tied, golden raid determines the winner.'}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* DDKA Commitment */}
-          <div className="bg-blue-900 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+          {/* JSKA Commitment */}
+          <div className="bg-teal-900 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
             <div className="relative z-10">
               <h3 className="text-3xl font-oswald font-bold text-white mb-6 uppercase">
-                {isHi ? 'DDKA की प्रतिबद्धता' : 'DDKA Commitment'}
+                {isHi ? 'JSKA की प्रतिबद्धता' : 'JSKA Commitment'}
               </h3>
-              <p className="text-blue-100 max-w-3xl mx-auto mb-10 leading-relaxed">
+              <p className="text-teal-100 max-w-3xl mx-auto mb-10 leading-relaxed">
                 {isHi
-                  ? 'धनबाद जिला कबड्डी संघ (DDKA) AKFI द्वारा निर्धारित सभी नियमों का कठोरता से पालन करता है। हम निष्पक्ष खेल और उच्च स्तर की खेल भावना सुनिश्चित करते हैं।'
-                  : 'Dhanbad District Kabaddi Association (DDKA) strictly adheres to all AKFI regulations. We ensure fair play and the highest standards of sportsmanship.'}
+                  ? 'झारखंड स्टेट कबड्डी एसोसिएशन (JSKA) AKFI द्वारा निर्धारित सभी नियमों का कठोरता से पालन करता है। हम निष्पक्ष खेल और उच्च स्तर की खेल भावना सुनिश्चित करते हैं।' 
+                  : 'Jharkhand State Kabaddi Association (JSKA) strictly adheres to all AKFI regulations. We ensure fair play and the highest standards of sportsmanship.'}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   to="/register"
-                  className="px-8 py-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25 uppercase tracking-wider text-sm"
+                  className="px-8 py-4 bg-purple-500 text-white font-bold rounded-xl hover:bg-purple-600 transition-all shadow-lg shadow-black-effect uppercase tracking-wider text-sm"
                 >
-                  {isHi ? 'DDKA से जुड़ें' : 'Join DDKA'}
+                  {isHi ? 'JSKA से जुड़ें' : 'Join JSKA'}
                 </Link>
                 <Link
                   to="/contact"
-                  className="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition-all border border-white/20 uppercase tracking-wider text-sm"
+                  className="px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all border border-slate-800 uppercase tracking-wider text-sm"
                 >
                   {isHi ? 'संपर्क करें' : 'Contact Us'}
                 </Link>
@@ -606,8 +606,8 @@ const KabaddiRules: React.FC<KabaddiRulesProps> = ({ lang }) => {
           <div className="mt-12 text-center">
             <p className="text-slate-600 text-sm">
               {isHi
-                ? '© 2025 धनबाद जिला कबड्डी संघ (DDKA). सर्वाधिकार सुरक्षित।'
-                : '© 2025 Dhanbad District Kabaddi Association (DDKA). All rights reserved.'}
+                ? '© 2025 झारखंड स्टेट कबड्डी एसोसिएशन (JSKA). सर्वाधिकार सुरक्षित।'
+                : '© 2025 Jharkhand State Kabaddi Association (JSKA). All rights reserved.'}
             </p>
             <p className="text-slate-600 text-xs mt-2">
               {isHi

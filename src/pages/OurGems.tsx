@@ -88,40 +88,40 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
       <Helmet>
         <title>
           {isHi
-            ? 'गौरव मंदिर | DDKA'
-            : 'Hall of Fame | DDKA - Champions & Referees'}
+            ? 'गौरव मंदिर | JSKA'
+            : 'Hall of Fame | JSKA - Champions & Referees'}
         </title>
         <meta
           name="description"
           content={
             isHi
-              ? 'DDKA के गौरवशाली खिलाड़ी और रेफरी बोर्ड - राष्ट्रीय खिलाड़ी, फेडरेशन कप और झारखंड प्रीमियर लीग के चैंपियन।'
-              : 'DDKA Hall of Fame - Celebrating our proud champions and referee board including National players, Federation Cup and Jharkhand Premier League stars.'
+              ? 'JSKA के गौरवशाली खिलाड़ी और रेफरी बोर्ड - राष्ट्रीय खिलाड़ी, फेडरेशन कप और झारखंड प्रीमियर लीग के चैंपियन।'
+              : 'JSKA Hall of Fame - Celebrating our proud champions and referee board including National players, Federation Cup and Jharkhand Premier League stars.'
           }
         />
         <meta
           name="keywords"
-          content="DDKA hall of fame, Dhanbad kabaddi champions, Jharkhand kabaddi players, national kabaddi players dhanbad, jaan kabaddi champions, kabaddi dhanbad jharkhand stars"
+          content="JSKA hall of fame, Jharkhand kabaddi champions, Jharkhand kabaddi players, national kabaddi players, jaan kabaddi champions"
         />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-stone-50 to-amber-50/20">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-orange-600 via-rose-600 to-amber-500 pt-28 pb-16 px-4 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-royal-600 via-rose-600 to-amber-500 pt-28 pb-16 px-4 relative overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
           </div>
           
           <div className="max-w-5xl mx-auto text-center relative z-10">
             <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-1 w-12 bg-white/70 rounded-full"></div>
+              <div className="h-1 w-12 bg-slate-700 rounded-full"></div>
               <Trophy className="w-8 h-8 text-white" />
-              <div className="h-1 w-12 bg-white/70 rounded-full"></div>
+              <div className="h-1 w-12 bg-slate-700 rounded-full"></div>
             </div>
             <h1 className="text-5xl md:text-7xl font-oswald font-extrabold text-white mb-4 uppercase tracking-wider drop-shadow-lg">
               {isHi ? 'गौरव मंदिर' : 'HALL OF FAME'}
             </h1>
-            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/30 rounded-full px-6 py-2 mb-6">
+            <div className="inline-block bg-slate-900 border border-slate-800 rounded-full px-6 py-2 mb-6 text-white">
               <p className="text-white font-semibold text-sm uppercase tracking-widest">
                 {isHi ? 'हमारे चैंपियन और रेफरी' : 'Our Champions & Referees'}
               </p>
@@ -129,7 +129,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
             <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed font-medium drop-shadow">
               {isHi
                 ? 'धनबाद जिला कबड्डी संघ के गौरवशाली खिलाड़ी और समर्पित रेफरी बोर्ड'
-                : 'Celebrating the proud champions and dedicated referee board of Dhanbad District Kabaddi Association'}
+                : 'Celebrating the proud champions and dedicated referee board of Jharkhand State Kabaddi Association (JSKA)'}
             </p>
           </div>
         </div>
@@ -141,8 +141,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
             <>
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
                 <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-8 py-6 flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
-                  <div className="h-6 w-56 bg-white/10 rounded-md" />
+                  <div className="w-10 h-10 bg-slate-800 rounded-lg" />
+                  <div className="h-6 w-56 bg-slate-800 rounded-md" />
                 </div>
                 <div className="p-4 md:p-10">
                   <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
@@ -163,8 +163,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
 
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
                 <div className="bg-gradient-to-r from-teal-600 to-emerald-500 px-8 py-6 flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
-                  <div className="h-6 w-44 bg-white/10 rounded-md" />
+                  <div className="w-10 h-10 bg-slate-800 rounded-lg" />
+                  <div className="h-6 w-44 bg-slate-800 rounded-md" />
                 </div>
                 <div className="p-4 md:p-10">
                   <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
@@ -184,14 +184,14 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               </div>
 
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
-                <div className="bg-gradient-to-r from-fuchsia-600 to-purple-600 px-8 py-6 flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
-                  <div className="h-6 w-48 bg-white/10 rounded-md" />
+                <div className="bg-gradient-to-r from-fuchsia-600 to-royal-600 px-8 py-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-slate-800 rounded-lg" />
+                  <div className="h-6 w-48 bg-slate-800 rounded-md" />
                 </div>
                 <div className="p-4 md:p-10">
                   <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-purple-50">
+                      <div key={i} className="rounded-xl p-3 md:p-6 border bg-gradient-to-br from-white to-royal-50">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full bg-slate-200 animate-pulse" />
                           <div className="flex-1 space-y-2">
@@ -207,8 +207,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
 
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-slate-800 via-indigo-800 to-cyan-700 px-8 py-6 flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/15 rounded-lg" />
-                  <div className="h-6 w-40 bg-white/10 rounded-md" />
+                  <div className="w-10 h-10 bg-slate-800 rounded-lg" />
+                  <div className="h-6 w-40 bg-slate-800 rounded-md" />
                 </div>
                 <div className="p-4 md:p-10">
                   <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
@@ -233,7 +233,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {nationalPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
                   <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
                       <Star className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -250,7 +250,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                             </div>
                             <div className="flex-1">
                               <h3 className="text-sm md:text-lg font-bold text-slate-900 mb-1 leading-tight">{player.name}</h3>
-                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'}`}>
+                              <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${player.gender === 'Female' ? 'bg-pink-100 text-pink-700' : 'bg-teal-100 text-teal-700'}`}>
                                 {player.gender === 'Female' ? (isHi ? 'महिला' : 'Female') : (isHi ? 'पुरुष' : 'Male')}
                               </span>
                             </div>
@@ -266,7 +266,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {federationCupPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
                   <div className="bg-gradient-to-r from-teal-600 to-emerald-500 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
                       <Award className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -298,8 +298,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {/* Jharkhand Premier League Section */}
               {jplPlayers.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
-                  <div className="bg-gradient-to-r from-fuchsia-600 to-purple-600 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                  <div className="bg-gradient-to-r from-fuchsia-600 to-royal-600 px-8 py-6 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
                       <Trophy className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -309,9 +309,9 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
                   <div className="p-4 md:p-10">
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                       {sortedJplPlayers.map((player) => (
-                        <div key={player._id} className="bg-gradient-to-br from-white to-purple-50 rounded-xl p-3 md:p-6 border border-purple-100 hover:shadow-lg transition-all hover:scale-105">
+                        <div key={player._id} className="bg-gradient-to-br from-white to-royal-50 rounded-xl p-3 md:p-6 border border-royal-100 hover:shadow-lg transition-all hover:scale-105">
                           <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-600 to-fuchsia-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-royal-600 to-fuchsia-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
                               <Star className="w-5 h-5 md:w-6 md:h-6 text-white fill-white" />
                             </div>
                             <div className="flex-1">
@@ -332,7 +332,7 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               {referees.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
                   <div className="bg-gradient-to-r from-slate-800 via-indigo-800 to-cyan-700 px-8 py-6 flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
                       <Shield className="w-6 h-6 text-white" />
                     </div>
                     <h2 className="text-2xl font-oswald font-bold text-white uppercase tracking-wide">
@@ -418,8 +418,8 @@ const OurGems: React.FC<OurGemsProps> = ({ lang }) => {
               </h3>
               <p className="text-white/90 max-w-3xl mx-auto leading-relaxed text-lg drop-shadow">
                 {isHi
-                  ? 'ये खिलाड़ी और रेफरी DDKA की मेहनत, समर्पण और उत्कृष्टता का प्रतीक हैं। इनकी सफलता धनबाद की कबड्डी विरासत को आगे बढ़ाती है।'
-                  : 'These players and referees represent the dedication, hard work, and excellence of DDKA. Their success continues the proud kabaddi legacy of Dhanbad.'}
+                  ? 'ये खिलाड़ी और रेफरी JSKA की मेहनत, समर्पण और उत्कृष्टता का प्रतीक हैं। इनकी सफलता झारखंड की कबड्डी विरासत को आगे बढ़ाती है।'
+                  : 'These players and referees represent the dedication, hard work, and excellence of JSKA. Their success continues the proud kabaddi legacy of Jharkhand.'}
               </p>
             </div>
           </div>

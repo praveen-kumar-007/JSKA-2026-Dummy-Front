@@ -21,4 +21,4 @@ Allow: /api/news/share/
 # Allow static page preview endpoints for better indexing
 Allow: /share/page/
 
-Sitemap: https://dhanbadkabaddiassociation.tech/sitemap.xml
+Sitemap: https://jharkhandkabaddiassociation.org/sitemap.xml

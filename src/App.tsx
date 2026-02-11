@@ -12,30 +12,27 @@ import About from './pages/About';
 import Gallery from './pages/Gallery';
 import News from './pages/News';
 import NewsArticle from './pages/NewsArticle';
-import AffiliatedInstitutions from './pages/AffiliatedInstitutions';
 import TermsConditions from './pages/TermsConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import KabaddiRules from './pages/KabaddiRules';
 import AdminNewsUpload from './pages/AdminNewsUpload';
 const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
-import AdminInstitutionDetails from './pages/AdminInstitutionDetails';
 import AdminLogin from './pages/AdminLogin';
 import AdminSignup from './pages/AdminSignup';
 import PublicLogin from './pages/PublicLogin';
 import Account from './pages/Account';
 import AdminRegistrationDetails from './pages/AdminRegistrationDetails';
 import PlayerIDCardPage from './pages/PlayerIDCardPage';
-import InstitutionDetailsPublic from './pages/InstitutionDetailsPublic';
 const AdminGalleryUpload = React.lazy(() => import('./pages/AdminGalleryUpload'));
 const AdminContact = React.lazy(() => import('./pages/AdminContact'));
 import Contact from './pages/Contact';
 import OurGems from './pages/OurGems';
-import Donate from './pages/Donate';
 const AdminPlayersManagement = React.lazy(() => import('./pages/AdminPlayersManagement'));
 const AdminRefereesManagement = React.lazy(() => import('./pages/AdminRefereesManagement'));
 const AdminDonations = React.lazy(() => import('./pages/AdminDonations'));
 import DonationReceipt from './pages/DonationReceipt';
 import VerificationCenter from './pages/VerificationCenter';
+import AffiliatedDistricts from './pages/AffiliatedDistricts';
 const AdminTechnicalOfficialsManagement = React.lazy(() => import('./pages/AdminTechnicalOfficialsManagement'));
 const AdminTechnicalOfficialDetails = React.lazy(() => import('./pages/AdminTechnicalOfficialDetails'));
 const AdminManageAdmins = React.lazy(() => import('./pages/AdminManageAdmins'));
@@ -46,7 +43,6 @@ const AdminRegistrations = React.lazy(() => import('./pages/AdminRegistrations')
 
 // Form Components
 import RegisterForm from './components/forms/RegisterForm';
-import InstitutionForm from './components/forms/InstitutionForm';
 import TechnicalOfficialForm from './components/forms/TechnicalOfficialForm';
 
 // Types & Icons
@@ -69,10 +65,25 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   const handlePageChange = (pageId: string) => {
-    if (pageId === 'home') {
-      navigate('/');
-    } else {
-      navigate(`/${pageId}`);
+    // Map logical page IDs to actual route paths
+    switch (pageId) {
+      case 'home':
+        navigate('/');
+        return;
+      case 'register-player':
+      case 'register':
+        navigate('/register');
+        return;
+      case 'technical-official-registration':
+        navigate('/technical-official-registration');
+        return;
+      case 'player-login':
+      case 'member-login':
+        navigate('/login');
+        return;
+      default:
+        // default behavior: navigate to /<id> (works for gallery, news, etc.)
+        navigate(`/${pageId}`);
     }
   };
 
@@ -96,12 +107,11 @@ const App: React.FC = () => {
         <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home lang={lang} onNavigate={handlePageChange} />} />
-          <Route path="/about" element={<About lang={lang} />} />
-          <Route path="/affiliated-institutions" element={<AffiliatedInstitutions lang={lang} />} />
+          <Route path="/about" element={<About lang={lang} onNavigate={handlePageChange} />} />
           <Route path="/gallery" element={<Gallery lang={lang} />} />
+          <Route path="/affiliated-districts" element={<AffiliatedDistricts lang={lang} />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsArticle />} />
-          <Route path="/donate" element={<Donate lang={lang} />} />
           <Route path="/verification" element={<VerificationCenter lang={lang} />} />
           <Route path="/donation/:id" element={<DonationReceipt />} />
           <Route path="/terms-conditions" element={<TermsConditions lang={lang} />} />
@@ -182,30 +192,30 @@ const App: React.FC = () => {
               <Helmet>
                 <title>
                   {lang === 'hi'
-                    ? 'खिलाड़ी पंजीकरण | धनबाद जिला कबड्डी संघ (DDKA)'
-                    : 'Player Registration | Dhanbad District Kabaddi Association (DDKA)'}
+                    ? 'खिलाड़ी पंजीकरण | झारखंड राज्य कबड्डी संघ (JSKA)'
+                    : 'Player Registration | Jharkhand State Kabaddi Association (JSKA)'}
                 </title>
                 {/* Canonical and JSON-LD to help indexing & rich results */}
-                <link rel="canonical" href={`${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/register`} />
+                <link rel="canonical" href={`${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/register`} />
                 <meta
                   name="description"
                   content={
                     lang === 'hi'
-                      ? 'धनबाद जिला कबड्डी संघ (DDKA) के लिए ऑनलाइन खिलाड़ी पंजीकरण फ़ॉर्म – धनबाद, झारखंड के खिलाड़ियों के लिए।'
-                      : 'Online player registration form for Dhanbad District Kabaddi Association (DDKA) – for Kabaddi players from Dhanbad, Jharkhand.'
+                      ? 'झारखंड राज्य कबड्डी संघ (JSKA) के लिए ऑनलाइन खिलाड़ी पंजीकरण फ़ॉर्म – झारखंड के खिलाड़ियों के लिए।'
+                      : 'Online player registration form for Jharkhand State Kabaddi Association (JSKA) – for Kabaddi players from Jharkhand.'
                   }
                 />
                 <meta
                   name="keywords"
-                  content="player registration dhanbad kabaddi, DDKA player registration, kabaddi registration dhanbad, kabaddi jharkhand player form, jaan kabaddi registration, jan kabaddi dhanbad"
+                  content="player registration jharkhand kabaddi, JSKA player registration, kabaddi registration jharkhand, kabaddi jharkhand player form, jaan kabaddi registration"
                 />
                 <script type="application/ld+json">
                   {JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "WebPage",
                     "name": lang === 'hi' ? 'खिलाड़ी पंजीकरण' : 'Player Registration',
-                    "url": `${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/register`,
-                    "description": lang === 'hi' ? 'धनबाद जिला कबड्डी संघ (DDKA) के लिए ऑनलाइन खिलाड़ी पंजीकरण फ़ॉर्म' : 'Online player registration form for DDKA'
+                    "url": `${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/register`,
+                    "description": lang === 'hi' ? 'झारखंड राज्य कबड्डी संघ (JSKA) के लिए ऑनलाइन खिलाड़ी पंजीकरण फ़ॉर्म' : 'Online player registration form for JSKA'
                   })}
                 </script>
               </Helmet>
@@ -222,38 +232,38 @@ const App: React.FC = () => {
               <Helmet>
                 <title>
                   {lang === 'hi'
-                    ? 'संस्थान एफिलिएशन | धनबाद जिला कबड्डी संघ (DDKA)'
-                    : 'Institution Affiliation | Dhanbad District Kabaddi Association (DDKA)'}
+                    ? 'संस्थान एफिलिएशन | झारखंड राज्य कबड्डी संघ (JSKA)'
+                    : 'Institution Affiliation | Jharkhand State Kabaddi Association (JSKA)'}
                 </title>
-                <link rel="canonical" href={`${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/institution`} />
+                <link rel="canonical" href={`${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/institution`} />
                 <meta
                   name="description"
                   content={
                     lang === 'hi'
-                      ? 'स्कूल, कॉलेज और क्लबों के लिए DDKA संस्थान एफिलिएशन पंजीकरण – धनबाद जिला कबड्डी संघ से जुड़ने के लिए ऑनलाइन फ़ॉर्म।'
-                      : 'Institution affiliation registration for schools, colleges and clubs with Dhanbad District Kabaddi Association (DDKA) in Dhanbad, Jharkhand.'
+                      ? 'स्कूल, कॉलेज और क्लबों के लिए JSKA संस्थान एफिलिएशन पंजीकरण – झारखंड राज्य कबड्डी संघ से जुड़ने के लिए ऑनलाइन फ़ॉर्म।'
+                      : 'Institution affiliation registration for schools, colleges and clubs with Jharkhand State Kabaddi Association (JSKA) in Jharkhand.'
                   }
                 />
                 <meta
                   name="keywords"
-                  content="institution affiliation dhanbad kabaddi, DDKA institution registration, kabaddi school affiliation dhanbad, kabaddi club registration jharkhand, kabaddi association of jharkhand dhanbad, jaan kabaddi school affiliation"
+                  content="institution affiliation jharkhand kabaddi, JSKA institution registration, kabaddi school affiliation jharkhand, kabaddi club registration jharkhand, kabaddi association of jharkhand, jaan kabaddi school affiliation"
                 />
                 <script type="application/ld+json">
                   {JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "Organization",
-                    "name": "Dhanbad District Kabaddi Association",
-                    "url": `${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}/institution`,
-                    "description": lang === 'hi' ? 'DDKA संस्थान एफिलिएशन पंजीकरण' : 'Institution affiliation registration with DDKA',
+                    "name": "Jharkhand State Kabaddi Association",
+                    "url": `${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/institution`,
+                    "description": lang === 'hi' ? 'JSKA संस्थान एफिलिएशन पंजीकरण' : 'Institution affiliation registration with JSKA',
                     "sameAs": [
-                      `${window.location?.origin || 'https://dhanbadkabaddiassociation.tech'}`
+                      `${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}`
                     ]
                   })}
                 </script>
               </Helmet>
               <div className="py-20 bg-slate-50 min-h-screen">
                 <div className="max-w-7xl mx-auto px-4">
-                  <InstitutionForm lang={lang} />
+                  {/* Institution form removed - institute affiliation no longer supported */}
                 </div>
               </div>
             </>
@@ -264,20 +274,20 @@ const App: React.FC = () => {
               <Helmet>
                 <title>
                   {lang === 'hi'
-                    ? 'टेक्निकल ऑफिशियल पंजीकरण | DDKA'
-                    : 'Technical Official Registration | DDKA Kabaddi Dhanbad'}
+                    ? 'टेक्निकल ऑफिशियल पंजीकरण | JSKA'
+                    : 'Technical Official Registration | JSKA Kabaddi Jharkhand'}
                 </title>
                 <meta
                   name="description"
                   content={
                     lang === 'hi'
-                      ? 'धनबाद जिला कबड्डी संघ (DDKA) के लिए टेक्निकल ऑफिशियल / रेफरी पंजीकरण फ़ॉर्म – धनबाद और झारखंड के इच्छुक अधिकारियों के लिए।'
-                      : 'Technical official / referee registration form for Dhanbad District Kabaddi Association (DDKA) – for Kabaddi officials from Dhanbad and Jharkhand.'
+                      ? 'झारखंड राज्य कबड्डी संघ (JSKA) के लिए टेक्निकल ऑफिशियल / रेफरी पंजीकरण फ़ॉर्म – झारखंड के इच्छुक अधिकारियों के लिए।'
+                      : 'Technical official / referee registration form for Jharkhand State Kabaddi Association (JSKA) – for Kabaddi officials from Jharkhand.'
                   }
                 />
                 <meta
                   name="keywords"
-                  content="technical official registration dhanbad kabaddi, kabaddi referees dhanbad, DDKA technical officials, kabaddi jharkhand referees, jaan kabaddi referee registration"
+                  content="technical official registration jharkhand kabaddi, kabaddi referees jharkhand, JSKA technical officials, kabaddi jharkhand referees, jaan kabaddi referee registration"
                 />
               </Helmet>
               <div className="py-20 bg-slate-50 min-h-screen">
@@ -294,16 +304,9 @@ const App: React.FC = () => {
           <Route path="/admin/registration/:id" element={
             isAuthenticated ? <AdminRegistrationDetails /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
           } />
-          <Route path="/admin/institution/:id" element={
-            isAuthenticated ? <AdminInstitutionDetails /> : <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
-          } />
 
           <Route path="/id-card/:idNo" element={<PlayerIDCardPage />} />
           {/* Public institution details for SEO */}
-          <Route path="/institution/:id" element={
-            // lazy load to reduce initial bundle size
-            <InstitutionDetailsPublic />
-          } />
           <Route path="*" element={<Home lang={lang} onNavigate={handlePageChange} />} />
         </Routes>
         </Suspense>
@@ -315,7 +318,7 @@ const App: React.FC = () => {
         <div className="fixed bottom-8 right-8 z-40">
           <a 
             href="tel:+91 9123163206" 
-            className="bg-orange-600 hover:bg-orange-700 text-white p-5 rounded-full shadow-2xl transition-all transform hover:scale-110 active:scale-95 group flex items-center justify-center"
+            className="bg-purple-600 hover:bg-purple-700 text-white p-5 rounded-full shadow-2xl shadow-black-effect transition-all transform hover:scale-110 active:scale-95 group flex items-center justify-center"
             title="Contact Support"
           >
             <Phone size={28} className="group-hover:rotate-12 transition-transform" />

@@ -75,8 +75,8 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
       if (res.ok && data && data.success) {
         setStatus('success');
         setResultMsg(lang === 'hi'
-          ? 'आपका दान रिकॉर्ड कर लिया गया है और सत्यापन के लिए लंबित है। DDKA की स्वीकृति के बाद आप रिसीप्ट डाउनलोड करने के लिए /login पर लॉगिन कर सकते हैं — ईमेल आईडी को ID के रूप में और पंजीकृत मोबाइल नंबर को पासवर्ड के रूप में उपयोग करें।'
-          : 'Your donation has been submitted and is pending verification. After approval by DDKA you can get the receipt by logging in at /login using your Email as your ID and your registered mobile number as the password.'
+          ? 'आपका दान रिकॉर्ड कर लिया गया है और सत्यापन के लिए लंबित है। JSKA की स्वीकृति के बाद आप रिसीप्ट डाउनलोड करने के लिए /login पर लॉगिन कर सकते हैं — ईमेल आईडी को ID के रूप में और पंजीकृत मोबाइल नंबर को पासवर्ड के रूप में उपयोग करें।'
+          : 'Your donation has been submitted and is pending verification. After approval by JSKA you can get the receipt by logging in at /login using your Email as your ID and your registered mobile number as the password.'
         );
         // clear form
         setName('');
@@ -102,12 +102,12 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
   return (
     <>
       <Helmet>
-        <title>{lang === 'hi' ? 'दान करें | DDKA' : 'Donate | DDKA'}</title>
-        <meta name="description" content={lang === 'hi' ? 'DDKA के लिए दान देकर खेल को समर्थन दें।' : 'Support DDKA by making a donation to grow local kabaddi.'} />
-        <meta name="keywords" content={lang === 'hi' ? 'दान, दान दें, DDKA, समर्थन' : 'donate, support DDKA, kabaddi donations'} />
+        <title>{lang === 'hi' ? 'दान करें | JSKA' : 'Donate | JSKA'}</title>
+        <meta name="description" content={lang === 'hi' ? 'JSKA के लिए दान देकर खेल को समर्थन दें।' : 'Support JSKA by making a donation to grow local kabaddi.'} />
+        <meta name="keywords" content={lang === 'hi' ? 'दान, दान दें, JSKA, समर्थन' : 'donate, support JSKA, kabaddi donations'} />
         <link rel="canonical" href="https://dhanbadkabaddiassociation.tech/donate" />
-        <meta property="og:title" content={lang === 'hi' ? 'दान करें | DDKA' : 'Donate | DDKA'} />
-        <meta property="og:description" content={lang === 'hi' ? 'DDKA के लिए दान देकर खेल को समर्थन दें।' : 'Support DDKA by making a donation to grow local kabaddi.'} />
+        <meta property="og:title" content={lang === 'hi' ? 'दान करें | JSKA' : 'Donate | JSKA'} />
+        <meta property="og:description" content={lang === 'hi' ? 'JSKA के लिए दान देकर खेल को समर्थन दें।' : 'Support JSKA by making a donation to grow local kabaddi.'} />
         <meta property="og:url" content="https://dhanbadkabaddiassociation.tech/donate" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
@@ -121,7 +121,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                 <Heart className="w-6 h-6" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-3xl font-extrabold text-blue-900 truncate">{lang === 'hi' ? 'DDKA को दान दें' : 'Support DDKA'}</h1>
+                <h1 className="text-3xl font-extrabold text-blue-900 truncate">{lang === 'hi' ? 'JSKA को दान दें' : 'Support JSKA'}</h1>
                 <p className="text-slate-600 mt-1">{lang === 'hi' ? 'आपका समर्थन हमारे खेल कार्यक्रमों, प्रशिक्षकों और युवा विकास को आगे बढ़ाता है।' : 'Your support helps fund tournaments, coaching, equipment and youth programs.'}</p>
               </div>
             </div>
@@ -160,13 +160,8 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
               <div>
                 <label className="block text-sm font-semibold text-blue-900 mb-2">{lang === 'hi' ? 'भुगतान विधि' : 'Payment method'}</label>
                 <div className="flex flex-col md:flex-row items-center gap-6">
-                  <div className="w-full md:w-48 h-auto md:h-48 bg-white rounded-lg p-3 border border-slate-200 flex items-center justify-center shadow-sm">
-                    <img src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1769251199/QR_1769251094_biebtv.png" alt="UPI QR code" className="max-w-full h-auto object-contain" />
-                  </div>
                   <div className="text-sm text-slate-700 min-w-0 break-words">
-                    <p className="font-semibold">{lang === 'hi' ? 'Scan & Pay (UPI)' : 'Scan & Pay (UPI)'}</p>
-                    <p className="mt-2">{lang === 'hi' ? 'UPI आईडी' : 'UPI ID'}: <span className="font-mono break-words inline-block">9504904499@upi</span></p>
-                    <p className="text-xs text-slate-500 mt-2">{lang === 'hi' ? 'भुगतान करने के बाद कृपया यहाँ भुगतान का प्रमाण (स्क्रीनशॉट) अपलोड करें।' : 'After paying, please upload your payment proof (screenshot) below.'}</p>
+                    <p className="font-semibold">{lang === 'hi' ? 'UPI ID' : 'UPI ID'}: <span className="font-mono break-words inline-block">9504904499@upi</span></p>
                   </div>
                 </div>
               </div>
@@ -218,7 +213,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                     setResultMsg('');
                     try { (document.querySelector('input[data-receipt]') as HTMLInputElement).value = ''; } catch(e) {}
                   }}
-                  className={`border rounded-lg p-4 flex items-center gap-4 cursor-pointer ${dragActive ? 'border-dashed border-blue-400 bg-blue-50' : 'border-slate-200 bg-white'}`}
+                  className={`border rounded-lg p-4 flex items-center gap-4 cursor-pointer ${dragActive ? 'border-dashed border-teal-400 bg-teal-50' : 'border-slate-200 bg-white'}`}
                 >
                   <input
                     data-receipt
@@ -271,7 +266,7 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
                         const input = document.querySelector('input[data-receipt]') as HTMLInputElement | null;
                         if (input) input.click();
                       }}
-                      className="px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded"
+                      className="px-3 py-1 text-xs bg-teal-50 text-teal-600 rounded"
                     >
                       {lang === 'hi' ? 'अपलोड करें' : 'Upload'}
                     </button>
@@ -304,10 +299,10 @@ const Donate: React.FC<{ lang?: 'en' | 'hi' }> = ({ lang = 'en' }) => {
               </div>
 
               <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
-                <button type="submit" className="w-full md:w-auto inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold shadow-sm justify-center" disabled={status === 'sending'}>
+                <button type="submit" className="w-full md:w-auto inline-flex items-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-lg font-semibold shadow-sm shadow-black-effect justify-center" disabled={status === 'sending'}>
                   <Zap className="w-4 h-4" /> {status === 'sending' ? (lang === 'hi' ? 'प्रक्रिया...' : 'Processing...') : (lang === 'hi' ? 'दान करें' : 'Donate now')}
                 </button>
-                <div className="text-sm text-slate-600 break-words">{lang === 'hi' ? 'दान सत्यापन के लिए लंबित है। DDKA की स्वीकृति के बाद आप रिसीप्ट प्राप्त करने के लिए /login पर लॉगिन कर सकते हैं (ईमेल आईडी के रूप में ID और पंजीकृत मोबाइल नंबर पासवर्ड के रूप में)।' : 'Donation is pending verification. After approval by DDKA you can get the receipt by logging in at /login using your Email as ID and your registered mobile number as password.'}</div>
+                <div className="text-sm text-slate-600 break-words">{lang === 'hi' ? 'दान सत्यापन के लिए लंबित है। JSKA की स्वीकृति के बाद आप रिसीप्ट प्राप्त करने के लिए /login पर लॉगिन कर सकते हैं (ईमेल आईडी के रूप में ID और पंजीकृत मोबाइल नंबर पासवर्ड के रूप में)।' : 'Donation is pending verification. After approval by JSKA you can get the receipt by logging in at /login using your Email as ID and your registered mobile number as password.'}</div>
               </div>
 
               {status === 'error' && <div className="text-sm text-red-600">{resultMsg}</div>}

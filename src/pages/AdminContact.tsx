@@ -174,26 +174,26 @@ const AdminContact: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-stretch gap-2">
               <button
                 onClick={() => { setActiveTab('contacts'); setSelectedIds([]); fetchContacts(); }}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'contacts' ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-900 hover:bg-blue-50'}`}>
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'contacts' ? 'bg-teal-900 text-white border-teal-900' : 'bg-white text-teal-900 hover:bg-teal-50'}`}>
                 <Mail size={14} /> Contacts
               </button>
 
               <button
                 onClick={() => { setActiveTab('newsletter'); setSelectedIds([]); fetchNewsletters(); }}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'newsletter' ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-900 hover:bg-blue-50'}`}>
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border shadow-sm flex items-center gap-2 ${activeTab === 'newsletter' ? 'bg-teal-900 text-white border-teal-900' : 'bg-white text-teal-900 hover:bg-teal-50'}`}>
                 <ListChecks size={14} /> Newsletter
               </button>
 
               <button
                 onClick={activeTab === 'contacts' ? fetchContacts : fetchNewsletters}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-blue-900 hover:bg-blue-50">
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-teal-900 hover:bg-teal-50">
                 <RefreshCcw size={16} /> Refresh
               </button>
 
               <button
                 onClick={() => setShowExportModal(true)}
                 disabled={activeTab === 'contacts' ? items.length === 0 : newsletters.length === 0}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-blue-900 hover:bg-blue-50 w-full sm:w-auto disabled:opacity-50">
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border shadow-sm text-sm font-bold text-teal-900 hover:bg-teal-50 w-full sm:w-auto disabled:opacity-50">
                 <Download size={16} /> Export CSV
               </button>
             </div>
@@ -203,7 +203,7 @@ const AdminContact: React.FC = () => {
         <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
           {loading ? (
             <div className="p-24 flex justify-center">
-              <RefreshCcw className="animate-spin text-blue-900" size={40} />
+              <RefreshCcw className="animate-spin text-teal-900" size={40} />
             </div>
           ) : activeTab === 'contacts' ? (
             items.length === 0 ? (
@@ -225,7 +225,7 @@ const AdminContact: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                     {items.map((item) => (
-                    <tr key={item._id} className="hover:bg-blue-50/40 transition-colors">
+                    <tr key={item._id} className="hover:bg-teal-50/40 transition-colors">
                       <td className="p-4">
                         <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(item._id)} onChange={(e) => {
                           if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, item._id])));
@@ -234,7 +234,7 @@ const AdminContact: React.FC = () => {
                       </td>
                       <td className="p-4">
                         <div className="flex flex-col">
-                          <span className="font-semibold text-blue-900 text-sm">{item.name}</span>
+                          <span className="font-semibold text-teal-900 text-sm">{item.name}</span>
                           <span className="text-xs text-slate-500 flex items-center gap-1">
                             <Mail size={12} /> {item.email}
                           </span>
@@ -314,7 +314,7 @@ const AdminContact: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-50">
                   {newsletters.map((n) => (
-                    <tr key={n._id} className="hover:bg-blue-50/40 transition-colors">
+                    <tr key={n._id} className="hover:bg-teal-50/40 transition-colors">
                       <td className="p-4">
                         <input type="checkbox" className="h-4 w-4" checked={selectedIds.includes(n._id)} onChange={(e) => {
                           if (e.currentTarget.checked) setSelectedIds(prev => Array.from(new Set([...prev, n._id])));
@@ -322,7 +322,7 @@ const AdminContact: React.FC = () => {
                         }} />
                       </td>
                       <td className="p-4 text-sm text-slate-800 flex items-center gap-2">
-                        <Mail size={14} className="text-orange-500" /> {n.email}
+                        <Mail size={14} className="text-purple-500" /> {n.email}
                       </td>
                       <td className="p-4 text-xs text-slate-500">
                         {new Date(n.createdAt).toLocaleString()}
@@ -366,7 +366,7 @@ const AdminContact: React.FC = () => {
               >
                 <XCircle size={24} />
               </button>
-              <h2 className="text-xl font-bold text-blue-900 mb-2">{selected.subject || 'No subject'}</h2>
+              <h2 className="text-xl font-bold text-teal-900 mb-2">{selected.subject || 'No subject'}</h2>
               <p className="text-sm text-slate-600 mb-4">
                 From <span className="font-semibold">{selected.name}</span> · {selected.email}
                 {selected.phone ? ` · ${selected.phone}` : ''}

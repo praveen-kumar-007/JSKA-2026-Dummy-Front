@@ -151,14 +151,14 @@ const AdminRefereesManagement: React.FC = () => {
       {/* Header */}
       <AdminPageHeader
         title="Referees Management"
-        subtitle="Manage DDKA's referee board"
+        subtitle="Manage JSKA's referee board"
         actions={(
           <div className="flex flex-col sm:flex-row items-stretch gap-2">
-            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold justify-center">
+            <button onClick={() => setShowForm(!showForm)} className="w-full sm:w-auto px-6 py-3 bg-teal-900 text-white rounded-xl hover:bg-teal-800 transition-colors flex items-center gap-2 font-bold justify-center">
               {showForm ? <X className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
               {showForm ? 'Cancel' : 'Add Referee'}
             </button>
-            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-blue-900 hover:bg-blue-50 flex items-center gap-2 font-semibold">
+            <button onClick={() => setShowExportModal(true)} className="w-full sm:w-auto px-4 py-2 bg-white border rounded-xl shadow-sm text-teal-900 hover:bg-teal-50 flex items-center gap-2 font-semibold">
               <Download className="w-4 h-4" /> Export
             </button>
           </div>
@@ -168,7 +168,7 @@ const AdminRefereesManagement: React.FC = () => {
       {/* Add/Edit Form */}
       {showForm && (
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-6">
+          <h2 className="text-2xl font-bold text-teal-900 mb-6">
             {editingId ? 'Edit Referee' : 'Add New Referee'}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -182,7 +182,7 @@ const AdminRefereesManagement: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                   placeholder="Enter referee name"
                 />
               </div>
@@ -196,7 +196,7 @@ const AdminRefereesManagement: React.FC = () => {
                   required
                   value={formData.qualification}
                   onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-900 focus:border-transparent"
                   placeholder="e.g., NIS KABADDI, BPED, MPED"
                 />
               </div>
@@ -205,7 +205,7 @@ const AdminRefereesManagement: React.FC = () => {
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-colors flex items-center gap-2 font-bold"
+                className="px-6 py-3 bg-teal-900 text-white rounded-xl hover:bg-teal-800 transition-colors flex items-center gap-2 font-bold"
               >
                 <Save className="w-5 h-5" />
                 {editingId ? 'Update Referee' : 'Add Referee'}
@@ -225,7 +225,7 @@ const AdminRefereesManagement: React.FC = () => {
       {/* Referees List */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-900"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-900"></div>
         </div>
       ) : (
         isMobile ? (
@@ -256,7 +256,7 @@ const AdminRefereesManagement: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-900 text-white">
+                <thead className="bg-teal-900 text-white">
                   <tr>
                     <th className="px-4 py-3"><input type="checkbox" className="h-4 w-4 form-checkbox" checked={referees.length>0 && selectedIds.length===referees.length} onChange={(e) => {
                       if (e.currentTarget.checked) setSelectedIds(referees.map(r => r._id)); else setSelectedIds([]);
@@ -284,7 +284,7 @@ const AdminRefereesManagement: React.FC = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-bold">
+                        <span className="inline-block px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm font-bold">
                           {referee.qualification}
                         </span>
                       </td>
@@ -292,7 +292,7 @@ const AdminRefereesManagement: React.FC = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleEdit(referee)}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
                             title="Edit"
                           >
                             <Edit2 className="w-5 h-5" />

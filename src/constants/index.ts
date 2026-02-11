@@ -1,25 +1,22 @@
 export const CONTACT_INFO = {
-  address: "Retired Rly Colony, Gomoh, Dhanbad, Jharkhand 828401",
+  address: "Gomoh, Jharkhand 828401", 
   phone: "+91 9123163206",
-  email: "dhanbaddistrictkabaddi@gmail.com"
+  email: "jharkhandstatekabaddi@gmail.com"
 };
 
 export const SOCIAL_LINKS = {
-  youtube: 'https://www.youtube.com/@DhanbadKabaddiAssociation',
-  instagram: 'https://www.instagram.com/dhanbad_kabaddi/',
-  x: 'https://x.com/DhanbadKabaddi',
+  youtube: 'https://www.youtube.com/@JharkhandKabaddiAssociation',
+  instagram: 'https://www.instagram.com/jharkhand_kabaddi/',
+  x: 'https://x.com/JharkhandKabaddi',
   facebook: 'https://www.facebook.com/profile.php?id=61586162997794'
 };
 
-export const FEES = {
-  PLAYER: 250,
-  INSTITUTION: 1600
-};
+
 
 export const MOCK_NEWS = [
   { title: "District Trials 2024", category: "TRIALS", content: "Trials for U-19 team starts next week...", date: "Oct 24, 2024" },
   { title: "Coach Workshop", category: "TRAINING", content: "Advanced coaching techniques session...", date: "Oct 20, 2024" },
-  { title: "Kabaddi League", category: "EVENT", content: "Dhanbad Premier Kabaddi starts soon...", date: "Oct 15, 2024" }
+  { title: "Kabaddi League", category: "EVENT", content: "Jharkhand Premier Kabaddi starts soon...", date: "Oct 15, 2024" }
 ];
 
 export const GALLERY_MOCK_DATA = [
@@ -29,7 +26,7 @@ export const GALLERY_MOCK_DATA = [
 ];
 
 export const ASSOCIATION_INFO = {
-  name: "DDKA - Dhanbad District Kabaddi Association"
+  name: "JSKA - Jharkhand State Kabaddi Association"
 };
 
 export const COLORS = {
@@ -39,5 +36,6 @@ export const COLORS = {
 };
 
 export const LOGOS = {
-  AKFI: "https://via.placeholder.com/80?text=DDKA"
+  AKFI: "https://via.placeholder.com/80?text=JSKA",
+  JSKA: "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
 };

@@ -465,11 +465,11 @@ const AdminRegistrationDetails = () => {
 
   // --- Layout: Two columns on desktop, stacked on mobile ---
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-teal-50 p-4 md:p-8">
       <div className="max-w-6xl mx-auto mb-4">
         <AdminPageHeader
           title={type === 'player' ? data.fullName : data.instName}
-          subtitle={type === 'player' ? data.email : 'Institution registration'}
+          subtitle={type === 'player' ? data.email : 'District registration'}
           showBack={false}
           actions={(
             <div className="flex flex-wrap items-center justify-end gap-2 w-full md:w-auto">
@@ -552,7 +552,7 @@ const AdminRegistrationDetails = () => {
                 <img src={data.photo} alt="Photo" className="w-40 h-40 object-cover rounded-lg border mb-4" />
                 <div className="font-bold text-lg mb-2">Passport Size Photo</div>
               </div>
-              <a href={data.photo} target="_blank" rel="noopener noreferrer" className="w-full mt-2 text-center bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-2 rounded flex items-center justify-center gap-2 border"><Download size={16} />Download Photo</a>
+              <a href={data.photo} target="_blank" rel="noopener noreferrer" className="w-full mt-2 text-center bg-teal-50 hover:bg-teal-100 text-teal-700 font-semibold py-2 rounded flex items-center justify-center gap-2 border"><Download size={16} />Download Photo</a>
               <span className="mt-3 inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-bold">Verified</span>
             </div>
           )}
@@ -562,10 +562,10 @@ const AdminRegistrationDetails = () => {
               <div className="font-bold text-lg mb-4 w-full text-center">Aadhar Card Documents</div>
               <div className="grid grid-cols-2 gap-4 w-full">
                 {data.front && (
-                  <div className="bg-blue-50 rounded-lg p-3 flex flex-col items-center justify-start h-full">
+                  <div className="bg-teal-50 rounded-lg p-3 flex flex-col items-center justify-start h-full">
                     <img src={data.front} alt="Aadhar Front" className="w-32 h-20 object-cover rounded border mb-2" />
-                    <a href={data.front} target="_blank" rel="noopener noreferrer" className="w-full text-center bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-1 rounded flex items-center justify-center gap-2 border"><Download size={14} />Download Front Side</a>
-                    <span className="mt-2 inline-block bg-blue-200 text-blue-800 text-xs px-2 py-0.5 rounded-full font-bold">Verified</span>
+                    <a href={data.front} target="_blank" rel="noopener noreferrer" className="w-full text-center bg-teal-100 hover:bg-teal-200 text-teal-700 font-semibold py-1 rounded flex items-center justify-center gap-2 border"><Download size={14} />Download Front Side</a>
+                    <span className="mt-2 inline-block bg-teal-200 text-teal-800 text-xs px-2 py-0.5 rounded-full font-bold">Verified</span>
                   </div>
                 )}
                 {data.back && (
@@ -587,7 +587,7 @@ const AdminRegistrationDetails = () => {
             </div>
           )}
 
-          {/* Institution Logo Card (Institution) */}
+          {/* District Logo Card (District) */}
           {type === 'institution' && (data.instLogoUrl || data.instLogo) && (
             <div className="bg-white rounded-xl shadow border p-6 flex flex-col items-center justify-start h-full">
               <div className="flex flex-col items-center w-full">
@@ -596,20 +596,20 @@ const AdminRegistrationDetails = () => {
                   alt="Institution Logo"
                   className="w-32 h-32 object-contain rounded-lg border mb-4 bg-white"
                 />
-                <div className="font-bold text-lg mb-2">Institution Logo</div>
+                <div className="font-bold text-lg mb-2">District Logo</div>
               </div>
               <a
                 href={data.instLogoUrl || data.instLogo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full mt-2 text-center bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-2 rounded flex items-center justify-center gap-2 border"
+                className="w-full mt-2 text-center bg-teal-50 hover:bg-teal-100 text-teal-700 font-semibold py-2 rounded flex items-center justify-center gap-2 border"
               >
                 <Download size={16} /> Download Logo
               </a>
             </div>
           )}
 
-          {/* Institution Payment Screenshot Card (Institution) */}
+          {/* District Payment Screenshot Card (District) */}
           {type === 'institution' && data.screenshotUrl && (
             <div className="bg-white rounded-xl shadow border p-6 flex flex-col items-center justify-start h-full">
               <div className="font-bold text-lg mb-2 w-full text-center">Payment Screenshot</div>
@@ -903,7 +903,7 @@ const AdminRegistrationDetails = () => {
                     <button
                       type="submit"
                       disabled={savingEdit}
-                      className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-800 disabled:opacity-60"
+                      className="px-4 py-2 rounded-full bg-teal-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-teal-800 disabled:opacity-60"
                     >
                       {savingEdit ? 'Saving…' : 'Save Changes'}
                     </button>
@@ -952,11 +952,11 @@ const AdminRegistrationDetails = () => {
                         type="text"
                         value={customIdInput}
                         onChange={(e) => setCustomIdInput(e.target.value)}
-                        placeholder={data.idNo || 'DDKA-1234'}
+                        placeholder={data.idNo || 'JSKA-1234'}
                         className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                       <p className="text-[11px] text-slate-500 mt-1">
-                        ID is automatically generated when approved as DDKA-1234 style. Admins can update it here if needed.
+                        ID is automatically generated when approved as JSKA-1234 style. Admins can update it here if needed.
                       </p>
                     </div>
                   </div>
@@ -974,7 +974,7 @@ const AdminRegistrationDetails = () => {
               {/* Personal Information */}
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <User className="text-orange-600 bg-orange-100 rounded-full p-1" size={28} />
+                  <User className="text-purple-600 bg-purple-100 rounded-full p-1" size={28} />
                   <span className="font-extrabold text-lg text-slate-900 tracking-wide">Personal Information</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1012,7 +1012,7 @@ const AdminRegistrationDetails = () => {
               {/* Contact Information */}
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
-                  <Phone className="text-blue-600 bg-blue-100 rounded-full p-1" size={28} />
+                  <Phone className="text-teal-600 bg-teal-100 rounded-full p-1" size={28} />
                   <span className="font-extrabold text-lg text-slate-900 tracking-wide">Contact Information</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1093,13 +1093,13 @@ const AdminRegistrationDetails = () => {
             </div>
           )}
 
-          {/* INSTITUTION: Sectioned Details */}
+          {/* DISTRICT: Sectioned Details */}
           {type === 'institution' && (
             <div className="flex flex-col gap-6 w-full">
               {editingDetails && (
                 <form onSubmit={handleSaveDetails} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 w-full space-y-4 mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-extrabold text-lg text-slate-900 tracking-wide">Edit Institution Details</span>
+                    <span className="font-extrabold text-lg text-slate-900 tracking-wide">Edit District Details</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -1262,7 +1262,7 @@ const AdminRegistrationDetails = () => {
                     </div>
                     <div className="bg-slate-50 border rounded-xl p-3 flex flex-col sm:flex-row gap-3">
                       <div className="flex-1">
-                        <p className="text-xs font-semibold text-slate-500 mb-1">Current Institution Logo</p>
+                        <p className="text-xs font-semibold text-slate-500 mb-1">Current District Logo</p>
                         <div className="mt-1">
                           {data.instLogoUrl ? (
                             <img src={data.instLogoUrl} alt="Current institution logo" className="w-full max-w-[160px] rounded-lg border object-cover" />
@@ -1272,7 +1272,7 @@ const AdminRegistrationDetails = () => {
                         </div>
                       </div>
                       <div className="flex-1">
-                        <p className="text-xs font-semibold text-slate-500 mb-1">New Institution Logo</p>
+                        <p className="text-xs font-semibold text-slate-500 mb-1">New District Logo</p>
                         <div className="mt-1 mb-2">
                           {editFiles.instLogo ? (
                             <img src={URL.createObjectURL(editFiles.instLogo)} alt="New institution logo preview" className="w-full max-w-[160px] rounded-lg border object-cover" />
@@ -1300,7 +1300,7 @@ const AdminRegistrationDetails = () => {
                     <button
                       type="submit"
                       disabled={savingEdit}
-                      className="px-4 py-2 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-800 disabled:opacity-60"
+                      className="px-4 py-2 rounded-full bg-teal-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-teal-800 disabled:opacity-60"
                     >
                       {savingEdit ? 'Saving…' : 'Save Changes'}
                     </button>
@@ -1311,7 +1311,7 @@ const AdminRegistrationDetails = () => {
               <div className="bg-white rounded-xl shadow border p-6 w-full">
                 <div className="flex items-center gap-2 mb-4">
                   <Building2 className="text-purple-500 bg-purple-100 rounded-full p-1" size={28} />
-                  <span className="font-extrabold text-lg text-purple-700 tracking-wide">INSTITUTION INFORMATION</span>
+                  <span className="font-extrabold text-lg text-purple-700 tracking-wide">DISTRICT INFORMATION</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
                   <div><span className="font-semibold">Institution Name:</span> {data.instName}</div>

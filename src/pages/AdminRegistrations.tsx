@@ -43,7 +43,7 @@ const AdminRegistrations: React.FC = () => {
   ];
 
   const institutionExportFields = [
-    { key: 'instName', label: 'Institution Name' },
+    { key: 'instName', label: 'District Name' },
     { key: 'instType', label: 'Type' },
     { key: 'officePhone', label: 'Office Phone' },
     { key: 'email', label: 'Email' },
@@ -209,7 +209,7 @@ const AdminRegistrations: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <AdminPageHeader
           title="Registrations"
-          subtitle="Manage player and institution approvals"
+          subtitle="Manage player and district approvals"
         />
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6">
@@ -218,9 +218,9 @@ const AdminRegistrations: React.FC = () => {
             onClick={() => canSeePlayers ? setActiveTab('players') : alert('You do not have permission to view player details.')}
             className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               activeTab === 'players'
-                ? 'bg-blue-900 text-white'
+                ? 'bg-teal-900 text-white'
                 : canSeePlayers
-                  ? 'bg-white hover:bg-blue-50 text-blue-900'
+                  ? 'bg-white hover:bg-teal-50 text-teal-900'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
             }`}
           >
@@ -232,13 +232,13 @@ const AdminRegistrations: React.FC = () => {
             onClick={() => canSeeInstitutions ? setActiveTab('institutions') : alert('You do not have permission to view institution details.')}
             className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               activeTab === 'institutions'
-                ? 'bg-blue-900 text-white'
+                ? 'bg-teal-900 text-white'
                 : canSeeInstitutions
-                  ? 'bg-white hover:bg-blue-50 text-blue-900'
+                  ? 'bg-white hover:bg-teal-50 text-teal-900'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
             }`}
           >
-            <span className="font-bold text-xs">Institution Details</span>
+            <span className="font-bold text-xs">District Details</span>
           </button>
         </div>
 
@@ -252,7 +252,7 @@ const AdminRegistrations: React.FC = () => {
             <input
               type="text"
               placeholder="Search by name, email, or Aadhar"
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-50 outline-none transition-all text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-4 focus:ring-teal-50 outline-none transition-all text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -292,7 +292,7 @@ const AdminRegistrations: React.FC = () => {
                   onClick={() => setAgeFilter(age)}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${
                     ageFilter === age
-                      ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
+                      ? 'bg-purple-500 text-white border-purple-500 shadow-sm'
                       : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-white'
                   }`}
                 >
@@ -315,7 +315,7 @@ const AdminRegistrations: React.FC = () => {
               <button
                 onClick={() => setShowExportModal(true)}
                 disabled={filteredData.length === 0}
-                className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-bold border bg-white text-blue-900 hover:bg-blue-50 disabled:opacity-50 inline-flex items-center gap-2"
+                className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-bold border bg-white text-teal-900 hover:bg-teal-50 disabled:opacity-50 inline-flex items-center gap-2"
               >
                 <Download size={14} /> Export
               </button>
@@ -399,7 +399,7 @@ const AdminRegistrations: React.FC = () => {
                               className="w-12 h-12 rounded-full object-cover border-2 border-slate-200"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                            <div className="w-12 h-12 bg-teal-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
                               {(item.fullName || item.instName || 'U')[0].toUpperCase()}
                             </div>
                           )}
@@ -407,7 +407,7 @@ const AdminRegistrations: React.FC = () => {
                       </td>
 
                       <td className="p-3 md:p-6">
-                        <p className="font-black text-blue-950 text-base leading-tight">{item.fullName || item.instName}</p>
+                        <p className="font-black text-teal-950 text-base leading-tight">{item.fullName || item.instName}</p>
                       </td>
 
                       <td className="p-3 md:p-6">
@@ -420,11 +420,11 @@ const AdminRegistrations: React.FC = () => {
 
                       <td className="p-3 md:p-6">
                         {activeTab === 'players' ? (
-                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-teal-700 text-xs font-black uppercase tracking-widest">
                             {getAgeGroup(item.dob)}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-blue-700 text-xs font-black uppercase tracking-widest">
+                          <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-teal-700 text-xs font-black uppercase tracking-widest">
                             {item.instType || 'N/A'}
                           </span>
                         )}
@@ -432,7 +432,7 @@ const AdminRegistrations: React.FC = () => {
 
                       <td className="p-3 md:p-6">
                         <span className="inline-flex items-center justify-center px-4 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-widest">
-                          {activeTab === 'players' ? (item.memberRole || 'Player') : 'Institution'}
+                          {activeTab === 'players' ? (item.memberRole || 'Player') : 'District'}
                         </span>
                       </td>
 
@@ -456,7 +456,7 @@ const AdminRegistrations: React.FC = () => {
                                 },
                               });
                             }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-all active:scale-95"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 transition-all active:scale-95"
                             title="View"
                           >
                             <Eye size={16} />
@@ -502,7 +502,7 @@ const AdminRegistrations: React.FC = () => {
           ) : (
             <div className="p-4 space-y-4">
               {loading ? (
-                <div className="p-8 text-center"><RefreshCcw className="animate-spin mx-auto text-blue-900 mb-4" size={40} /></div>
+                <div className="p-8 text-center"><RefreshCcw className="animate-spin mx-auto text-teal-900 mb-4" size={40} /></div>
               ) : filteredData.length === 0 ? (
                 <div className="p-8 text-center text-slate-300 font-bold uppercase tracking-widest">No records found</div>
               ) : filteredData.map((item) => {
@@ -537,7 +537,7 @@ const AdminRegistrations: React.FC = () => {
                           className="w-14 h-14 rounded-full object-cover border-2 border-slate-200"
                         />
                       ) : (
-                        <div className="w-14 h-14 bg-blue-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
+                        <div className="w-14 h-14 bg-teal-900 rounded-full flex items-center justify-center text-white font-black text-lg shadow-lg">
                           {(item.fullName || item.instName || 'U')[0].toUpperCase()}
                         </div>
                       )}
@@ -545,7 +545,7 @@ const AdminRegistrations: React.FC = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <p className="font-black text-blue-950 text-base leading-tight truncate">{item.fullName || item.instName}</p>
+                          <p className="font-black text-teal-950 text-base leading-tight truncate">{item.fullName || item.instName}</p>
                           <p className="text-xs text-slate-600 break-words">{item.email || item.phone || '-'}</p>
                           {activeTab === 'players' && (
                             <p className="text-xs text-slate-600 mt-0.5">
@@ -554,7 +554,7 @@ const AdminRegistrations: React.FC = () => {
                           )}
                           {activeTab === 'institutions' && (
                             <p className="text-xs text-slate-600 mt-0.5">
-                              {item.instType || 'Institution'}
+                              {item.instType || 'District'}
                             </p>
                           )}
                         </div>
@@ -578,7 +578,7 @@ const AdminRegistrations: React.FC = () => {
                                 },
                               });
                             }}
-                            className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-full text-[11px] font-black tracking-widest uppercase flex items-center justify-center gap-1.5"
+                            className="flex-1 px-3 py-2 bg-teal-600 text-white rounded-full text-[11px] font-black tracking-widest uppercase flex items-center justify-center gap-1.5"
                           >
                             <Eye size={14} />
                             <span>View</span>

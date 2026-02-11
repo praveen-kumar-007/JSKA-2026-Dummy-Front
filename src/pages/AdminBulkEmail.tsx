@@ -194,7 +194,7 @@ const AdminBulkEmail: React.FC = () => {
                   className="px-3 py-2 rounded-lg border border-slate-200 text-sm w-full sm:w-auto"
                 >
                   {['All', 'Player', 'Institution', 'Technical Official', 'Newsletter', 'Contact'].map(t => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>{t === 'Institution' ? 'District' : t}</option>
                   ))}
                 </select>
               </div>
@@ -308,7 +308,7 @@ const AdminBulkEmail: React.FC = () => {
             <button
               onClick={sendEmails}
               disabled={sending}
-              className="w-full flex items-center justify-center gap-2 bg-blue-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-800 transition-all disabled:opacity-60"
+              className="w-full flex items-center justify-center gap-2 bg-teal-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-teal-800 transition-all disabled:opacity-60"
             >
               <Send size={16} /> {sending ? 'Sending...' : 'Send Email'}
             </button>

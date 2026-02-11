@@ -150,21 +150,21 @@ const AdminNewsUpload = () => {
       <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-10 flex flex-col md:flex-row gap-10 mb-16 items-stretch">
         {/* Left: Form Fields */}
         <div className="flex-1 flex flex-col gap-5 justify-center">
-          <input required className="border border-slate-200 p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-200" placeholder="Heading/Title" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
-          <input className="border border-slate-200 p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-200" placeholder="Category (optional)" value={form.category} onChange={e => setForm(f => ({...f, category: e.target.value}))} />
-          <textarea required className="border border-slate-200 p-3 rounded-lg min-h-[100px] text-lg focus:ring-2 focus:ring-blue-200" placeholder="News Content" value={form.content} onChange={e => setForm(f => ({...f, content: e.target.value}))} />
+          <input required className="border border-slate-200 p-3 rounded-lg text-lg focus:ring-2 focus:ring-teal-200" placeholder="Heading/Title" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
+          <input className="border border-slate-200 p-3 rounded-lg text-lg focus:ring-2 focus:ring-teal-200" placeholder="Category (optional)" value={form.category} onChange={e => setForm(f => ({...f, category: e.target.value}))} />
+          <textarea required className="border border-slate-200 p-3 rounded-lg min-h-[100px] text-lg focus:ring-2 focus:ring-teal-200" placeholder="News Content" value={form.content} onChange={e => setForm(f => ({...f, content: e.target.value}))} />
           <label className="flex items-center gap-2 cursor-pointer text-base font-medium">
             <input type="checkbox" checked={form.isHighlight} onChange={e => setForm(f => ({...f, isHighlight: e.target.checked}))} />
             Highlight
           </label>
-          <button type="submit" disabled={uploading} className="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all w-fit mt-2">{uploading ? 'Posting...' : 'Post News'}</button>
+          <button type="submit" disabled={uploading} className="bg-teal-900 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-teal-700 transition-all w-fit mt-2">{uploading ? 'Posting...' : 'Post News'}</button>
           {success && <div className="text-green-600 font-bold mt-2">News posted successfully!</div>}
           {error && <div className="text-red-600 font-bold mt-2">{error}</div>}
         </div>
         {/* Right: Image Upload Preview */}
         <div className="flex-1 flex flex-col items-center gap-4 justify-center border-l border-slate-100 pl-6">
           <label className="flex flex-col items-center gap-2 cursor-pointer w-full">
-            <ImageIcon size={40} className="text-blue-400" />
+            <ImageIcon size={40} className="text-teal-400" />
             <input type="file" accept="image/*" multiple onChange={e => setImages(Array.from(e.target.files || []))} className="hidden" />
             <span className="text-sm text-slate-400">Choose images (multiple allowed)</span>
           </label>
@@ -182,7 +182,7 @@ const AdminNewsUpload = () => {
       </form>
 
       {/* Divider */}
-      <div className="w-full h-0.5 bg-gradient-to-r from-blue-200 via-slate-100 to-orange-100 mb-12 rounded-full" />
+      <div className="w-full h-0.5 bg-gradient-to-r from-teal-200 via-slate-100 to-royal-100 mb-12 rounded-full" />
 
       {/* News Management Controls */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -226,7 +226,7 @@ const AdminNewsUpload = () => {
             <div key={item._id} className="bg-white rounded-2xl shadow border p-6 flex flex-col relative group">
               {/* Card Actions */}
               <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => setViewModal({ open: true, news: item })} className="p-1 rounded hover:bg-blue-50 text-blue-600"><Eye size={18}/></button>
+                <button onClick={() => setViewModal({ open: true, news: item })} className="p-1 rounded hover:bg-teal-50 text-teal-600"><Eye size={18}/></button>
                 <button onClick={() => handleEdit(item)} className="p-1 rounded hover:bg-yellow-50 text-yellow-600"><Edit2 size={18}/></button>
                 {canDelete && (
                   <button onClick={() => handleDelete(item._id)} className="p-1 rounded hover:bg-red-50 text-red-600"><X size={18}/></button>
@@ -240,8 +240,8 @@ const AdminNewsUpload = () => {
                 </div>
               )}
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs px-2 py-1 rounded bg-blue-50 text-blue-700 font-bold uppercase">{item.category}</span>
-                {item.isHighlight && <span className="text-xs px-2 py-1 rounded bg-orange-100 text-orange-700 font-bold">Highlight</span>}
+                <span className="text-xs px-2 py-1 rounded bg-teal-50 text-teal-700 font-bold uppercase">{item.category}</span>
+                {item.isHighlight && <span className="text-xs px-2 py-1 rounded bg-purple-100 text-purple-700 font-bold">Highlight</span>}
                 <div className="flex items-center gap-2">
                   <StatusMark status={item.status} className="w-6 h-6" title={item.status} />
                 </div>
@@ -276,7 +276,7 @@ const AdminNewsUpload = () => {
                 <input type="checkbox" checked={editModal.news.isHighlight} onChange={e => setEditModal(m => ({...m, news: {...m.news, isHighlight: e.target.checked}}))} />
                 Highlight
               </label>
-              <button type="submit" className="bg-blue-900 text-white px-6 py-2 rounded font-bold hover:bg-blue-700 transition-all w-fit">Save Changes</button>
+              <button type="submit" className="bg-teal-900 text-white px-6 py-2 rounded font-bold hover:bg-teal-700 transition-all w-fit">Save Changes</button>
             </form>
           </div>
         </div>
@@ -294,7 +294,7 @@ const AdminNewsUpload = () => {
               ))}
             </div>
             <div className="mb-2 text-xs text-slate-500 flex items-center gap-2">{new Date(viewModal.news.createdAt).toLocaleDateString()}</div>
-            <div className="mb-2 text-xs text-blue-700 font-bold uppercase">{viewModal.news.category}</div>
+            <div className="mb-2 text-xs text-teal-700 font-bold uppercase">{viewModal.news.category}</div>
             <div className="text-slate-700 whitespace-pre-line mb-4">{viewModal.news.content}</div>
           </div>
         </div>

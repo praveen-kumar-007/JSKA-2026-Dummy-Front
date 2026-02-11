@@ -93,7 +93,7 @@ const AdminUnifiedSearch: React.FC = () => {
           phoneAlt: p.parentsPhone,
           aadharNumber: p.aadharNumber,
           transactionId: p.transactionId,
-          idLabel: p.idNo || (p.transactionId ? `DDKA-${String(p.transactionId).slice(-6).toUpperCase()}` : ''),
+          idLabel: p.idNo || (p.transactionId ? `JSKA-${String(p.transactionId).slice(-6).toUpperCase()}` : ''),
           status: p.status || 'Pending',
           createdAt: p.createdAt,
           raw: p
@@ -121,7 +121,7 @@ const AdminUnifiedSearch: React.FC = () => {
           phone: o.mobile,
           aadharNumber: o.aadharNumber,
           transactionId: o.transactionId,
-          idLabel: o._id ? `DDKA-2026-${String(o._id).slice(-4).toUpperCase()}` : '',
+          idLabel: o._id ? `JSKA-2026-${String(o._id).slice(-4).toUpperCase()}` : '',
           status: o.status || 'Pending',
           createdAt: o.createdAt,
           raw: o
@@ -184,7 +184,7 @@ const AdminUnifiedSearch: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <AdminPageHeader
           title="Unified Search"
-          subtitle="Search across Players, Institutions, and Officials"
+          subtitle="Search across Players, Districts, and Officials"
           actions={(
             <div className="text-xs text-slate-500">Total: {filteredRecords.length}</div>
           )}
@@ -196,7 +196,7 @@ const AdminUnifiedSearch: React.FC = () => {
             <input
               type="text"
               placeholder="Search by ID, name, email, phone, Aadhar..."
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-50 outline-none transition-all text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-4 focus:ring-teal-50 outline-none transition-all text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -213,7 +213,7 @@ const AdminUnifiedSearch: React.FC = () => {
                     : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-white'
                 }`}
               >
-                {t}
+                {t === 'Institution' ? 'District' : t}
               </button>
             ))}
           </div>
@@ -281,7 +281,7 @@ const AdminUnifiedSearch: React.FC = () => {
                         : 'bg-amber-100 text-amber-700';
 
                     const typeBadge = r.group === 'Player'
-                      ? 'bg-blue-100 text-blue-700'
+                      ? 'bg-teal-100 text-teal-700'
                       : r.group === 'Institution'
                         ? 'bg-purple-100 text-purple-700'
                         : 'bg-amber-100 text-amber-700';
@@ -308,7 +308,7 @@ const AdminUnifiedSearch: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => { navigate(detailPath); }}
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700"
                           >
                             <Eye size={14} /> View Details
                           </button>

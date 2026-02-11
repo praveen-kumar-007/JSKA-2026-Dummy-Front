@@ -37,8 +37,8 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
     >
       {/* Watermark (larger, still subtle) */}
       <img
-        src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png"
-        alt="DDKA Watermark"
+        src="/logo.png"
+        alt="JSKA Watermark"
         style={{
           position: 'absolute',
           left: '50%',
@@ -52,7 +52,7 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
         }}
       />
 
-      {/* Top Header - Deep Blue with DDKA Logo */}
+      {/* Top Header - Deep Blue with JSKA Logo */}
       <div
         style={{
           background: 'linear-gradient(135deg, #00579B, #003366)',
@@ -65,8 +65,8 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
         }}
       >
         <img
-          src="https://res.cloudinary.com/dmmll82la/image/upload/v1766683651/ddka-logo_ywnhyh.png"
-          alt="DDKA Logo"
+          src="/logo.png"
+          alt="JSKA Logo"
           style={{
             width: '30px',
             height: '30px',
@@ -80,24 +80,16 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
           <div
             style={{
               fontSize: '11px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#FFFFFF',
-              lineHeight: 1.1,
+              lineHeight: 1.05,
               textAlign: 'left',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
             }}
           >
-            Dhanbad District Kabaddi
-          </div>
-          <div
-            style={{
-              fontSize: '9px',
-              fontWeight: 600,
-              color: '#FFFFFF',
-              lineHeight: 1.1,
-              textAlign: 'left',
-            }}
-          >
-            Association
+            Jharkhand State Kabaddi Association
           </div>
         </div>
       </div>
@@ -163,7 +155,7 @@ export const IDCardFront: React.FC<Props> = ({ data }) => {
             letterSpacing: '0.35px',
           }}
         >
-          {data.memberRole ? data.memberRole : 'DDKA MEMBER'}
+          {data.memberRole ? data.memberRole : 'JSKA MEMBER'}
         </p>
 
         {/* ID - emphasized and doubled size */}

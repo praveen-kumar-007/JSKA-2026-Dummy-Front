@@ -213,8 +213,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
         setPublicSettings(prev => ({ ...prev, allowUnifiedSearch: e.detail.allowUnifiedSearch }));
       }
     };
-    window.addEventListener('ddka-settings-updated', onSettingsUpdate as EventListener);
-    return () => window.removeEventListener('ddka-settings-updated', onSettingsUpdate as EventListener);
+    window.addEventListener('jska-settings-updated', onSettingsUpdate as EventListener);
+    return () => window.removeEventListener('jska-settings-updated', onSettingsUpdate as EventListener);
   }, [activeTab]);
 
 
@@ -490,7 +490,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
         // Update global publicSettings so current session reflects change immediately
         setPublicSettings(prev => ({ ...prev, [settingKey]: !value }));
         // Notify other parts of the app to re-fetch or update their UI
-        window.dispatchEvent(new CustomEvent('ddka-settings-updated', { detail: { [settingKey]: !value } }));
+        window.dispatchEvent(new CustomEvent('jska-settings-updated', { detail: { [settingKey]: !value } }));
       } catch (err) {
         console.error(err);
         alert('Failed to update setting');
@@ -531,14 +531,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
         {/* Top Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
           <div>
-            <h1 className="text-3xl md:text-5xl font-oswald font-bold text-blue-900 uppercase tracking-tight">DDKA CONTROL CENTER</h1>
+            <h1 className="text-3xl md:text-5xl font-oswald font-bold text-teal-900 uppercase tracking-tight">JSKA CONTROL CENTER</h1>
             <p className="text-slate-500 font-medium flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Admin Portal • Team DDKA (Build By Praveen Kumar❤️)
+              Admin Portal • Team JSKA (Built By Praveen Kumar❤️)
             </p>
             <div className="flex items-center gap-4">
               {adminRole && (
-                <p className="mt-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+                <p className="mt-1 text-xs font-bold uppercase tracking-widest text-teal-700">
                   Admin: {adminRole === 'superadmin' ? 'SUPERADMIN' : 'ADMIN'}
                 </p>
               )}
@@ -627,7 +627,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               }}
               className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
                 adminRole === 'superadmin' || adminPermissions?.canAccessGallery
-                  ? 'bg-white hover:bg-blue-50 cursor-pointer'
+                  ? 'bg-white hover:bg-teal-50 cursor-pointer'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               }`}
             >
@@ -635,7 +635,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 size={32}
                 className={`${
                   adminRole === 'superadmin' || adminPermissions?.canAccessGallery
-                    ? 'text-blue-700 mb-2'
+                    ? 'text-teal-700 mb-2'
                     : 'text-slate-400 mb-2'
                 }`}
               />
@@ -656,7 +656,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               }}
               className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
                 adminRole === 'superadmin' || adminPermissions?.canAccessNews
-                  ? 'bg-white hover:bg-blue-50 cursor-pointer'
+                  ? 'bg-white hover:bg-teal-50 cursor-pointer'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               }`}
             >
@@ -664,7 +664,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 size={32}
                 className={`${
                   adminRole === 'superadmin' || adminPermissions?.canAccessNews
-                    ? 'text-blue-700 mb-2'
+                    ? 'text-teal-700 mb-2'
                     : 'text-slate-400 mb-2'
                 }`}
               />
@@ -685,7 +685,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               }}
               className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
                 adminRole === 'superadmin' || adminPermissions?.canAccessContacts
-                  ? 'bg-white hover:bg-blue-50 cursor-pointer'
+                  ? 'bg-white hover:bg-teal-50 cursor-pointer'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               }`}
             >
@@ -693,7 +693,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 size={28}
                 className={`${
                   adminRole === 'superadmin' || adminPermissions?.canAccessContacts
-                    ? 'text-blue-700 mb-2'
+                    ? 'text-teal-700 mb-2'
                     : 'text-slate-400 mb-2'
                 }`}
               />
@@ -745,7 +745,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               }}
               className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
                 adminRole === 'superadmin' || adminPermissions?.canAccessChampions
-                  ? 'bg-white hover:bg-orange-50 cursor-pointer'
+                  ? 'bg-white hover:bg-purple-50 cursor-pointer'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               }`}
             >
@@ -753,7 +753,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 size={28}
                 className={`${
                   adminRole === 'superadmin' || adminPermissions?.canAccessChampions
-                    ? 'text-orange-700 mb-2'
+                    ? 'text-purple-700 mb-2'
                     : 'text-slate-400 mb-2'
                 }`}
               />
@@ -875,17 +875,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
             <button
               type="button"
               onClick={() => { navigate('/admin/login-alerts'); }}
-              className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-blue-50 transition-all w-full min-h-[92px]"
+              className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow border hover:bg-teal-50 transition-all w-full min-h-[92px]"
             >
               <div className="relative w-full flex items-center justify-center">
-                <LogIn size={28} className="text-blue-700 mb-2" />
+                <LogIn size={28} className="text-teal-700 mb-2" />
                 {loginAlertSummary.newLogins > 0 && (
                   <div className="absolute -top-1 -right-1 inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold">
                     {loginAlertSummary.newLogins}
                   </div>
                 )}
               </div>
-              <span className="text-xs font-semibold mt-1 text-blue-900">Login Alerts</span>
+              <span className="text-xs font-semibold mt-1 text-teal-900">Login Alerts</span>
             </button>
           )}
 
@@ -960,9 +960,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
               }}
               className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
                 activeTab === 'players'
-                  ? 'bg-blue-900 text-white'
+                  ? 'bg-teal-900 text-white'
                   : (adminRole === 'superadmin' || adminPermissions?.canAccessPlayerDetails)
-                      ? 'bg-white hover:bg-blue-50 text-blue-900'
+                      ? 'bg-white hover:bg-teal-50 text-teal-900'
                       : 'bg-slate-100 text-slate-400 cursor-not-allowed'
               }`}
             >
@@ -971,9 +971,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                   size={28}
                   className={
                     activeTab === 'players'
-                      ? 'text-orange-400'
+                      ? 'text-purple-400'
                       : (adminRole === 'superadmin' || adminPermissions?.canAccessPlayerDetails)
-                          ? 'text-blue-900'
+                          ? 'text-teal-900'
                           : 'text-slate-400'
                   }
                 />
@@ -985,21 +985,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
             </button>
           )}
 
-          {/* Institution Details tab - requires canAccessInstitutionDetails */}
+          {/* District Details tab - requires canAccessInstitutionDetails */}
           <button
             type="button"
             onClick={() => {
               if (adminRole === 'superadmin' || adminPermissions?.canAccessInstitutionDetails) {
                 navigate('/admin/registrations?tab=institutions');
               } else {
-                alert('You do not have permission to view institution details. Please contact the superadmin.');
+                alert('You do not have permission to view district details. Please contact the superadmin.');
               }
             }}
             className={`flex flex-col items-center justify-center p-4 rounded-xl shadow border transition-all w-full min-h-[92px] ${
               activeTab === 'institutions'
-                ? 'bg-blue-900 text-white'
+                ? 'bg-teal-900 text-white'
                 : (adminRole === 'superadmin' || adminPermissions?.canAccessInstitutionDetails)
-                    ? 'bg-white hover:bg-blue-50 text-blue-900'
+                    ? 'bg-white hover:bg-teal-50 text-teal-900'
                     : 'bg-slate-100 text-slate-400 cursor-not-allowed'
             }`}
           >
@@ -1008,9 +1008,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 size={28}
                 className={
                   activeTab === 'institutions'
-                    ? 'text-orange-400'
+                    ? 'text-purple-400'
                     : (adminRole === 'superadmin' || adminPermissions?.canAccessInstitutionDetails)
-                        ? 'text-blue-900'
+                        ? 'text-teal-900'
                         : 'text-slate-400'
                 }
               />
@@ -1018,7 +1018,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang: _lang, onLogout }
                 <div className="absolute -top-1 -right-1 inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-600 text-white text-xs font-bold">{pendingInstitutions}</div>
               )}
             </div>
-            <span className="font-bold text-xs">Institution Details</span>
+            <span className="font-bold text-xs">District Details</span>
           </button>
         </div>
 

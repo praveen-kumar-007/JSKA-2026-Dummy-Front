@@ -33,11 +33,11 @@ const FooterContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-slate-900/60 p-6 rounded-xl border border-blue-900/30 mt-8">
-      <h4 className="text-lg font-bold text-orange-400 mb-2">Contact Us</h4>
+    <form onSubmit={handleSubmit} className="space-y-4 bg-slate-900/60 p-6 rounded-xl border border-teal-900/30 mt-8">
+      <h4 className="text-lg font-bold text-purple-400 mb-2">Contact Us</h4>
       <input
         type="email"
-        className="w-full px-4 py-2 rounded bg-slate-800 text-white border border-slate-700 focus:border-orange-400 outline-none"
+        className="w-full px-4 py-2 rounded bg-slate-800 text-white border border-slate-700 focus:border-purple-400 outline-none"
         placeholder="Your Email"
         value={email}
         onChange={e => setEmail(e.target.value)}
@@ -45,7 +45,7 @@ const FooterContactForm: React.FC = () => {
       />
       <button
         type="submit"
-        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded transition-all"
+        className="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 rounded transition-all shadow-black-effect"
         disabled={status === 'sending'}
       >
         {status === 'sending' ? 'Sending...' : 'Send'}
