@@ -164,11 +164,11 @@ export const Gallery: React.FC<GalleryProps> = ({ lang }) => {
                 </p>
               </div>
             ) : (
-              <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {galleryImages.map((image, index) => (
                   <div
                     key={index}
-                    className="group relative break-inside-avoid mb-6 cursor-pointer transform hover:scale-105 transition-all duration-300"
+                    className="group relative cursor-pointer transform hover:scale-105 transition-all duration-300"
                     onClick={() => setSelectedIndex(index)}
                   >
                     <div className="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
