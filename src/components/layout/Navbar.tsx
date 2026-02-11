@@ -106,7 +106,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
             <img
               src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
               alt="JSKA Logo"
-              className="h-9 w-9 object-contain rounded-md"
+              className="h-9 w-9 object-contain rounded-full bg-white p-1 shadow-md border border-gray-200"
             />
             <div className="flex flex-col leading-tight">
               <span className="text-lg font-oswald font-extrabold text-slate-900">JSKA</span>
