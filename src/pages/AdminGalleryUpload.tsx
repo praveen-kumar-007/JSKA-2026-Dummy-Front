@@ -120,10 +120,19 @@ const AdminGalleryUpload = () => {
               <div className="flex gap-3 mt-2 w-full flex-wrap justify-center">
                 {images.map((img, i) => (
                   <div key={i} className="w-32 h-28 bg-slate-100 rounded-xl border flex items-center justify-center overflow-hidden relative shadow mb-2">
-                    <img src={URL.createObjectURL(img)} alt="preview" className="object-cover w-full h-full" />
+                    <img
+                      src={URL.createObjectURL(img)}
+                      alt="preview"
+                      className="object-cover w-full h-full"
+                      onError={(e) => {
+                        const el = e.currentTarget as HTMLImageElement;
+                        el.onerror = null;
+                        el.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23f8fafc"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%238f9ba6" font-family="Arial" font-size="14">Preview not available</text></svg>';
+                      }}
+                    />
                     <button type="button" onClick={() => setImages(images.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 bg-white rounded-full p-1 shadow hover:bg-red-100"><X size={16} /></button>
                   </div>
-                ))}
+                ))} 
               </div>
             )}
           </div>
@@ -147,7 +156,29 @@ const AdminGalleryUpload = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {gallery.map((img) => (
               <div key={img._id} className="relative group bg-white rounded-xl shadow border p-2 flex flex-col items-center">
-                <img src={img.url} alt="gallery-img" className="w-full h-40 object-cover rounded-lg" />
+                <img
+                  src={img.url}
+                  alt="gallery-img"
+                  className="w-full h-40 md:h-52 object-cover rounded-lg"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    el.onerror = null;
+                    let src = el.src || '';
+                    // try to upgrade to https or add https: for protocol-less URLs
+                    try {
+                      if (src.startsWith('http://')) src = src.replace(/^http:\/\//i, 'https://');
+                      if (src.startsWith('//')) src = 'https:' + src;
+                      if (src !== el.src) {
+                        el.src = src;
+                        return;
+                      }
+                    } catch (err) {
+                      /* ignore */
+                    }
+                    // final fallback to inline placeholder SVG
+                    el.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23f8fafc"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="Arial" font-size="20">Image unavailable</text></svg>';
+                  }}
+                />
                 {canDelete && (
                   <button onClick={() => handleDelete(img._id)} className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><X size={16} /></button>
                 )}

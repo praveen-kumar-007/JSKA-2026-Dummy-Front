@@ -177,6 +177,18 @@ export const Gallery: React.FC<GalleryProps> = ({ lang }) => {
                         alt={`Gallery ${index + 1}`}
                         className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
+                        onError={(e) => {
+                          const el = e.currentTarget as HTMLImageElement;
+                          el.onerror = null;
+                          let src = el.src || '';
+                          if (src.startsWith('http://')) src = src.replace(/^http:\/\//i, 'https://');
+                          if (src.startsWith('//')) src = 'https:' + src;
+                          if (src !== el.src) {
+                            el.src = src;
+                            return;
+                          }
+                          el.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450"><rect width="100%" height="100%" fill="%23f8fafc"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="Arial" font-size="20">Image unavailable</text></svg>';
+                        }}
                       />
 
                       {/* Overlay */}
@@ -316,6 +328,18 @@ export const Gallery: React.FC<GalleryProps> = ({ lang }) => {
                 }
               `}
               onClick={() => setIsZoomed(!isZoomed)}
+              onError={(e) => {
+                const el = e.currentTarget as HTMLImageElement;
+                el.onerror = null;
+                let src = el.src || '';
+                if (src.startsWith('http://')) src = src.replace(/^http:\/\//i, 'https://');
+                if (src.startsWith('//')) src = 'https:' + src;
+                if (src !== el.src) {
+                  el.src = src;
+                  return;
+                }
+                el.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect width="100%" height="100%" fill="%230b1220"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fff" font-family="Arial" font-size="18">Unable to load image</text></svg>';
+              }}
             />
 
             {!isZoomed && (
