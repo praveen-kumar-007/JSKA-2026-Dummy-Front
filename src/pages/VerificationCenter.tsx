@@ -49,7 +49,7 @@ const defaultRecord: VerificationRecord = {
   name: 'Record not found',
   fatherName: '—',
   dob: '—',
-  photoUrl: '/logo.png',
+  photoUrl: 'https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg',
 
   roles: ['player'],
   status: 'pending',

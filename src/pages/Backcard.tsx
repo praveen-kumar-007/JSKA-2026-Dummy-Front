@@ -28,7 +28,7 @@ export const IDCardBack: React.FC<Props> = ({ data }) => {
     >
       {/* Watermark (larger, still subtle) */}
       <img
-        src="/logo.png"
+        src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
         alt="JSKA Watermark"
         style={{
           position: 'absolute',

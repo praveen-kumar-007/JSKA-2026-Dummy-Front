@@ -99,7 +99,7 @@ const PlayerIDCardPage = () => {
             "@type": "Person",
             "name": cardData.name,
             "jobTitle": cardData.memberRole || 'Player',
-            "image": cardData.photoUrl || `${window.location?.origin || 'https://jharkhandkabaddiassociation.org'}/logo.png`,
+            "image": cardData.photoUrl || 'https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg',
             "address": cardData.address,
             "telephone": cardData.phone,
             "identifier": cardData.idNo

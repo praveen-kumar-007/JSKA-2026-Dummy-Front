@@ -46,7 +46,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-orange-500 rounded-2xl blur opacity-50"></div>
                   <img
-                    src="/logo.png"
+                    src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
                     alt="JSKA Logo"
                     className="relative h-16 w-16 rounded-2xl bg-white p-2 shadow-xl"
                   />

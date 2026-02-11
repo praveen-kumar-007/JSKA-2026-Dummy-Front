@@ -92,7 +92,7 @@ const NewsArticle = () => {
               "datePublished": news.createdAt,
               "dateModified": news.updatedAt || news.createdAt,
               "author": { "@type": "Organization", "name": "Dhanbad District Kabaddi Association" },
-              "publisher": { "@type": "Organization", "name": "JSKA", "logo": { "@type": "ImageObject", "url": `${window.location.origin}/logo.png` } },
+              "publisher": { "@type": "Organization", "name": "JSKA", "logo": { "@type": "ImageObject", "url": "https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg" } },
               "description": news.content && news.content.slice(0, 200)
             })}
           </script>
