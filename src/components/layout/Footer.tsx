@@ -46,9 +46,9 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-orange-500 rounded-2xl blur opacity-50"></div>
                   <img
-                    src="https://res.cloudinary.com/dcqo5qt7b/image/upload/v1767429051/WhatsApp_Image_2026-01-03_at_1.57.17_PM_qg7rs3.jpg"
+                    src="/logo.png"
                     alt="JSKA Logo"
-                    className="relative h-16 w-16 rounded-2xl bg-white p-2 shadow-xl"
+                    className="relative z-20 h-16 w-16 rounded-2xl bg-white p-2 shadow-xl border border-gray-200"
                   />
                 </div>
                 <div>
@@ -149,7 +149,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
                 <p className="text-sm text-slate-200 font-medium">{translations[lang].affiliation.line1}</p>
                 <p className="text-xs text-slate-400 mt-1">{translations[lang].affiliation.line2}</p>
               </div>
-            </div>"
+            </div>
           </div>
         </div>
 
