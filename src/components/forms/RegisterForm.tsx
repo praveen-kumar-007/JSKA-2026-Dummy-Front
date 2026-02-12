@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CheckCircle, User, UserPlus, Calendar, MapPin, Mail, Phone, FileText } from 'lucide-react';
+import { CheckCircle, User, FileText } from 'lucide-react';
 import { RegistrationType } from '../../types';
 import type { Language } from '../../translations';
 import { translations } from '../../translations';
