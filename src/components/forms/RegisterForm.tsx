@@ -75,7 +75,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
     setIsSubmitting(true);
 
     // Client-side validation
-    if (!form.fullName || !form.fathersName || !form.dob || !form.email || !form.phone || !form.aadharNumber || !form.reasonForJoining) {
+    if (!form.fullName || !form.fathersName || !form.dob || !form.email || !form.phone || !form.parentsPhone || !form.aadharNumber || !form.reasonForJoining) {
       alert('Please fill all required fields.');
       setIsSubmitting(false);
       return;
@@ -243,6 +243,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
               <div>
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-widest">{t.labels.phone} *</label>
                 <input name="phone" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-600 uppercase tracking-widest">{lang === 'hi' ? 'अभिभावक का फोन / Guardian phone' : 'Parents / Guardian Phone'} *</label>
+                <input name="parentsPhone" required value={form.parentsPhone} onChange={(e) => setForm({ ...form, parentsPhone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" placeholder={lang === 'hi' ? 'अभिभावक का फोन' : 'Parents / Guardian phone'} />
               </div>
 
               <div className="md:col-span-2">
