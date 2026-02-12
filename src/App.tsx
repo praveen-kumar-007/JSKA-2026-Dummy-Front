@@ -81,6 +81,15 @@ const App: React.FC = () => {
       case 'member-login':
         navigate('/login');
         return;
+      case 'units':
+        // 'Affiliated Units' in nav -> AffiliatedDistricts page
+        navigate('/affiliated-districts');
+        return;
+      case 'committee':
+      case 'constitution':
+        // these are subsections of About — navigate to About (frontend may scroll to anchor)
+        navigate('/about');
+        return;
       default:
         // default behavior: navigate to /<id> (works for gallery, news, etc.)
         navigate(`/${pageId}`);
@@ -88,7 +97,8 @@ const App: React.FC = () => {
   };
 
   const getCurrentPageId = () => {
-    const path = location.pathname.substring(1);
+    // return the first path segment so nested routes (e.g. /news/123) still mark the parent nav active
+    const path = location.pathname.substring(1).split('/')[0];
     return path === '' ? 'home' : path;
   };
 

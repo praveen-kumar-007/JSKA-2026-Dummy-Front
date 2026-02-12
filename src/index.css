@@ -1,8 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
 @import "tailwindcss"; /* This one line replaces the 3 old tailwind lines */
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+:root { --nav-font: 'Oswald', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
 
-/* Add this to make sure your Oswald font still works in v4 */
-@theme {
-  --font-oswald: "Oswald", sans-serif;
-}
+/* Optional: ensure the site still defaults to Inter elsewhere (Tailwind 'inter' is available) */
+body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
