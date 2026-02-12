@@ -36,7 +36,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
     }, ms) as unknown as number;
   }, []);
 
-  const handleClickPause = useCallback((e: React.MouseEvent) => {
+  const handleClickPause = useCallback(() => {
     userPauseRef.current = true;
     isPausedRef.current = true;
     scheduleResumeAfter();
@@ -51,7 +51,7 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
     if (!userPauseRef.current) isPausedRef.current = false;
   }, []);
 
-  const handleUserScroll = useCallback((e: React.UIEvent) => {
+  const handleUserScroll = useCallback(() => {
     // user scrolled manually -> treat like user interaction
     if (programmaticScrollRef.current) return; // ignore programmatic scroll events
     userPauseRef.current = true;
