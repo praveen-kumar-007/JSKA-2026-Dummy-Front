@@ -34,6 +34,7 @@ const AdminRegistrations: React.FC = () => {
     { key: 'fullName', label: 'Name' },
     { key: 'email', label: 'Email' },
     { key: 'phone', label: 'Phone' },
+    { key: 'district', label: 'District' },
     { key: 'dob', label: 'DOB' },
     { key: 'aadharNumber', label: 'Aadhar' },
     { key: 'transactionId', label: 'Transaction ID' },
@@ -346,6 +347,7 @@ const AdminRegistrations: React.FC = () => {
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Name</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Email</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Phone</th>
+                    <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">District</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Age Group / Type</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Role</th>
                     <th className="p-3 md:p-6 font-oswald uppercase text-slate-400 text-xs tracking-widest">Status</th>
@@ -416,6 +418,10 @@ const AdminRegistrations: React.FC = () => {
 
                       <td className="p-3 md:p-6">
                         <p className="text-sm text-slate-700 font-medium">{item.phone || item.officePhone || '-'}</p>
+                      </td>
+
+                      <td className="p-3 md:p-6">
+                        <p className="text-sm text-slate-700 font-medium">{activeTab === 'players' ? (item.district || '-') : (item.district || '-')}</p>
                       </td>
 
                       <td className="p-3 md:p-6">
@@ -548,9 +554,10 @@ const AdminRegistrations: React.FC = () => {
                           <p className="font-black text-teal-950 text-base leading-tight truncate">{item.fullName || item.instName}</p>
                           <p className="text-xs text-slate-600 break-words">{item.email || item.phone || '-'}</p>
                           {activeTab === 'players' && (
-                            <p className="text-xs text-slate-600 mt-0.5">
-                              {getAgeGroup(item.dob)}
-                            </p>
+                            <>
+                              <p className="text-xs text-slate-600 mt-0.5">{getAgeGroup(item.dob)}</p>
+                              <p className="text-xs text-slate-600 mt-0.5">{item.district || '-'}</p>
+                            </>
                           )}
                           {activeTab === 'institutions' && (
                             <p className="text-xs text-slate-600 mt-0.5">

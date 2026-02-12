@@ -650,6 +650,7 @@ const AdminRegistrationDetails = () => {
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">ID: {idDisplay}</span>
                     <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">Age Group: {ageGroup}</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">District: {data.district || '-'}</span>
                     <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">Role: {data.memberRole || 'Player'}</span>
                   </div>
                 )}

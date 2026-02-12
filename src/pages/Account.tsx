@@ -382,6 +382,7 @@ const Account: React.FC = () => {
                         {profile.dob && <div><strong>DOB:</strong> {formatDate(profile.dob)}</div>}
                         {profile.bloodGroup && <div><strong>Blood Group:</strong> {profile.bloodGroup}</div>}
                         {profile.parentsPhone && <div><strong>Parents' Phone:</strong> {profile.parentsPhone}</div>}
+                        {profile.district && <div><strong>District:</strong> {profile.district}</div>}
                         {profile.aadharNumber && <div><strong>Aadhar Number:</strong> {profile.aadharNumber}</div>}
                         {profile.memberRole && <div><strong>Role on Card:</strong> {profile.memberRole}</div>}
                       </div>
