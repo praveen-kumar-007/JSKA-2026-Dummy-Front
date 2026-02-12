@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Trophy, Users, Award, Zap, Megaphone, Calendar, ArrowRight, Activity, Star, Target, Shield, Flame, Play, BarChart3, TrendingUp, Heart, ChevronRight, ChevronLeft } from 'lucide-react';
 import type { Language } from '../translations';
@@ -16,6 +16,93 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
 
+  // Announcements — auto-scroll control (continuous loop, pause on hover/click/manual scroll,
+  // resume automatically after 15s when paused by user interaction)
+  const announcementsRef = useRef<HTMLDivElement | null>(null);
+  const isPausedRef = useRef(false);            // whether auto-scroll is currently paused
+  const userPauseRef = useRef(false);          // true when user clicked / manually interacted
+  const programmaticScrollRef = useRef(false); // set while we programmatically update scrollTop
+  const rafRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number | null>(null);
+  const resumeTimeoutRef = useRef<number | null>(null);
+  const USER_PAUSE_DURATION = 15000; // 15 seconds
+  const SCROLL_SPEED = 30; // pixels per second (adjust to taste)
+
+  const scheduleResumeAfter = useCallback((ms = USER_PAUSE_DURATION) => {
+    if (resumeTimeoutRef.current) window.clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = window.setTimeout(() => {
+      userPauseRef.current = false;
+      isPausedRef.current = false;
+    }, ms) as unknown as number;
+  }, []);
+
+  const handleClickPause = useCallback((e: React.MouseEvent) => {
+    userPauseRef.current = true;
+    isPausedRef.current = true;
+    scheduleResumeAfter();
+  }, [scheduleResumeAfter]);
+
+  const handleMouseEnterPause = useCallback(() => {
+    // hover pause (does not set userPauseRef so mouseleave will resume immediately)
+    isPausedRef.current = true;
+  }, []);
+
+  const handleMouseLeaveResume = useCallback(() => {
+    if (!userPauseRef.current) isPausedRef.current = false;
+  }, []);
+
+  const handleUserScroll = useCallback((e: React.UIEvent) => {
+    // user scrolled manually -> treat like user interaction
+    if (programmaticScrollRef.current) return; // ignore programmatic scroll events
+    userPauseRef.current = true;
+    isPausedRef.current = true;
+    scheduleResumeAfter();
+  }, [scheduleResumeAfter]);
+
+  useEffect(() => {
+    const el = announcementsRef.current;
+    if (!el) return;
+
+    const step = (now: number) => {
+      if (!lastTimeRef.current) lastTimeRef.current = now;
+      const dt = (now - lastTimeRef.current) / 1000;
+      lastTimeRef.current = now;
+
+      // only auto-scroll when not paused
+      if (!isPausedRef.current) {
+        const totalHeight = el.scrollHeight; // with duplication this will be 2x of single list
+        const halfHeight = totalHeight / 2; // threshold to reset so loop is seamless
+
+        // only scroll when there is something to scroll
+        if (halfHeight > el.clientHeight + 2) {
+          programmaticScrollRef.current = true;
+
+          // advance scrollTop smoothly
+          el.scrollTop = el.scrollTop + SCROLL_SPEED * dt;
+
+          // when we've scrolled past the first copy, jump back by one copy height
+          if (el.scrollTop >= halfHeight - 1) {
+            el.scrollTop = el.scrollTop - halfHeight;
+            // normalize lastTime so there is no big jump next frame
+            lastTimeRef.current = now;
+          }
+
+          // allow user scroll events after programmatic update
+          setTimeout(() => (programmaticScrollRef.current = false), 30);
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (resumeTimeoutRef.current) window.clearTimeout(resumeTimeoutRef.current);
+    };
+  }, []);
+
   // Hero background images from public folder
   const heroImages = [
     '/Home - Jharkhand State Kabaddi Association (JSKA)_files/1.jpeg',
@@ -26,6 +113,15 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
     '/Home - Jharkhand State Kabaddi Association (JSKA)_files/6.jpeg',
     '/Home - Jharkhand State Kabaddi Association (JSKA)_files/7.jpeg',
     '/Home - Jharkhand State Kabaddi Association (JSKA)_files/9.jpeg'
+  ];
+
+  const announcementsData = [
+    { en: 'State-level coaching camps announced across 6 districts — registrations open.', hi: '6 जिलों में राज्य स्तरीय कोचिंग कैंप आयोजित — पंजीकरण चालू।', date: '10 Feb 2026' },
+    { en: 'JSKA scholarship program for under-19 players – applications accepted.', hi: 'अंडर-19 खिलाड़ियों के लिए JSKA छात्रवृत्ति कार्यक्रम — आवेदन स्वीकार किए जा रहे हैं।', date: '08 Feb 2026' },
+    { en: 'Inter-district league fixtures released; check schedule and venues.', hi: 'इंटर-डिस्ट्रिक्ट लीग के फ़िक्स्चर जारी; समय सारिणी व स्थान देखें।', date: '05 Feb 2026' },
+    { en: 'Talent hunt trials at Ranchi stadium on 22 Feb — open for school teams.', hi: 'रांची स्टेडियम में 22 फ़रवरी को टैलेंट हंट ट्रायल — स्कूल टीमों के लिए खुला।', date: '03 Feb 2026' },
+    { en: 'Free refereeing workshop for local referees — certification provided.', hi: 'स्थानीय रेफरी के लिए मुफ्त वर्कशॉप — प्रमाणन दिया जाएगा।', date: '28 Jan 2026' },
+    { en: 'New JSKA merchandise store launching soon — stay tuned.', hi: 'नया JSKA मर्चेंडाइज़ स्टोर जल्द लॉन्च हो रहा है — बने रहें।', date: '20 Jan 2026' }
   ];
 
   // Fetch gallery images from backend
@@ -270,6 +366,95 @@ export const Home: React.FC<HomeProps> = ({ lang, onNavigate }) => {
             </div>
           </div>
         </div>
+
+        {/* Announcements — Scrollable, point-wise, attractive card */}
+        <section className="py-12 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200 p-6 md:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="bg-gradient-to-br from-orange-400 to-red-500 text-white w-12 h-12 rounded-lg flex items-center justify-center shadow-lg">
+                    <Megaphone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-black text-gray-800">{lang === 'hi' ? 'सूचनाएँ' : 'Announcements'}</h3>
+                    <p className="text-sm text-gray-500">{lang === 'hi' ? 'ताज़ा अपडेट — बिंदुवार पढ़ने के लिए स्क्रॉल करें' : 'Latest updates — scroll to read point-wise'}</p>
+                  </div>
+                </div>
+                <div className="hidden md:flex items-center gap-3">
+                  <span className="text-sm text-gray-500">{lang === 'hi' ? 'अंतिम अपडेट' : 'Last updated'}</span>
+                  <div className="px-3 py-1 bg-slate-100 text-sm rounded-full text-slate-700 font-semibold">12 Feb 2026</div>
+                </div>
+              </div>
+
+              {/* Announcements list (scrollable) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                  ref={announcementsRef}
+                  onMouseEnter={handleMouseEnterPause}
+                  onMouseLeave={handleMouseLeaveResume}
+                  onClick={handleClickPause}
+                  onScroll={handleUserScroll}
+                  className="md:col-span-2 bg-gradient-to-br from-blue-50 to-white border border-blue-100 rounded-2xl p-4 md:p-6 max-h-64 md:max-h-72 overflow-y-auto shadow-sm cursor-pointer"
+                  role="region"
+                  aria-label={lang === 'hi' ? 'सूचनाएँ' : 'Announcements'}
+                >
+                  {/* Render announcements twice to create a seamless continuous scroll even when
+                      content height is less than container height */}
+                  <div className="space-y-4">
+                    {announcementsData.map((item, idx) => (
+                      <div key={`a1-${idx}`} className="flex gap-4 items-start">
+                        <div className="mt-1 w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500 shadow-lg flex-shrink-0" />
+                        <div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm text-slate-500 font-medium">{item.date}</span>
+                            <span className="text-xs px-2 py-1 bg-slate-100 rounded-full text-slate-600">{lang === 'hi' ? 'नोटिस' : 'Notice'}</span>
+                          </div>
+                          <p className="mt-2 text-gray-800 font-semibold">{lang === 'hi' ? item.hi : item.en}</p>
+                        </div>
+                      </div>
+                    ))}
+
+                    {announcementsData.map((item, idx) => (
+                      <div key={`a2-${idx}`} aria-hidden className="flex gap-4 items-start opacity-95">
+                        <div className="mt-1 w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500 shadow-lg flex-shrink-0" />
+                        <div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm text-slate-500 font-medium">{item.date}</span>
+                            <span className="text-xs px-2 py-1 bg-slate-100 rounded-full text-slate-600">{lang === 'hi' ? 'नोटिस' : 'Notice'}</span>
+                          </div>
+                          <p className="mt-2 text-gray-800 font-semibold">{lang === 'hi' ? item.hi : item.en}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right column — quick links / CTA */}
+                <div className="md:col-span-1 bg-gradient-to-br from-white to-blue-50 rounded-2xl border border-gray-100 p-6 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-800 mb-3">{lang === 'hi' ? 'क्विक लिंक' : 'Quick Links'}</h4>
+                    <ul className="text-sm text-gray-600 space-y-3">
+                      <li className="hover:text-blue-700 cursor-pointer">{lang === 'hi' ? 'रजिस्ट्रेशन विवरण' : 'Registration Details'}</li>
+                      <li className="hover:text-blue-700 cursor-pointer">{lang === 'hi' ? 'टूर्नामेंट शेड्यूल' : 'Tournament Schedule'}</li>
+                      <li className="hover:text-blue-700 cursor-pointer">{lang === 'hi' ? 'कोचिंग कैंप' : 'Coaching Camps'}</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-6">
+                    <button
+                      onClick={() => onNavigate('news')}
+                      className="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-md"
+                    >
+                      {lang === 'hi' ? 'और पढ़ें' : 'Read More'}
+                    </button>
+                    <p className="mt-3 text-xs text-gray-400">{lang === 'hi' ? 'सूचनाएँ समय-समय पर अपडेट की जाएँगी।' : 'Announcements will be updated periodically.'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Mission & Vision Section */}
         <div className="py-20 px-4">
