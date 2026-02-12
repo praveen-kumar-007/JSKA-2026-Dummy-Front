@@ -4,7 +4,7 @@ import {
   Menu, X, ChevronDown, Home, Info, 
   Image as ImageIcon, Newspaper, UserPlus, LogIn, 
   ShieldCheck, Trophy, Users, Landmark, FileText, 
-  UserCheck, Award, Globe, ChevronRight, Zap, Star
+  UserCheck, Award, ChevronRight, Star
 } from 'lucide-react';
 import { translations } from '../../translations';
 import type { Language } from '../../translations';
@@ -113,32 +113,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
 
   return (
     <>
-      {/* Header Spacer - Prevents content from going under the fixed navbar */}
-      <div className="h-[70px] md:h-[110px] w-full" />
+      {/* Header Spacer - Prevents content from going under the fixed navbar (reduced for single-line header) */}
+      <div className="h-[64px] md:h-[72px] w-full" />
 
       <header className="fixed top-0 left-0 right-0 z-[100] font-oswald selection:bg-orange-100">
         <motion.div className="h-1 bg-orange-500 origin-left z-[110]" style={{ scaleX }} />
 
-        {/* TOP BAR: Official Info */}
-        <div className={`hidden lg:flex bg-[#0f172a] text-white overflow-hidden transition-all duration-500 ${scrolled ? 'h-0' : 'h-10'}`}>
-          <div className="max-w-7xl mx-auto px-8 w-full flex justify-between items-center text-[10px] font-black tracking-[0.2em] uppercase">
-            <div className="flex items-center space-x-8">
-              <span className="flex items-center gap-2 text-orange-400"><Trophy size={14} /> Affiliated to AKFI India</span>
-              <span className="flex items-center gap-2 text-green-400"><Zap size={14} className="animate-pulse" /> Digital Registration Active</span>
-            </div>
-            <div className="flex items-center space-x-6">
-              <span className="opacity-70">Recognition: MYAS, Government of India</span>
-              <div className="h-4 w-px bg-white/10" />
-              <div className="flex items-center gap-2">
-                <Globe size={14} className="text-orange-400" />
-                <span>Ranchi HQ</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* MAIN NAV: White Surface */}
-        <nav className={`transition-all duration-500 bg-white ${scrolled ? 'py-1 shadow-2xl' : 'py-3 md:py-5 border-b border-slate-50'}`}>
+        <nav className={`transition-all duration-500 bg-white ${scrolled ? 'py-1 shadow-2xl' : 'py-2 md:py-3 border-b border-slate-50'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               
@@ -169,7 +151,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, lang, onLang
                   >
                     <button
                       onClick={() => !item.dropdown && handleNavClick(item.id)}
-                      className={`px-4 py-2.5 rounded-xl text-[13px] font-black tracking-tight transition-all flex items-center gap-2 ${
+                      className={`py-2.5 rounded-xl font-black tracking-tight transition-all flex items-center gap-2 whitespace-nowrap ${
+                        (item.id === 'hub' || item.id === 'register') ? 'text-[12px] px-3' : 'px-4 text-[13px]'
+                      } ${
                         currentPage === item.id || item.dropdown?.some(sub => sub.id === currentPage)
                         ? 'text-orange-600 bg-orange-50'
                         : 'text-slate-700 hover:text-orange-600 hover:bg-slate-50'
