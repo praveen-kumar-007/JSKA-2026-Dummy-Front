@@ -15,6 +15,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
 
   const t = translations[lang].forms;
 
+  // --- input helpers ---
+  const formatAadhar = (value: string) => {
+    const digits = value.replace(/\D/g, '').slice(0, 12);
+    return digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+  };
+
+  const handlePhoneInput = (key: 'phone' | 'parentsPhone') => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setForm(prev => ({ ...prev, [key]: digits }));
+  };
+
+  const handleAadharChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm(prev => ({ ...prev, aadharNumber: formatAadhar(e.target.value) }));
+  };
+
   const [form, setForm] = useState({
     fullName: '',
     fathersName: '',
@@ -81,6 +96,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
       return;
     }
 
+    // Numeric validations
+    if (form.phone.replace(/\D/g, '').length !== 10) {
+      alert('Phone number must contain exactly 10 digits.');
+      setIsSubmitting(false);
+      return;
+    }
+    if (form.parentsPhone.replace(/\D/g, '').length !== 10) {
+      alert('Parents / Guardian phone must contain exactly 10 digits.');
+      setIsSubmitting(false);
+      return;
+    }
+    if (form.aadharNumber.replace(/\D/g, '').length !== 12) {
+      alert('Aadhar number must contain exactly 12 digits.');
+      setIsSubmitting(false);
+      return;
+    }
+
     if (!files.photo || !files.front || !files.back) {
       alert('Please upload Photo and Aadhar Front/Back images.');
       setIsSubmitting(false);
@@ -96,8 +128,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
     try {
       const formDataToSend = new FormData();
 
-      // Add form data
-      Object.entries(form).forEach(([key, value]) => {
+      // Add form data (clean numeric fields before sending)
+      const cleanedForm = {
+        ...form,
+        phone: form.phone.replace(/\D/g, ''),
+        parentsPhone: form.parentsPhone.replace(/\D/g, ''),
+        aadharNumber: form.aadharNumber.replace(/\s+/g, '')
+      };
+      Object.entries(cleanedForm).forEach(([key, value]) => {
         formDataToSend.append(key, String(value as any));
       });
 
@@ -242,12 +280,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
 
               <div>
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-widest">{t.labels.phone} *</label>
-                <input name="phone" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" />
+                <input inputMode="numeric" maxLength={10} name="phone" required value={form.phone} onChange={handlePhoneInput('phone')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" />
               </div>
 
               <div>
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-widest">{lang === 'hi' ? 'अभिभावक का फोन / Guardian phone' : 'Parents / Guardian Phone'} *</label>
-                <input name="parentsPhone" required value={form.parentsPhone} onChange={(e) => setForm({ ...form, parentsPhone: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" placeholder={lang === 'hi' ? 'अभिभावक का फोन' : 'Parents / Guardian phone'} />
+                <input inputMode="numeric" maxLength={10} name="parentsPhone" required value={form.parentsPhone} onChange={handlePhoneInput('parentsPhone')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" placeholder={lang === 'hi' ? 'अभिभावक का फोन' : 'Parents / Guardian phone'} />
               </div>
 
               <div className="md:col-span-2">
@@ -257,7 +295,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
 
               <div>
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-widest">{t.labels.aadhar} *</label>
-                <input name="aadharNumber" required value={form.aadharNumber} onChange={(e) => setForm({ ...form, aadharNumber: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" />
+                <input inputMode="numeric" maxLength={14} name="aadharNumber" required value={form.aadharNumber} onChange={handleAadharChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-50" placeholder="1234 5678 9012" />
               </div>
 
               <div className="md:col-span-2">
@@ -277,7 +315,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
               <div className="p-3 rounded-lg border border-slate-100 bg-slate-50 text-center">
                 <label className="block text-sm">
                   {t.labels.photo}
-                  <input required type="file" accept="image/*" capture="user" onChange={(e) => handleFileChange('photo', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
+                  <input required type="file" accept="image/*" onChange={(e) => handleFileChange('photo', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
                 </label>
                 {previews.photo && (
                   <div className="mt-3 flex items-center justify-center gap-3">
@@ -293,7 +331,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
               <div className="p-3 rounded-lg border border-slate-100 bg-slate-50 text-center">
                 <label className="block text-sm">
                   {t.labels.aadharFront}
-                  <input required type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange('front', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
+                  <input required type="file" accept="image/*" onChange={(e) => handleFileChange('front', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
                 </label>
                 {previews.front && (
                   <div className="mt-3 flex items-center justify-center gap-3">
@@ -309,7 +347,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ lang }) => {
               <div className="p-3 rounded-lg border border-slate-100 bg-slate-50 text-center">
                 <label className="block text-sm">
                   {t.labels.aadharBack}
-                  <input required type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange('back', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
+                  <input required type="file" accept="image/*" onChange={(e) => handleFileChange('back', e.target.files?.[0] || null)} className="mt-2 mx-auto" />
                 </label>
                 {previews.back && (
                   <div className="mt-3 flex items-center justify-center gap-3">
