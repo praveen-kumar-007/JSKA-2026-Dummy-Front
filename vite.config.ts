@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Use relative asset paths so the app works when hosted on a subpath
-  // (avoids blank screen when deployed under a path or served from a CDN)
-  base: './',
+  // Use absolute asset paths so JS/CSS chunks still load when the browser
+  // is on a nested route (e.g. /news/123). Relative './' breaks refresh
+  // because assets resolve under the current path and return 404s.
+  base: '/',
   plugins: [react()],
   build: {
     rollupOptions: {
